@@ -7,17 +7,17 @@ import UserDao from "../dao/userDao.js";
 import AddError from "../error/AddError.js";
 import DeleteError from "../error/DeleteError.js";
 import UpdateError from "../error/UpdateError.js";
+import UserError from "../error/UserError.js";
+import md5 from "md5-node";
 import { hasEmpty, isPhoneNum } from "../util/stringFormatUtil.js";
 
 class UserService {
     constructor() {
         this.userDao = new UserDao();
     }
-    async add(req, res, next) {
-        // 获取参数
-        var params = req.body;
+    async add(params) {
         // 确定用户名称是否重复
-        var result = await this.userDao.findOneByName(req, res, next);
+        var result = await this.userDao.findOneByName(params);
         // 检验参数是否合规
         if (!Object.keys(params).length) {
             // 判断参数是否为空
@@ -33,30 +33,28 @@ class UserService {
 
         try {
             // 等待promise的错误抛出后再执行
-            return await this.userDao.add(req, res, next);
+            return await this.userDao.add(params);
         } catch (e) {
             throw new AddError(e);
         }
     }
 
-    async delete(req, res, next) {
+    async delete(params) {
         // 检查id是否存在
-        var result = await this.userDao.findOneById(req, res, next);
+        var result = await this.userDao.findOneById(params);
         if (!result.length) {
             throw new DeleteError("操作失败，未找到用户");
         }
         try {
-            return await this.userDao.delete(req, res, next);
+            return await this.userDao.delete(params);
         } catch (e) {
             throw new DeleteError(e);
         }
     }
 
-    async updatePassword(req, res, next) {
-        // 获取参数
-        var params = req.body;
+    async updatePassword(params) {
         // 检查id是否存在
-        var result = await this.userDao.findOneById(req, res, next);
+        var result = await this.userDao.findOneById(params);
         // 检验参数是否合规
         if (!Object.keys(params).length) {
             // 判断参数是否为空
@@ -68,26 +66,51 @@ class UserService {
         }
 
         try {
-            return await this.userDao.updatePassword(req, res, next);
+            return await this.userDao.updatePassword(params);
         } catch (e) {
             throw new UpdateError(e);
         }
     }
 
-    async findOneById(req, res, next) {
+    async findOneById(params) {
         // return一个promise，获取结果需要通过then
-        return await this.userDao.findOneById(req, res, next);
+        return await this.userDao.findOneById(params);
     }
 
-    async findOneByName(req, res, next) {
-        return await this.userDao.findOneByName(req, res, next);
+    async findOneByName(params) {
+        return await this.userDao.findOneByName(params);
     }
 
-    async findAll(req, res, next) {
-        return await this.userDao.findAll(req, res, next);
+    async findAll(params) {
+        return await this.userDao.findAll(params);
     }
 
-    async login(req, res, next) {}
+    /**
+     * @description 登录
+     * @param {name, password}
+     * @return {successInfo}
+     * @throws {UserError}
+     */
+    async login(params) {
+        // 检查name是否存在
+        var result = await this.userDao.findOneByName(params);
+        if (result.length) {
+            // 检查密码是否正确
+            var password = result[0].password;
+            if (password === md5(params.password)) {
+                // 密码正确
+                return "登录成功";
+            } else {
+                // 密码错误
+                throw new UserError("密码错误，请重新输入");
+            }
+        }
+        throw new UserError("登录失败，用户不存在");
+    }
+
+    async findRoles(params) {
+        return await this.userDao.findRoles(params);
+    }
 }
 
 export default UserService;

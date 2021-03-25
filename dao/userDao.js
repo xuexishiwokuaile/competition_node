@@ -14,11 +14,10 @@ const pool = mysql.createPool($util.extend({}, $conf.mysql));
 
 class UserDao {
     constructor() {}
-    add(req, res, next) {
+    add(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
-                var params = req.body;
                 connection.query(
                     $sql.add,
                     [
@@ -51,11 +50,10 @@ class UserDao {
         });
     }
 
-    delete(req, res, next) {
+    delete(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 将id转换为整形
-                var params = req.query;
                 connection.query(
                     $sql.delete,
                     +params.id,
@@ -79,11 +77,10 @@ class UserDao {
         });
     }
 
-    updatePassword(req, res, next) {
+    updatePassword(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
-                var params = req.body;
                 connection.query(
                     $sql.updatePassword,
                     [md5(params.password), +params.id],
@@ -111,14 +108,10 @@ class UserDao {
         });
     }
 
-    findOneById(req, res, next) {
+    findOneById(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
-                // 可能被外部接口或add/update等内部函数调用，因此请求可能来自body或query
-                var params = !Object.keys(req.query).length
-                    ? req.body
-                    : req.query;
                 connection.query(
                     $sql.findOneById,
                     [params.id],
@@ -136,13 +129,10 @@ class UserDao {
         });
     }
 
-    findOneByName(req, res, next) {
+    findOneByName(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
-                var params = !Object.keys(req.query).length
-                    ? req.body
-                    : req.query;
                 connection.query(
                     $sql.findOneByName,
                     [params.name],
@@ -160,7 +150,7 @@ class UserDao {
         });
     }
 
-    findAll(req, res, next) {
+    findAll(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query($sql.findAll, function (err, result) {
@@ -172,6 +162,26 @@ class UserDao {
                     // 释放连接
                     connection.release();
                 });
+            });
+        });
+    }
+
+    findRoles(params) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query(
+                    $sql.findRoles,
+                    params.name,
+                    function (err, result) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            resolve(result);
+                        }
+                        // 释放连接
+                        connection.release();
+                    }
+                );
             });
         });
     }

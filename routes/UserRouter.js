@@ -10,44 +10,27 @@ const router = Router();
 
 const userService = new UserService();
 
-// TODO： 验证session
-router.use(function (req, res, next) {
-    if (req.session) {
-        console.log("session", req.session.role);
-    }
-    next();
-});
-/* GET users listing. */
-router.get("/", function (req, res, next) {
-    res.send("respond with a resource");
-});
-
-/**
- * @description:
- */
-router.post("/login", function (req, res, next) {});
-
 /**
  * @description 添加用户
  * @param {name, password, phone, gender}
  * @url /user/add
  * @return {}
  */
-router.post("/add", function (req, res, next) {
-    userService.add(req, res, next).then(
-        (result) => {
-            res.json({
-                code: "0",
-                msg: result,
-            });
-        },
-        (e) => {
-            res.json({
-                code: "1",
-                msg: e.name + ": " + e.message,
-            });
-        }
-    );
+router.post("/add", async function (req, res, next) {
+    // 获取前端传递的参数
+    var params = req.body;
+    try {
+        var result = await userService.add(params);
+        res.json({
+            code: "0",
+            msg: result,
+        });
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
 });
 
 /**
@@ -57,20 +40,34 @@ router.post("/add", function (req, res, next) {
  * @return {}
  */
 router.delete("/delete", async function (req, res, next) {
-    userService.delete(req, res, next).then(
-        (result) => {
-            res.json({
-                code: "0",
-                msg: result,
-            });
-        },
-        (e) => {
-            res.json({
-                code: "1",
-                msg: e.name + ": " + e.message,
-            });
-        }
-    );
+    var params = req.query;
+    // userService.delete(params).then(
+    //     (result) => {
+    //         res.json({
+    //             code: "0",
+    //             msg: result,
+    //         });
+    //     },
+    //     (e) => {
+    //         res.json({
+    //             code: "1",
+    //             msg: e.name + ": " + e.message,
+    //         });
+    //     }
+    // );
+
+    try {
+        var result = await userService.delete(params);
+        res.json({
+            code: "0",
+            msg: result,
+        });
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
 });
 
 /**
@@ -80,22 +77,19 @@ router.delete("/delete", async function (req, res, next) {
  * @return {}
  */
 router.put("/updatePassword", async function (req, res, next) {
-    userService.updatePassword(req, res, next).then(
-        (result) => {
-            res.json(
-                res.json({
-                    code: "0",
-                    msg: result,
-                })
-            );
-        },
-        (e) => {
-            res.json({
-                code: "1",
-                msg: e.name + ": " + e.message,
-            });
-        }
-    );
+    var params = req.body;
+    try {
+        var result = await userService.updatePassword(params);
+        res.json({
+            code: "0",
+            msg: result,
+        });
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
 });
 
 /**
@@ -104,10 +98,9 @@ router.put("/updatePassword", async function (req, res, next) {
  * @url /user/findOneById
  * @return {}
  */
-router.get("/findOneById", function (req, res, next) {
-    userService.findOneById(req, res, next).then((result) => {
-        res.send(result);
-    });
+router.get("/findOneById", async function (req, res, next) {
+    var params = req.query;
+    res.send(await userService.findOneById(params));
 });
 
 /**
@@ -116,10 +109,9 @@ router.get("/findOneById", function (req, res, next) {
  * @url /user/findOneByName
  * @return {}
  */
-router.get("/findOneByName", function (req, res, next) {
-    userService.findOneByName(req, res, next).then((result) => {
-        res.send(result);
-    });
+router.get("/findOneByName", async function (req, res, next) {
+    var params = req.query;
+    res.send(await userService.findOneByName(params));
 });
 
 /**
@@ -128,10 +120,9 @@ router.get("/findOneByName", function (req, res, next) {
  * @url /user/findAll
  * @return {}
  */
-router.get("/findAll", function (req, res, next) {
-    userService.findAll(req, res, next).then((result) => {
-        res.send(result);
-    });
+router.get("/findAll", async function (req, res, next) {
+    var params = req.query;
+    res.send(await userService.findAll(params));
 });
 
 router.post("/test", function (req, res, next) {
