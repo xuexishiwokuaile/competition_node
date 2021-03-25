@@ -15,6 +15,9 @@ import { fileURLToPath } from "url";
 import indexRouter from "./routes/indexRouter.js";
 import usersRouter from "./routes/userRouter.js";
 
+import { checkRole } from "./middleWare/checkRole.js";
+import { updateCookie } from "./middleWare/updateCookie.js";
+
 var app = express();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -26,14 +29,18 @@ app.set("view engine", "jade");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser("competition"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
     session({
         name: "SESSIONID",
-        secret: "sessiontest",
+        secret: "competition",
     })
 );
+
+// 添加自定义中间件
+app.use("/", checkRole);
+app.use("/", updateCookie);
 
 app.use("/", indexRouter);
 app.use("/user", usersRouter);

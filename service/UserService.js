@@ -107,6 +107,10 @@ class UserService {
         }
         throw new UserError("登录失败，用户不存在");
     }
+
+    async findRoles(params) {
+        return await this.userDao.findRoles(params);
+    }
 }
 
 export default UserService;
