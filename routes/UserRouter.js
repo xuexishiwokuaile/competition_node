@@ -10,44 +10,27 @@ const router = Router();
 
 const userService = new UserService();
 
-// TODO： 验证session
-router.use(function (req, res, next) {
-    if (req.session) {
-        console.log("session", req.session.role);
-***REMOVED***
-    next();
-***REMOVED***
-***REMOVED*** GET users listing.***REMOVED***
-router.get("/", function (req, res, next) {
-    res.send("respond with a resource");
-***REMOVED***
-
-***REMOVED****
- * @description:
-***REMOVED***
-router.post("/login", function (req, res, next) {***REMOVED***
-
 ***REMOVED****
  * @description 添加用户
  * @param {name, password, phone, gender***REMOVED***
  * @url /user/add
  * @return {***REMOVED***
 ***REMOVED***
-router.post("/add", function (req, res, next) {
-    userService.add(req, res, next).then(
-        (result) => {
-            res.json({
-                code: "0",
-                msg: result,
-            ***REMOVED***
-***REMOVED***,
-        (e) => {
-            res.json({
-                code: "1",
-                msg: e.name + ": " + e.message,
-            ***REMOVED***
+router.post("/add", async function (req, res, next) {
+    // 获取前端传递的参数
+    var params = req.body;
 ***REMOVED***
-    );
+        var result = await userService.add(params);
+        res.json({
+            code: "0",
+            msg: result,
+        ***REMOVED***
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
 ***REMOVED***
 
 ***REMOVED****
@@ -57,20 +40,34 @@ router.post("/add", function (req, res, next) {
  * @return {***REMOVED***
 ***REMOVED***
 router.delete("/delete", async function (req, res, next) {
-    userService.delete(req, res, next).then(
-        (result) => {
-            res.json({
-                code: "0",
-                msg: result,
-            ***REMOVED***
-***REMOVED***,
-        (e) => {
-            res.json({
-                code: "1",
-                msg: e.name + ": " + e.message,
-            ***REMOVED***
+    var params = req.query;
+    // userService.delete(params).then(
+    //     (result) => {
+    //         res.json({
+    //             code: "0",
+    //             msg: result,
+    //         ***REMOVED***
+    // ***REMOVED***,
+    //     (e) => {
+    //         res.json({
+    //             code: "1",
+    //             msg: e.name + ": " + e.message,
+    //         ***REMOVED***
+    // ***REMOVED***
+    // );
+
 ***REMOVED***
-    );
+        var result = await userService.delete(params);
+        res.json({
+            code: "0",
+            msg: result,
+        ***REMOVED***
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
 ***REMOVED***
 
 ***REMOVED****
@@ -80,22 +77,19 @@ router.delete("/delete", async function (req, res, next) {
  * @return {***REMOVED***
 ***REMOVED***
 router.put("/updatePassword", async function (req, res, next) {
-    userService.updatePassword(req, res, next).then(
-        (result) => {
-            res.json(
-                res.json({
-                    code: "0",
-                    msg: result,
-        ***REMOVED***)
-            );
-***REMOVED***,
-        (e) => {
-            res.json({
-                code: "1",
-                msg: e.name + ": " + e.message,
-            ***REMOVED***
+    var params = req.body;
 ***REMOVED***
-    );
+        var result = await userService.updatePassword(params);
+        res.json({
+            code: "0",
+            msg: result,
+        ***REMOVED***
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
 ***REMOVED***
 
 ***REMOVED****
@@ -104,10 +98,9 @@ router.put("/updatePassword", async function (req, res, next) {
  * @url /user/findOneById
  * @return {***REMOVED***
 ***REMOVED***
-router.get("/findOneById", function (req, res, next) {
-    userService.findOneById(req, res, next).then((result) => {
-        res.send(result);
-    ***REMOVED***
+router.get("/findOneById", async function (req, res, next) {
+    var params = req.query;
+    res.send(await userService.findOneById(params));
 ***REMOVED***
 
 ***REMOVED****
@@ -116,10 +109,9 @@ router.get("/findOneById", function (req, res, next) {
  * @url /user/findOneByName
  * @return {***REMOVED***
 ***REMOVED***
-router.get("/findOneByName", function (req, res, next) {
-    userService.findOneByName(req, res, next).then((result) => {
-        res.send(result);
-    ***REMOVED***
+router.get("/findOneByName", async function (req, res, next) {
+    var params = req.query;
+    res.send(await userService.findOneByName(params));
 ***REMOVED***
 
 ***REMOVED****
@@ -128,10 +120,9 @@ router.get("/findOneByName", function (req, res, next) {
  * @url /user/findAll
  * @return {***REMOVED***
 ***REMOVED***
-router.get("/findAll", function (req, res, next) {
-    userService.findAll(req, res, next).then((result) => {
-        res.send(result);
-    ***REMOVED***
+router.get("/findAll", async function (req, res, next) {
+    var params = req.query;
+    res.send(await userService.findAll(params));
 ***REMOVED***
 
 router.post("/test", function (req, res, next) {
