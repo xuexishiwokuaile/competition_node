@@ -83,7 +83,7 @@ class UserDao {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.updatePassword,
-                    [md5(params.password), +params,id],
+                    [md5(params.password), +params.id],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {
@@ -169,15 +169,19 @@ class UserDao {
     findRoles(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query($sql.findAll, function (err, result) {
-                    if (err) {
-                        console.log(err);
-            ***REMOVED*** else {
-                        resolve(result);
-            ***REMOVED***
-                    // 释放连接
-                    connection.release();
+                connection.query(
+                    $sql.findRoles,
+                    params.name,
+                    function (err, result) {
+                        if (err) {
+                            console.log(err);
+                ***REMOVED*** else {
+                            resolve(result);
                 ***REMOVED***
+                        // 释放连接
+                        connection.release();
+            ***REMOVED***
+                );
             ***REMOVED***
         ***REMOVED***
 ***REMOVED***

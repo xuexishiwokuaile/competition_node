@@ -107,6 +107,10 @@ class UserService {
 ***REMOVED***
         throw new UserError("登录失败，用户不存在");
 ***REMOVED***
+
+    async findRoles(params) {
+        return await this.userDao.findRoles(params);
+***REMOVED***
 ***REMOVED***
 
 export default UserService;
