@@ -14,11 +14,10 @@ const pool = mysql.createPool($util.extend({***REMOVED***, $conf.mysql));
 
 class UserDao {
     constructor() {***REMOVED***
-    add(req, res, next) {
+    add(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
-                var params = req.body;
                 connection.query(
                     $sql.add,
                     [
@@ -51,11 +50,10 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    delete(req, res, next) {
+    delete(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 将id转换为整形
-                var params = req.query;
                 connection.query(
                     $sql.delete,
                     +params.id,
@@ -79,14 +77,13 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    updatePassword(req, res, next) {
+    updatePassword(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
-                var params = req.body;
                 connection.query(
                     $sql.updatePassword,
-                    [md5(params.password), +params.id],
+                    [md5(params.password), +params,id],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {
@@ -111,14 +108,10 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findOneById(req, res, next) {
+    findOneById(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
-                // 可能被外部接口或add/update等内部函数调用，因此请求可能来自body或query
-                var params = !Object.keys(req.query).length
-                    ? req.body
-                    : req.query;
                 connection.query(
                     $sql.findOneById,
                     [params.id],
@@ -136,13 +129,10 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findOneByName(req, res, next) {
+    findOneByName(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
-                var params = !Object.keys(req.query).length
-                    ? req.body
-                    : req.query;
                 connection.query(
                     $sql.findOneByName,
                     [params.name],
@@ -160,7 +150,23 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findAll(req, res, next) {
+    findAll(params) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query($sql.findAll, function (err, result) {
+                    if (err) {
+                        console.log(err);
+            ***REMOVED*** else {
+                        resolve(result);
+            ***REMOVED***
+                    // 释放连接
+                    connection.release();
+                ***REMOVED***
+            ***REMOVED***
+        ***REMOVED***
+***REMOVED***
+
+    findRoles(params) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query($sql.findAll, function (err, result) {

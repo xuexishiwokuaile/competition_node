@@ -23,9 +23,33 @@ router.get("/", function (req, res, next) {
 ***REMOVED***
 
 ***REMOVED****
- * @description:
+ * @description 登录
+ * @param {name, password***REMOVED***
+ * @url /user/login
+ * @return {***REMOVED***
 ***REMOVED***
-router.post("/login", function (req, res, next) {***REMOVED***
+router.post("/login", function (req, res, next) {
+    // 获取传递的参数
+    var params = req.body;
+    userService.login(params).then(
+        (result) => {
+            // TODO: 在session里存储用户信息
+            // cookie的过期时间设置为一周
+            res.cookie("name", params.name, { httpOnly: true, maxAge: 604800 ***REMOVED***
+            res.cookie("password", params.password, { httpOnly: true, maxAge: 604800 ***REMOVED***
+            res.json({
+                code: "0",
+                msg: result,
+            ***REMOVED***
+***REMOVED***,
+        (e) => {
+            res.json({
+                code: "1",
+                msg: e.name + ": " + e.message,
+            ***REMOVED***
+***REMOVED***
+    );
+***REMOVED***
 
 ***REMOVED****
  * @description 添加用户
@@ -34,7 +58,9 @@ router.post("/login", function (req, res, next) {***REMOVED***
  * @return {***REMOVED***
 ***REMOVED***
 router.post("/add", function (req, res, next) {
-    userService.add(req, res, next).then(
+    // 获取前端传递的参数
+    var params = req.body;
+    userService.add(params).then(
         (result) => {
             res.json({
                 code: "0",
@@ -57,7 +83,8 @@ router.post("/add", function (req, res, next) {
  * @return {***REMOVED***
 ***REMOVED***
 router.delete("/delete", async function (req, res, next) {
-    userService.delete(req, res, next).then(
+    var params = req.query;
+    userService.delete(params).then(
         (result) => {
             res.json({
                 code: "0",
@@ -80,7 +107,8 @@ router.delete("/delete", async function (req, res, next) {
  * @return {***REMOVED***
 ***REMOVED***
 router.put("/updatePassword", async function (req, res, next) {
-    userService.updatePassword(req, res, next).then(
+    var params = req.body;
+    userService.updatePassword(params).then(
         (result) => {
             res.json(
                 res.json({
@@ -105,7 +133,8 @@ router.put("/updatePassword", async function (req, res, next) {
  * @return {***REMOVED***
 ***REMOVED***
 router.get("/findOneById", function (req, res, next) {
-    userService.findOneById(req, res, next).then((result) => {
+    var params = req.query;
+    userService.findOneById(params).then((result) => {
         res.send(result);
     ***REMOVED***
 ***REMOVED***
@@ -117,7 +146,8 @@ router.get("/findOneById", function (req, res, next) {
  * @return {***REMOVED***
 ***REMOVED***
 router.get("/findOneByName", function (req, res, next) {
-    userService.findOneByName(req, res, next).then((result) => {
+    var params = req.query;
+    userService.findOneByName(params).then((result) => {
         res.send(result);
     ***REMOVED***
 ***REMOVED***
@@ -129,7 +159,8 @@ router.get("/findOneByName", function (req, res, next) {
  * @return {***REMOVED***
 ***REMOVED***
 router.get("/findAll", function (req, res, next) {
-    userService.findAll(req, res, next).then((result) => {
+    var params = req.query;
+    userService.findAll(params).then((result) => {
         res.send(result);
     ***REMOVED***
 ***REMOVED***
