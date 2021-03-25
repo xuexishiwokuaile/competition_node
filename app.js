@@ -11,6 +11,7 @@ import logger from "morgan";
 import session from "express-session";
 import { dirname ***REMOVED*** from "path";
 import { fileURLToPath ***REMOVED*** from "url";
+import cors from "cors";
 
 import indexRouter from "./routes/indexRouter.js";
 import usersRouter from "./routes/userRouter.js";
@@ -26,6 +27,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false ***REMOVED***));
