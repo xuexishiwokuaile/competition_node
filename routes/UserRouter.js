@@ -18,9 +18,10 @@ const userService = new UserService();
  */
 router.post("/add", async function (req, res, next) {
     // 获取前端传递的参数
-    var params = req.body;
+    var user = req.body;
     try {
-        var result = await userService.add(params);
+        var result = await userService.add(user);
+        console.log(result);
         res.json({
             code: "0",
             msg: result,
@@ -40,8 +41,8 @@ router.post("/add", async function (req, res, next) {
  * @return {}
  */
 router.delete("/delete", async function (req, res, next) {
-    var params = req.query;
-    // userService.delete(params).then(
+    var user = req.query;
+    // userService.delete(user).then(
     //     (result) => {
     //         res.json({
     //             code: "0",
@@ -57,7 +58,7 @@ router.delete("/delete", async function (req, res, next) {
     // );
 
     try {
-        var result = await userService.delete(params);
+        var result = await userService.delete(user);
         res.json({
             code: "0",
             msg: result,
@@ -77,9 +78,9 @@ router.delete("/delete", async function (req, res, next) {
  * @return {}
  */
 router.put("/updatePassword", async function (req, res, next) {
-    var params = req.body;
+    var user = req.body;
     try {
-        var result = await userService.updatePassword(params);
+        var result = await userService.updatePassword(user);
         res.json({
             code: "0",
             msg: result,
@@ -99,8 +100,8 @@ router.put("/updatePassword", async function (req, res, next) {
  * @return {}
  */
 router.get("/findOneById", async function (req, res, next) {
-    var params = req.query;
-    res.send(await userService.findOneById(params));
+    var user = req.query;
+    res.send(await userService.findOneById(user));
 });
 
 /**
@@ -110,8 +111,8 @@ router.get("/findOneById", async function (req, res, next) {
  * @return {}
  */
 router.get("/findOneByName", async function (req, res, next) {
-    var params = req.query;
-    res.send(await userService.findOneByName(params));
+    var user = req.query;
+    res.send(await userService.findOneByName(user));
 });
 
 /**
@@ -121,8 +122,8 @@ router.get("/findOneByName", async function (req, res, next) {
  * @return {}
  */
 router.get("/findAll", async function (req, res, next) {
-    var params = req.query;
-    res.send(await userService.findAll(params));
+    var user = req.query;
+    res.send(await userService.findAll());
 });
 
 router.post("/test", function (req, res, next) {
