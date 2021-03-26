@@ -14,6 +14,11 @@ export function hasEmpty(input) {
     return false;
 ***REMOVED***
 
+export function isEmpty(input) {
+    if (input == null || input.length == 0) return true;
+    return false;
+***REMOVED***
+
 export function isPhoneNum(phoneNum) {
     if (hasEmpty(phoneNum)) return false;
     return /^1[3456789]\d{9***REMOVED***$/.test(phoneNum);

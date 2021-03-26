@@ -28,16 +28,16 @@ class UserDao {
                             connection.release();
                             // 通过reject向外抛出错误
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("操作失败，数据库错误");
+                            reject("添加失败，数据库错误");
                             // reject不会终止函数，这里需要手动return来终止
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
                             connection.release();
-                            reject("操作失败");
+                            reject("添加失败");
                 ***REMOVED***
                 ***REMOVED***
                         // 释放连接
-                        resolve("操作成功");
+                        resolve("添加成功");
                         connection.release();
             ***REMOVED***
                 );
@@ -53,11 +53,11 @@ class UserDao {
                     if (err) {
                         console.log(err);
                         connection.release();
-                        reject("操作失败，数据库错误");
+                        reject("删除失败，数据库错误");
             ***REMOVED***
             ***REMOVED*** else if (!result.affectedRows) {
                         connection.release();
-                        reject("操作失败");
+                        reject("删除失败");
             ***REMOVED***
             ***REMOVED***
                     // 释放连接
@@ -82,16 +82,16 @@ class UserDao {
                             connection.release();
                             // 通过reject向外抛出错误
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("操作失败，数据库错误");
+                            reject("更新失败，数据库错误");
                             // reject不会终止函数，这里需要手动return来终止
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
                             connection.release();
-                            reject("操作失败");
+                            reject("更新失败");
                 ***REMOVED***
                 ***REMOVED***
                         // 释放连接
-                        resolve("操作成功");
+                        resolve("更新成功");
                         connection.release();
             ***REMOVED***
                 );
@@ -105,7 +105,7 @@ class UserDao {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.findOneById,
-                    [user.id],
+                    [+user.id],
                     function (err, result) {
                         if (err) {
                             console.log(err);

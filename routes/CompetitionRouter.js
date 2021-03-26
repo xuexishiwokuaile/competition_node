@@ -1,26 +1,25 @@
 ***REMOVED***
 ***REMOVED***
- * @Date: 2021-03-25 00:01:05
+ * @Date: 2021-03-25 20:27:55
 ***REMOVED***
 
 import { Router ***REMOVED*** from "express";
-import UserService from "../service/userService.js";
+import CompetitionService from "../service/CompetitionService.js";
 
 const router = Router();
-
-const userService = new UserService();
+const competitionService = new CompetitionService();
 
 ***REMOVED****
- * @description 添加用户
- * @param {name, password, phone, gender***REMOVED***
- * @url /user/add
+ * @description 添加竞赛
+ * @param {name, url, detail, image***REMOVED***
+ * @url /competition/add
  * @return {***REMOVED***
 ***REMOVED***
 router.post("/add", async function (req, res, next) {
     // 获取传递的参数
-    var user = req.body;
+    const competition = req.body;
 ***REMOVED***
-        var result = await userService.add(user);
+        const result = await competitionService.add(competition);
         res.json({
             code: "0",
             msg: result,
@@ -34,31 +33,16 @@ router.post("/add", async function (req, res, next) {
 ***REMOVED***
 
 ***REMOVED****
- * @description 删除用户
+ * @description 删除竞赛
  * @param {id***REMOVED***
- * @url /user/delete
+ * @url /competition/delete
  * @return {***REMOVED***
 ***REMOVED***
 router.delete("/delete", async function (req, res, next) {
     // 获取传递的参数
-    var user = req.query;
-    // userService.delete(user).then(
-    //     (result) => {
-    //         res.json({
-    //             code: "0",
-    //             msg: result,
-    //         ***REMOVED***
-    // ***REMOVED***,
-    //     (e) => {
-    //         res.json({
-    //             code: "1",
-    //             msg: e.name + ": " + e.message,
-    //         ***REMOVED***
-    // ***REMOVED***
-    // );
-
+    const competition = req.query;
 ***REMOVED***
-        var result = await userService.delete(user);
+        const result = await competitionService.delete(competition);
         res.json({
             code: "0",
             msg: result,
@@ -72,16 +56,16 @@ router.delete("/delete", async function (req, res, next) {
 ***REMOVED***
 
 ***REMOVED****
- * @description 更新用户密码
- * @param {id, password***REMOVED***
- * @url /user/updatePassword
+ * @description 更新竞赛
+ * @param {id, name, url, detail, image***REMOVED***
+ * @url /competition/update
  * @return {***REMOVED***
 ***REMOVED***
-router.put("/updatePassword", async function (req, res, next) {
+router.put("/update", async function (req, res, next) {
     // 获取传递的参数
-    var user = req.body;
+    const competition = req.body;
 ***REMOVED***
-        var result = await userService.updatePassword(user);
+        const result = await competitionService.update(competition);
         res.json({
             code: "0",
             msg: result,
@@ -95,36 +79,37 @@ router.put("/updatePassword", async function (req, res, next) {
 ***REMOVED***
 
 ***REMOVED****
- * @description 根据id查找用户
+ * @description 根据id查找竞赛
  * @param {id***REMOVED***
- * @url /user/findOneById
- * @return {user***REMOVED***
+ * @url /competition/findOneById
+ * @return {competition***REMOVED***
 ***REMOVED***
 router.get("/findOneById", async function (req, res, next) {
     // 获取传递的参数
-    var user = req.query;
-    res.send(await userService.findOneById(user));
+    const competition = req.query;
+    res.send(await competitionService.findOneById(competition));
 ***REMOVED***
 
 ***REMOVED****
- * @description 根据name查找用户
+ * @description 根据name查找竞赛
  * @param {name***REMOVED***
- * @url /user/findOneByName
- * @return {user***REMOVED***
+ * @url /competition/findOneByName
+ * @return {competition***REMOVED***
 ***REMOVED***
 router.get("/findOneByName", async function (req, res, next) {
-    var user = req.query;
-    res.send(await userService.findOneByName(user));
+    // 获取传递的参数
+    const competition = req.query;
+    res.send(await competitionService.findOneByName(competition));
 ***REMOVED***
 
 ***REMOVED****
- * @description 查找所有用户
+ * @description 查找所有竞赛
  * @param {***REMOVED***
- * @url /user/findAll
- * @return {[user]***REMOVED***
+ * @url /competition/findAll
+ * @return {[competition]***REMOVED***
 ***REMOVED***
 router.get("/findAll", async function (req, res, next) {
-    res.send(await userService.findAll());
+    res.send(await competitionService.findAll());
 ***REMOVED***
 
 export default router;

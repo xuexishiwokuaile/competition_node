@@ -21,16 +21,16 @@ class UserService {
         // 检验参数是否合规
         if (!Object.keys(user).length) {
             // 判断参数是否为空
-            throw new AddError("操作失败，未提供用户");
+            throw new AddError("添加失败，未提供用户");
 ***REMOVED*** else if (result.length) {
             // 异步异常
-            throw new AddError("操作失败，用户名称重复");
+            throw new AddError("添加失败，用户名称重复");
 ***REMOVED*** else if (hasEmpty(user.name) || hasEmpty(user.password)) {
-            throw new AddError("操作失败，用户信息含空");
+            throw new AddError("添加失败，用户信息含空");
 ***REMOVED*** else if (!isPhoneNum(user.phone)) {
-            throw new AddError("操作失败，手机号格式不正确");
+            throw new AddError("添加失败，手机号格式不正确");
 ***REMOVED*** else if(!Number.isInteger(+user.gender)) {
-            throw new AddError("操作失败，性别格式不正确");
+            throw new AddError("添加失败，性别格式不正确");
 ***REMOVED***
 
     ***REMOVED***
@@ -45,7 +45,7 @@ class UserService {
         // 检查id是否存在
         var result = await this.userDao.findOneById(user);
         if (!result.length) {
-            throw new DeleteError("操作失败，未找到用户");
+            throw new DeleteError("删除失败，未找到用户");
 ***REMOVED***
     ***REMOVED***
             return await this.userDao.delete(user);
@@ -60,11 +60,11 @@ class UserService {
         // 检验参数是否合规
         if (!Object.keys(user).length) {
             // 判断参数是否为空
-            throw new UpdateError("操作失败，未提供用户");
+            throw new UpdateError("更新失败，未提供用户");
 ***REMOVED*** else if (!result.length) {
-            throw new UpdateError("操作失败，未找到用户");
+            throw new UpdateError("更新失败，未找到用户");
 ***REMOVED*** else if (hasEmpty(user.password)) {
-            throw new UpdateError("操作失败，密码含空");
+            throw new UpdateError("更新失败，密码含空");
 ***REMOVED***
 
     ***REMOVED***

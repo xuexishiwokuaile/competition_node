@@ -1,26 +1,31 @@
 ***REMOVED***
 ***REMOVED***
- * @Date: 2021-03-23 14:41:38
+ * @Date: 2021-03-26 15:28:23
 ***REMOVED***
 
 import mysql from "mysql";
 import $conf from "../conf/db.js";
 import $util from "../util/pool.js";
-import $sql from "./UserSqlMapping.js";
+import $sql from "./CompetitionSqlMapping.js";
 import md5 from "md5-node";
 
 // 使用连接池，提升性能
 const pool = mysql.createPool($util.extend({***REMOVED***, $conf.mysql));
 
-class UserDao {
+class CompetitionDao {
     constructor() {***REMOVED***
-    add(user) {
+    add(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.add,
-                    [user.name, md5(user.password), user.phone, user.gender],
+                    [
+                        competition.name,
+                        competition.url,
+                        competition.detail,
+                        competition.image,
+                    ],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {
@@ -28,7 +33,7 @@ class UserDao {
                             connection.release();
                             // 通过reject向外抛出错误
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("添加失败，数据库错误");
+                            reject("操作失败，数据库错误");
                             // reject不会终止函数，这里需要手动return来终止
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
@@ -45,53 +50,26 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    delete(user) {
+    delete(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                // 将id转换为整形
-                connection.query($sql.delete, +user.id, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                        connection.release();
-                        reject("删除失败，数据库错误");
-            ***REMOVED***
-            ***REMOVED*** else if (!result.affectedRows) {
-                        connection.release();
-                        reject("删除失败");
-            ***REMOVED***
-            ***REMOVED***
-                    // 释放连接
-                    resolve("操作成功");
-                    connection.release();
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
-
-    updatePassword(user) {
-        return new Promise(function (resolve, reject) {
-            pool.getConnection(function (err, connection) {
-                // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.updatePassword,
-                    [md5(user.password), +user.id],
+                    $sql.delete,
+                    // 将id转换为整形
+                    +competition.id,
                     function (err, result) {
-                        // 查看错误详情，便于调试
                         if (err) {
                             console.log(err);
                             connection.release();
-                            // 通过reject向外抛出错误
-                            // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("更新失败，数据库错误");
-                            // reject不会终止函数，这里需要手动return来终止
+                            reject("删除失败，数据库错误");
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
                             connection.release();
-                            reject("更新失败");
+                            reject("删除失败");
                 ***REMOVED***
                 ***REMOVED***
                         // 释放连接
-                        resolve("更新成功");
+                        resolve("删除成功");
                         connection.release();
             ***REMOVED***
                 );
@@ -99,13 +77,50 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findOneById(user) {
+    update(competition) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                // 获取前台页面传过来的参数
+                connection.query(
+                    $sql.update,
+                    [
+                        competition.name,
+                        competition.url,
+                        competition.detail,
+                        competition.image,
+                        +competition.id
+                    ],
+                    function (err, result) {
+                        // 查看错误详情，便于调试
+                        if (err) {
+                            console.log(err);
+                            connection.release();
+                            // 通过reject向外抛出错误
+                            // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
+                            reject("删除失败，数据库错误");
+                            // reject不会终止函数，这里需要手动return来终止
+                ***REMOVED***
+                ***REMOVED*** else if (!result.affectedRows) {
+                            connection.release();
+                            reject("删除失败");
+                ***REMOVED***
+                ***REMOVED***
+                        // 释放连接
+                        resolve("操作成功");
+                        connection.release();
+            ***REMOVED***
+                );
+            ***REMOVED***
+        ***REMOVED***
+***REMOVED***
+
+    findOneById(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.findOneById,
-                    [+user.id],
+                    [+competition.id],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -120,13 +135,13 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findOneByName(user) {
+    findOneByName(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.findOneByName,
-                    [user.name],
+                    [competition.name],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -156,26 +171,6 @@ class UserDao {
             ***REMOVED***
         ***REMOVED***
 ***REMOVED***
-
-    findRoles(user) {
-        return new Promise(function (resolve, reject) {
-            pool.getConnection(function (err, connection) {
-                connection.query(
-                    $sql.findRoles,
-                    user.name,
-                    function (err, result) {
-                        if (err) {
-                            console.log(err);
-                ***REMOVED*** else {
-                            resolve(result);
-                ***REMOVED***
-                        // 释放连接
-                        connection.release();
-            ***REMOVED***
-                );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
 ***REMOVED***
 
-export default UserDao;
+export default CompetitionDao;
