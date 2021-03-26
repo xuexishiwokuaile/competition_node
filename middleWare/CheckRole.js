@@ -22,8 +22,6 @@ export async function checkRole(req, res, next) {
     if (interfaceName == "login") {
         next();
 ***REMOVED*** else {
-        // 又回到这里执行
-        console.log(interfaceName);
         if (!(req.signedCookies.name || req.signedCookies.password)) {
             // cookie中不包含name或password字段，返回403错误
             next(createError(403));
