@@ -14,16 +14,22 @@ var userService = new UserService();
  * @return {}
  */
 export async function checkRole(req, res, next) {
-    // // 采用正则匹配url请求
-    // var pattern = /[a-z]+/;
-    // // 得到用户请求的接口名，查看是否有权限访问
-    // var interfaceName = req.url.match(pattern)[0];
-
     // 去掉url ?后的参数
-    const url = req.url.substring(0, req.url.indexOf("?"));
+    const url =
+        req.url.indexOf("?") > -1
+            ? req.url.substring(0, req.url.indexOf("?"))
+            : req.url;
+
+    // 正则匹配url
+    var pattern = /[a-z]+/;
+    // 得到用户请求的router名
+    var routerName = url.match(pattern)[0];
 
     // 放行匿名请求
-    if (authorization["anonymous"].hasOwnProperty(url)) {
+    if (
+        authorization["anonymous"].hasOwnProperty(url) ||
+        authorization["anonymous"].hasOwnProperty(`/${routerName}/*`)
+    ) {
         next();
     } else {
         if (!(req.signedCookies.name || req.signedCookies.password)) {
@@ -44,22 +50,14 @@ export async function checkRole(req, res, next) {
             role = req.session.role;
         }
 
-        if (authorization[role].hasOwnProperty(url)) {
-            // 精确匹配
+        if (
+            authorization[role].hasOwnProperty(url) ||
+            authorization[role].hasOwnProperty(`/${routerName}/*`)
+        ) {
+            // 精确匹配 || 模糊匹配
             next();
         } else {
-            // 模糊匹配*
-            // 正则匹配url
-            var pattern = /[a-z]+/;
-            // 得到用户请求的router名
-            var routerName = url.match(pattern)[0];
-            if (authorization[role].hasOwnProperty(`/${routerName}/*`)) {
-                // 模糊匹配成功
-                next();
-            } else {
-                // 用户角色没有操作权限
-                next(createError(403));
-            }
+            next(createError(403));
         }
     }
 }
