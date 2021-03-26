@@ -3,7 +3,7 @@
  * @Date: 2021-03-25 00:01:05
 ***REMOVED***
 
-import UserDao from "../dao/userDao.js";
+import UserDao from "../dao/UserDao.js";
 import AddError from "../error/AddError.js";
 import DeleteError from "../error/DeleteError.js";
 import UpdateError from "../error/UpdateError.js";
@@ -15,74 +15,76 @@ class UserService {
     constructor() {
         this.userDao = new UserDao();
 ***REMOVED***
-    async add(params) {
+    async add(user) {
         // 确定用户名称是否重复
-        var result = await this.userDao.findOneByName(params);
+        var result = await this.userDao.findOneByName(user);
         // 检验参数是否合规
-        if (!Object.keys(params).length) {
+        if (!Object.keys(user).length) {
             // 判断参数是否为空
             throw new AddError("操作失败，未提供用户");
 ***REMOVED*** else if (result.length) {
             // 异步异常
             throw new AddError("操作失败，用户名称重复");
-***REMOVED*** else if (hasEmpty(params.name) || hasEmpty(params.password)) {
+***REMOVED*** else if (hasEmpty(user.name) || hasEmpty(user.password)) {
             throw new AddError("操作失败，用户信息含空");
-***REMOVED*** else if (!isPhoneNum(params.phone)) {
+***REMOVED*** else if (!isPhoneNum(user.phone)) {
             throw new AddError("操作失败，手机号格式不正确");
+***REMOVED*** else if(!Number.isInteger(+user.gender)) {
+            throw new AddError("操作失败，性别格式不正确");
 ***REMOVED***
 
     ***REMOVED***
             // 等待promise的错误抛出后再执行
-            return await this.userDao.add(params);
+            return await this.userDao.add(user);
 ***REMOVED*** catch (e) {
             throw new AddError(e);
 ***REMOVED***
 ***REMOVED***
 
-    async delete(params) {
+    async delete(user) {
         // 检查id是否存在
-        var result = await this.userDao.findOneById(params);
+        var result = await this.userDao.findOneById(user);
         if (!result.length) {
             throw new DeleteError("操作失败，未找到用户");
 ***REMOVED***
     ***REMOVED***
-            return await this.userDao.delete(params);
+            return await this.userDao.delete(user);
 ***REMOVED*** catch (e) {
             throw new DeleteError(e);
 ***REMOVED***
 ***REMOVED***
 
-    async updatePassword(params) {
+    async updatePassword(user) {
         // 检查id是否存在
-        var result = await this.userDao.findOneById(params);
+        var result = await this.userDao.findOneById(user);
         // 检验参数是否合规
-        if (!Object.keys(params).length) {
+        if (!Object.keys(user).length) {
             // 判断参数是否为空
             throw new UpdateError("操作失败，未提供用户");
 ***REMOVED*** else if (!result.length) {
             throw new UpdateError("操作失败，未找到用户");
-***REMOVED*** else if (hasEmpty(params.password)) {
+***REMOVED*** else if (hasEmpty(user.password)) {
             throw new UpdateError("操作失败，密码含空");
 ***REMOVED***
 
     ***REMOVED***
-            return await this.userDao.updatePassword(params);
+            return await this.userDao.updatePassword(user);
 ***REMOVED*** catch (e) {
             throw new UpdateError(e);
 ***REMOVED***
 ***REMOVED***
 
-    async findOneById(params) {
+    async findOneById(user) {
         // return一个promise，获取结果需要通过then
-        return await this.userDao.findOneById(params);
+        return await this.userDao.findOneById(user);
 ***REMOVED***
 
-    async findOneByName(params) {
-        return await this.userDao.findOneByName(params);
+    async findOneByName(user) {
+        return await this.userDao.findOneByName(user);
 ***REMOVED***
 
-    async findAll(params) {
-        return await this.userDao.findAll(params);
+    async findAll() {
+        return await this.userDao.findAll();
 ***REMOVED***
 
     ***REMOVED****
@@ -91,13 +93,13 @@ class UserService {
      * @return {successInfo***REMOVED***
      * @throws {UserError***REMOVED***
     ***REMOVED***
-    async login(params) {
+    async login(user) {
         // 检查name是否存在
-        var result = await this.userDao.findOneByName(params);
+        var result = await this.userDao.findOneByName(user);
         if (result.length) {
             // 检查密码是否正确
             var password = result[0].password;
-            if (password === md5(params.password)) {
+            if (password === md5(user.password)) {
                 // 密码正确
                 return "登录成功";
     ***REMOVED*** else {
@@ -108,8 +110,8 @@ class UserService {
         throw new UserError("登录失败，用户不存在");
 ***REMOVED***
 
-    async findRoles(params) {
-        return await this.userDao.findRoles(params);
+    async findRoles(user) {
+        return await this.userDao.findRoles(user);
 ***REMOVED***
 ***REMOVED***
 

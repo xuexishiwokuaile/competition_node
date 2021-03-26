@@ -6,7 +6,7 @@
 import mysql from "mysql";
 import $conf from "../conf/db.js";
 import $util from "../util/pool.js";
-import $sql from "./userSqlMapping.js";
+import $sql from "./UserSqlMapping.js";
 import md5 from "md5-node";
 
 // 使用连接池，提升性能
@@ -14,18 +14,13 @@ const pool = mysql.createPool($util.extend({***REMOVED***, $conf.mysql));
 
 class UserDao {
     constructor() {***REMOVED***
-    add(params) {
+    add(user) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.add,
-                    [
-                        params.name,
-                        md5(params.password),
-                        params.phone,
-                        params.gender,
-                    ],
+                    [user.name, md5(user.password), user.phone, user.gender],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {
@@ -50,40 +45,36 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    delete(params) {
+    delete(user) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 将id转换为整形
-                connection.query(
-                    $sql.delete,
-                    +params.id,
-                    function (err, result) {
-                        if (err) {
-                            console.log(err);
-                            connection.release();
-                            reject("操作失败，数据库错误");
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
-                            connection.release();
-                            reject("操作失败");
-                ***REMOVED***
-                ***REMOVED***
-                        // 释放连接
-                        resolve("操作成功");
+                connection.query($sql.delete, +user.id, function (err, result) {
+                    if (err) {
+                        console.log(err);
                         connection.release();
+                        reject("操作失败，数据库错误");
             ***REMOVED***
-                );
+            ***REMOVED*** else if (!result.affectedRows) {
+                        connection.release();
+                        reject("操作失败");
+            ***REMOVED***
+            ***REMOVED***
+                    // 释放连接
+                    resolve("操作成功");
+                    connection.release();
+                ***REMOVED***
             ***REMOVED***
         ***REMOVED***
 ***REMOVED***
 
-    updatePassword(params) {
+    updatePassword(user) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.updatePassword,
-                    [md5(params.password), +params.id],
+                    [md5(user.password), +user.id],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {
@@ -108,13 +99,13 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findOneById(params) {
+    findOneById(user) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.findOneById,
-                    [params.id],
+                    [user.id],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -129,13 +120,13 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findOneByName(params) {
+    findOneByName(user) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.findOneByName,
-                    [params.name],
+                    [user.name],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -150,7 +141,7 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findAll(params) {
+    findAll() {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query($sql.findAll, function (err, result) {
@@ -166,12 +157,12 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findRoles(params) {
+    findRoles(user) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query(
                     $sql.findRoles,
-                    params.name,
+                    user.name,
                     function (err, result) {
                         if (err) {
                             console.log(err);
