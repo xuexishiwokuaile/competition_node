@@ -3,10 +3,14 @@
  * @Date: 2021-03-25 20:26:40
  */
 export default {
+    anonymous: {
+        "/login": true,
+        "/register": true,
+    },
     student: {
-        user: true,
-        login: true,
-        competition: true,
+        "/login": true,
+        "/register": true,
+        "/competition": true,
     },
     teacher: {
         user: true,
