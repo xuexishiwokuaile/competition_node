@@ -17,11 +17,10 @@ const userService = new UserService();
  * @return {}
  */
 router.post("/add", async function (req, res, next) {
-    // 获取前端传递的参数
+    // 获取传递的参数
     var user = req.body;
     try {
         var result = await userService.add(user);
-        console.log(result);
         res.json({
             code: "0",
             msg: result,
@@ -41,6 +40,7 @@ router.post("/add", async function (req, res, next) {
  * @return {}
  */
 router.delete("/delete", async function (req, res, next) {
+    // 获取传递的参数
     var user = req.query;
     // userService.delete(user).then(
     //     (result) => {
@@ -78,6 +78,7 @@ router.delete("/delete", async function (req, res, next) {
  * @return {}
  */
 router.put("/updatePassword", async function (req, res, next) {
+    // 获取传递的参数
     var user = req.body;
     try {
         var result = await userService.updatePassword(user);
@@ -97,9 +98,10 @@ router.put("/updatePassword", async function (req, res, next) {
  * @description 根据id查找用户
  * @param {id}
  * @url /user/findOneById
- * @return {}
+ * @return {user}
  */
 router.get("/findOneById", async function (req, res, next) {
+    // 获取传递的参数
     var user = req.query;
     res.send(await userService.findOneById(user));
 });
@@ -108,7 +110,7 @@ router.get("/findOneById", async function (req, res, next) {
  * @description 根据name查找用户
  * @param {name}
  * @url /user/findOneByName
- * @return {}
+ * @return {user}
  */
 router.get("/findOneByName", async function (req, res, next) {
     var user = req.query;
@@ -119,18 +121,10 @@ router.get("/findOneByName", async function (req, res, next) {
  * @description 查找所有用户
  * @param {}
  * @url /user/findAll
- * @return {}
+ * @return {[user]}
  */
 router.get("/findAll", async function (req, res, next) {
-    var user = req.query;
     res.send(await userService.findAll());
-});
-
-router.post("/test", function (req, res, next) {
-    user = req.body;
-    res.cookie("signed", true, { httpOnly: true, maxAge: 1000 });
-    req.session.role = "student";
-    res.send("success");
 });
 
 export default router;
