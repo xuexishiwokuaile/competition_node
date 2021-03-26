@@ -14,10 +14,11 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 
 import indexRouter from "./routes/indexRouter.js";
-import usersRouter from "./routes/userRouter.js";
+import userRouter from "./routes/userRouter.js";
+import competitionRouter from "./routes/CompetitionRouter.js";
 
-import { checkRole } from "./middleWare/checkRole.js";
-import { updateCookie } from "./middleWare/updateCookie.js";
+import { checkRole } from "./middleWare/CheckRole.js";
+import { updateCookie } from "./middleWare/UpdateCookie.js";
 
 var app = express();
 
@@ -45,7 +46,8 @@ app.use("/", checkRole);
 app.use("/", updateCookie);
 
 app.use("/", indexRouter);
-app.use("/user", usersRouter);
+app.use("/user", userRouter);
+app.use("/competition",competitionRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

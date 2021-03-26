@@ -1,30 +1,30 @@
 /*
  * @Author: chenanran
- * @Date: 2021-03-23 14:41:38
+ * @Date: 2021-03-26 15:28:23
  */
 
 import mysql from "mysql";
 import $conf from "../conf/db.js";
 import $util from "../util/pool.js";
-import $sql from "./userSqlMapping.js";
+import $sql from "./CompetitionSqlMapping.js";
 import md5 from "md5-node";
 
 // 使用连接池，提升性能
 const pool = mysql.createPool($util.extend({}, $conf.mysql));
 
-class UserDao {
+class CompetitionDao {
     constructor() {}
-    add(params) {
+    add(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.add,
                     [
-                        params.name,
-                        md5(params.password),
-                        params.phone,
-                        params.gender,
+                        competition.name,
+                        competition.url,
+                        competition.detail,
+                        competition.image,
                     ],
                     function (err, result) {
                         // 查看错误详情，便于调试
@@ -38,11 +38,11 @@ class UserDao {
                             return;
                         } else if (!result.affectedRows) {
                             connection.release();
-                            reject("操作失败");
+                            reject("添加失败");
                             return;
                         }
                         // 释放连接
-                        resolve("操作成功");
+                        resolve("添加成功");
                         connection.release();
                     }
                 );
@@ -50,26 +50,26 @@ class UserDao {
         });
     }
 
-    delete(params) {
+    delete(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                // 将id转换为整形
                 connection.query(
                     $sql.delete,
-                    +params.id,
+                    // 将id转换为整形
+                    +competition.id,
                     function (err, result) {
                         if (err) {
                             console.log(err);
                             connection.release();
-                            reject("操作失败，数据库错误");
+                            reject("删除失败，数据库错误");
                             return;
                         } else if (!result.affectedRows) {
                             connection.release();
-                            reject("操作失败");
+                            reject("删除失败");
                             return;
                         }
                         // 释放连接
-                        resolve("操作成功");
+                        resolve("删除成功");
                         connection.release();
                     }
                 );
@@ -77,13 +77,19 @@ class UserDao {
         });
     }
 
-    updatePassword(params) {
+    update(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.updatePassword,
-                    [md5(params.password), +params.id],
+                    $sql.update,
+                    [
+                        competition.name,
+                        competition.url,
+                        competition.detail,
+                        competition.image,
+                        +competition.id
+                    ],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {
@@ -91,12 +97,12 @@ class UserDao {
                             connection.release();
                             // 通过reject向外抛出错误
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("操作失败，数据库错误");
+                            reject("删除失败，数据库错误");
                             // reject不会终止函数，这里需要手动return来终止
                             return;
                         } else if (!result.affectedRows) {
                             connection.release();
-                            reject("操作失败");
+                            reject("删除失败");
                             return;
                         }
                         // 释放连接
@@ -108,13 +114,13 @@ class UserDao {
         });
     }
 
-    findOneById(params) {
+    findOneById(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.findOneById,
-                    [params.id],
+                    [+competition.id],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -129,13 +135,13 @@ class UserDao {
         });
     }
 
-    findOneByName(params) {
+    findOneByName(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.findOneByName,
-                    [params.name],
+                    [competition.name],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -150,7 +156,7 @@ class UserDao {
         });
     }
 
-    findAll(params) {
+    findAll() {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query($sql.findAll, function (err, result) {
@@ -165,26 +171,6 @@ class UserDao {
             });
         });
     }
-
-    findRoles(params) {
-        return new Promise(function (resolve, reject) {
-            pool.getConnection(function (err, connection) {
-                connection.query(
-                    $sql.findRoles,
-                    params.name,
-                    function (err, result) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            resolve(result);
-                        }
-                        // 释放连接
-                        connection.release();
-                    }
-                );
-            });
-        });
-    }
 }
 
-export default UserDao;
+export default CompetitionDao;
