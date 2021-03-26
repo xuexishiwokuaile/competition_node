@@ -14,12 +14,13 @@ var userService = new UserService();
  * @return {***REMOVED***
 ***REMOVED***
 export async function checkRole(req, res, next) {
-    // 采用正则匹配url请求
-    var pattern = /[a-z]+/;
-    // 得到用户请求的接口名，查看是否有权限访问
-    var interfaceName = req.url.match(pattern)[0];
-    // 放行login
-    if (interfaceName == "login") {
+    // // 采用正则匹配url请求
+    // var pattern = /[a-z]+/;
+    // // 得到用户请求的接口名，查看是否有权限访问
+    // var interfaceName = req.url.match(pattern)[0];
+
+    // 放行匿名请求
+    if (authorization["anonymous"].hasOwnProperty(req.url)) {
         next();
 ***REMOVED*** else {
         if (!(req.signedCookies.name || req.signedCookies.password)) {

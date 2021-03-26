@@ -3,16 +3,14 @@
  * @Date: 2021-03-25 18:06:05
 ***REMOVED***
 
+import authorization from "../conf/authorization.js";
+
 ***REMOVED****
  * @description 每次用户发送请求后更新cookie，修改cookie过期时间
 ***REMOVED***
 export function updateCookie(req, res, next) {
-    // 采用正则匹配url请求
-    var pattern = /[a-z]+/;
-    // 得到用户请求的接口名，查看是否有权限访问
-    var interfaceName = req.url.match(pattern)[0];
-    // 放行login
-    if (interfaceName === "login") next();
+    // 放行匿名请求
+    if (authorization["anonymous"].hasOwnProperty(req.url)) next();
     else {
         // 更新cookie
         res.cookie("name", req.signedCookies.name, {
