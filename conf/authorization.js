@@ -4,22 +4,20 @@
  */
 export default {
     anonymous: {
-        "/login": true,
-        "/register": true,
+        "/login": "",
+        "/register": "",
     },
     student: {
-        "/login": true,
-        "/register": true,
-        "/competition": true,
+        "/competition/findOneById": "",
+        "/competition/findOneByName": "",
+        "/takepart/*": "",
     },
     teacher: {
-        user: true,
-        login: true,
-        competition: true,
+        "/user/*": "",
+        "/competition/*": "",
     },
     admin: {
-        user: true,
-        login: true,
-        competition: true,
+        "/user/*": "",
+        "/competition/*": "",
     },
 };
