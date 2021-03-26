@@ -21,19 +21,19 @@ router.get("/", function (req, res, next) {
 ***REMOVED***
 router.post("/login", async function (req, res, next) {
     // 获取传递的参数
-    var params = req.body;
+    var user = req.body;
 ***REMOVED***
-        var result = await userService.login(params);
-        var role = await userService.findRoles(params);
+        var result = await userService.login(user);
+        var role = await userService.findRoles(user);
         // 将用户的角色信息传入到session中
         req.session.role = role[0].roleName;
         // 将用户的登录信息传入到cookie中
-        res.cookie("name", params.name, {
+        res.cookie("name", user.name, {
             httpOnly: true,
             maxAge: 3600 * 24 * 7 * 1000, // 过期时间为一周
             signed: true,
         ***REMOVED***
-        res.cookie("password", params.password, {
+        res.cookie("password", user.password, {
             httpOnly: true,
             maxAge: 3600 * 24 * 7 * 1000,
             signed: true,
