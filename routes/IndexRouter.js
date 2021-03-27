@@ -28,9 +28,15 @@ router.post("/login", async function (req, res, next) {
         // 将用户的角色信息传入到session中
         req.session.role = role[0].roleName;
         // 将用户的登录信息传入到cookie中
-        res.cookie("name", user.name, {
+        // 传入id, name, password
+        res.cookie("id", result, {
             httpOnly: true,
             maxAge: 3600 * 24 * 7 * 1000, // 过期时间为一周
+            signed: true, // 加密
+        });
+        res.cookie("name", user.name, {
+            httpOnly: true,
+            maxAge: 3600 * 24 * 7 * 1000,
             signed: true,
         });
         res.cookie("password", user.password, {
@@ -40,7 +46,8 @@ router.post("/login", async function (req, res, next) {
         });
         res.json({
             code: "0",
-            msg: result,
+            msg: "登录成功",
+            id: result,
         });
     } catch (e) {
         res.json({
@@ -63,7 +70,8 @@ router.post("/register", async function (req, res, next) {
         var result = await userService.add(user);
         res.json({
             code: "0",
-            msg: result,
+            msg: "注册成功",
+            id: result,
         });
     } catch (e) {
         res.json({

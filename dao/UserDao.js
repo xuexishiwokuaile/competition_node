@@ -6,7 +6,7 @@
 import mysql from "mysql";
 import $conf from "../conf/db.js";
 import $util from "../util/pool.js";
-import $sql from "./UserSqlMapping.js";
+import $sql from "./sql/UserSqlMapping.js";
 import md5 from "md5-node";
 
 // 使用连接池，提升性能
@@ -28,16 +28,17 @@ class UserDao {
                             connection.release();
                             // 通过reject向外抛出错误
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("添加失败，数据库错误");
+                            reject(err);
                             // reject不会终止函数，这里需要手动return来终止
                             return;
                         } else if (!result.affectedRows) {
                             connection.release();
-                            reject("添加失败");
+                            reject("添加失败，操作无效");
                             return;
                         }
+                        // 获取到数据库中生成的id
+                        resolve(result.insertId);
                         // 释放连接
-                        resolve("添加成功");
                         connection.release();
                     }
                 );
@@ -53,11 +54,11 @@ class UserDao {
                     if (err) {
                         console.log(err);
                         connection.release();
-                        reject("删除失败，数据库错误");
+                        reject(err);
                         return;
                     } else if (!result.affectedRows) {
                         connection.release();
-                        reject("删除失败");
+                        reject("删除失败，操作无效");
                         return;
                     }
                     // 释放连接
@@ -82,12 +83,12 @@ class UserDao {
                             connection.release();
                             // 通过reject向外抛出错误
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("更新失败，数据库错误");
+                            reject(err);
                             // reject不会终止函数，这里需要手动return来终止
                             return;
                         } else if (!result.affectedRows) {
                             connection.release();
-                            reject("更新失败");
+                            reject("更新失败，操作无效");
                             return;
                         }
                         // 释放连接
@@ -109,6 +110,7 @@ class UserDao {
                     function (err, result) {
                         if (err) {
                             console.log(err);
+                            reject(err);
                         } else {
                             resolve(result);
                         }
@@ -130,6 +132,7 @@ class UserDao {
                     function (err, result) {
                         if (err) {
                             console.log(err);
+                            reject(err);
                         } else {
                             resolve(result);
                         }
@@ -147,6 +150,7 @@ class UserDao {
                 connection.query($sql.findAll, function (err, result) {
                     if (err) {
                         console.log(err);
+                        reject(err);
                     } else {
                         resolve(result);
                     }
@@ -166,6 +170,7 @@ class UserDao {
                     function (err, result) {
                         if (err) {
                             console.log(err);
+                            reject(err);
                         } else {
                             resolve(result);
                         }

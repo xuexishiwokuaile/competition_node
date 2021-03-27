@@ -22,7 +22,8 @@ router.post("/add", async function (req, res, next) {
         const result = await competitionService.add(competition);
         res.json({
             code: "0",
-            msg: result,
+            msg: "添加成功",
+            id: result,
         });
     } catch (e) {
         res.json({
@@ -87,7 +88,15 @@ router.put("/update", async function (req, res, next) {
 router.get("/findOneById", async function (req, res, next) {
     // 获取传递的参数
     const competition = req.query;
-    res.send(await competitionService.findOneById(competition));
+    try {
+        const result = await competitionService.findOneById(competition);
+        res.send(result);
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
 });
 
 /**
