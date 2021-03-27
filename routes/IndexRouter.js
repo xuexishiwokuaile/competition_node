@@ -50,4 +50,27 @@ router.post("/login", async function (req, res, next) {
     }
 });
 
+/**
+ * @description 注册
+ * @param {name, password, phone, gender}
+ * @url /register
+ * @return {}
+ */
+router.post("/register", async function (req, res, next) {
+    // 获取传递的参数
+    var user = req.body;
+    try {
+        var result = await userService.add(user);
+        res.json({
+            code: "0",
+            msg: result,
+        });
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
+});
+
 export default router;

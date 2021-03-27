@@ -5,6 +5,7 @@
 import UserService from "../service/UserService.js";
 import createError from "http-errors";
 import authorization from "../conf/authorization.js";
+import { checkUrl, getRouterName } from "../util/urlUtil.js";
 
 var userService = new UserService();
 
@@ -14,17 +15,8 @@ var userService = new UserService();
  * @return {}
  */
 export async function checkRole(req, res, next) {
-    // 去掉url ?后的参数
-    const url =
-        req.url.indexOf("?") > -1
-            ? req.url.substring(0, req.url.indexOf("?"))
-            : req.url;
-
-    // 正则匹配url
-    var pattern = /[a-z]+/;
-    // 得到用户请求的router名
-    var routerName = url.match(pattern)[0];
-
+    const url = checkUrl(req.url);
+    const routerName = getRouterName(url);
     // 放行匿名请求
     if (
         authorization["anonymous"].hasOwnProperty(url) ||

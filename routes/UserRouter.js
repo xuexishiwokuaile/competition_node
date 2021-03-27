@@ -11,29 +11,6 @@ const router = Router();
 const userService = new UserService();
 
 /**
- * @description 添加用户
- * @param {name, password, phone, gender}
- * @url /user/add
- * @return {}
- */
-router.post("/add", async function (req, res, next) {
-    // 获取传递的参数
-    var user = req.body;
-    try {
-        var result = await userService.add(user);
-        res.json({
-            code: "0",
-            msg: result,
-        });
-    } catch (e) {
-        res.json({
-            code: "1",
-            msg: e.name + ": " + e.message,
-        });
-    }
-});
-
-/**
  * @description 删除用户
  * @param {id}
  * @url /user/delete
