@@ -5,6 +5,7 @@
 import UserService from "../service/UserService.js";
 import createError from "http-errors";
 import authorization from "../conf/authorization.js";
+import { checkUrl, getRouterName ***REMOVED*** from "../util/urlUtil.js";
 
 var userService = new UserService();
 
@@ -14,12 +15,13 @@ var userService = new UserService();
  * @return {***REMOVED***
 ***REMOVED***
 export async function checkRole(req, res, next) {
-    // 采用正则匹配url请求
-    var pattern = /[a-z]+/;
-    // 得到用户请求的接口名，查看是否有权限访问
-    var interfaceName = req.url.match(pattern)[0];
-    // 放行login
-    if (interfaceName == "login") {
+    const url = checkUrl(req.url);
+    const routerName = getRouterName(url);
+    // 放行匿名请求
+    if (
+        authorization["anonymous"].hasOwnProperty(url) ||
+        authorization["anonymous"].hasOwnProperty(`/${routerName***REMOVED******REMOVED***`)
+    ) {
         next();
 ***REMOVED*** else {
         if (!(req.signedCookies.name || req.signedCookies.password)) {
@@ -39,15 +41,15 @@ export async function checkRole(req, res, next) {
 ***REMOVED*** else {
             role = req.session.role;
 ***REMOVED***
+
         if (
-            !(
-                authorization[role].hasOwnProperty(interfaceName) &&
-                authorization[role][interfaceName]
-            )
+            authorization[role].hasOwnProperty(url) ||
+            authorization[role].hasOwnProperty(`/${routerName***REMOVED******REMOVED***`)
         ) {
-            // 用户角色没有操作权限
+            // 精确匹配 || 模糊匹配
+            next();
+***REMOVED*** else {
             next(createError(403));
 ***REMOVED***
-        next();
 ***REMOVED***
 ***REMOVED***

@@ -3,19 +3,21 @@
  * @Date: 2021-03-25 20:26:40
 ***REMOVED***
 export default {
+    anonymous: {
+        "/login": "",
+        "/register": "",
+***REMOVED***,
     student: {
-        user: true,
-        login: true,
-        competition: true,
+        "/competition/findOneById": "",
+        "/competition/findOneByName": "",
+        "/takepart***REMOVED***": "",
 ***REMOVED***,
     teacher: {
-        user: true,
-        login: true,
-        competition: true,
+        "/user***REMOVED***": "",
+        "/competition***REMOVED***": "",
 ***REMOVED***,
     admin: {
-        user: true,
-        login: true,
-        competition: true,
+        "/user***REMOVED***": "",
+        "/competition***REMOVED***": "",
 ***REMOVED***,
 ***REMOVED***;
