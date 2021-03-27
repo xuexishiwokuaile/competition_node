@@ -7,7 +7,6 @@ import mysql from "mysql";
 import $conf from "../conf/db.js";
 import $util from "../util/pool.js";
 import $sql from "./sql/CompetitionSqlMapping.js";
-import md5 from "md5-node";
 
 // 使用连接池，提升性能
 const pool = mysql.createPool($util.extend({}, $conf.mysql));
@@ -33,7 +32,7 @@ class CompetitionDao {
                             connection.release();
                             // 通过reject向外抛出错误
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("操作失败，数据库错误");
+                            reject(err);
                             // reject不会终止函数，这里需要手动return来终止
                             return;
                         } else if (!result.affectedRows) {
@@ -62,7 +61,7 @@ class CompetitionDao {
                         if (err) {
                             console.log(err);
                             connection.release();
-                            reject("删除失败，数据库错误");
+                            reject(err);
                             return;
                         } else if (!result.affectedRows) {
                             connection.release();
@@ -98,16 +97,16 @@ class CompetitionDao {
                             connection.release();
                             // 通过reject向外抛出错误
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("删除失败，数据库错误");
+                            reject(err);
                             // reject不会终止函数，这里需要手动return来终止
                             return;
                         } else if (!result.affectedRows) {
                             connection.release();
-                            reject("删除失败");
+                            reject("更新失败");
                             return;
                         }
                         // 释放连接
-                        resolve("操作成功");
+                        resolve("更新成功");
                         connection.release();
                     }
                 );
@@ -125,6 +124,7 @@ class CompetitionDao {
                     function (err, result) {
                         if (err) {
                             console.log(err);
+                            reject(err);
                         } else {
                             resolve(result);
                         }
@@ -146,6 +146,7 @@ class CompetitionDao {
                     function (err, result) {
                         if (err) {
                             console.log(err);
+                            reject(err);
                         } else {
                             resolve(result);
                         }
@@ -163,6 +164,7 @@ class CompetitionDao {
                 connection.query($sql.findAll, function (err, result) {
                     if (err) {
                         console.log(err);
+                        reject(err);
                     } else {
                         resolve(result);
                     }
