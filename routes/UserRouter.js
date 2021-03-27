@@ -80,7 +80,15 @@ router.put("/updatePassword", async function (req, res, next) {
 router.get("/findOneById", async function (req, res, next) {
     // 获取传递的参数
     var user = req.query;
-    res.send(await userService.findOneById(user));
+***REMOVED***
+        const result = await userService.findOneById(user);
+        res.send(result);
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
 ***REMOVED***
 
 ***REMOVED****

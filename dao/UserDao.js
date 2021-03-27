@@ -28,7 +28,7 @@ class UserDao {
                             connection.release();
                             // 通过reject向外抛出错误
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("添加失败，数据库错误");
+                            reject(err);
                             // reject不会终止函数，这里需要手动return来终止
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
@@ -54,7 +54,7 @@ class UserDao {
                     if (err) {
                         console.log(err);
                         connection.release();
-                        reject("删除失败，数据库错误");
+                        reject(err);
             ***REMOVED***
             ***REMOVED*** else if (!result.affectedRows) {
                         connection.release();
@@ -83,7 +83,7 @@ class UserDao {
                             connection.release();
                             // 通过reject向外抛出错误
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
-                            reject("更新失败，数据库错误");
+                            reject(err);
                             // reject不会终止函数，这里需要手动return来终止
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
@@ -110,6 +110,7 @@ class UserDao {
                     function (err, result) {
                         if (err) {
                             console.log(err);
+                            reject(err);
                 ***REMOVED*** else {
                             resolve(result);
                 ***REMOVED***
@@ -131,6 +132,7 @@ class UserDao {
                     function (err, result) {
                         if (err) {
                             console.log(err);
+                            reject(err);
                 ***REMOVED*** else {
                             resolve(result);
                 ***REMOVED***
@@ -148,6 +150,7 @@ class UserDao {
                 connection.query($sql.findAll, function (err, result) {
                     if (err) {
                         console.log(err);
+                        reject(err);
             ***REMOVED*** else {
                         resolve(result);
             ***REMOVED***
@@ -167,6 +170,7 @@ class UserDao {
                     function (err, result) {
                         if (err) {
                             console.log(err);
+                            reject(err);
                 ***REMOVED*** else {
                             resolve(result);
                 ***REMOVED***

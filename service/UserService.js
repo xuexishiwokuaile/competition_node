@@ -29,7 +29,7 @@ class UserService {
             throw new AddError("添加失败，用户信息含空");
 ***REMOVED*** else if (!isPhoneNum(user.phone)) {
             throw new AddError("添加失败，手机号格式不正确");
-***REMOVED*** else if(!Number.isInteger(+user.gender)) {
+***REMOVED*** else if (!Number.isInteger(+user.gender)) {
             throw new AddError("添加失败，性别格式不正确");
 ***REMOVED***
 
@@ -101,7 +101,7 @@ class UserService {
             var password = result[0].password;
             if (password === md5(user.password)) {
                 // 密码正确
-                return "登录成功";
+                return result[0].id;
     ***REMOVED*** else {
                 // 密码错误
                 throw new UserError("密码错误，请重新输入");
