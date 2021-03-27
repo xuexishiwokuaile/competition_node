@@ -10,6 +10,7 @@ export default {
     student: {
         "/competition/findOneById": "",
         "/competition/findOneByName": "",
+        "/competition/*": "",
         "/takepart/*": "",
     },
     teacher: {

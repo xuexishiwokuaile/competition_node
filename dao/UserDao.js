@@ -33,7 +33,7 @@ class UserDao {
                             return;
                         } else if (!result.affectedRows) {
                             connection.release();
-                            reject("添加失败");
+                            reject("添加失败，操作无效");
                             return;
                         }
                         // 获取到数据库中生成的id
@@ -58,7 +58,7 @@ class UserDao {
                         return;
                     } else if (!result.affectedRows) {
                         connection.release();
-                        reject("删除失败");
+                        reject("删除失败，操作无效");
                         return;
                     }
                     // 释放连接
@@ -88,7 +88,7 @@ class UserDao {
                             return;
                         } else if (!result.affectedRows) {
                             connection.release();
-                            reject("更新失败");
+                            reject("更新失败，操作无效");
                             return;
                         }
                         // 释放连接
