@@ -36,8 +36,9 @@ class UserDao {
                             reject("添加失败");
                 ***REMOVED***
                 ***REMOVED***
+                        // 获取到数据库中生成的id
+                        resolve(result.insertId);
                         // 释放连接
-                        resolve("添加成功");
                         connection.release();
             ***REMOVED***
                 );
