@@ -6,7 +6,7 @@
 import mysql from "mysql";
 import $conf from "../conf/db.js";
 import $util from "../util/pool.js";
-import $sql from "./UserSqlMapping.js";
+import $sql from "./sql/UserSqlMapping.js";
 import md5 from "md5-node";
 
 // 使用连接池，提升性能
