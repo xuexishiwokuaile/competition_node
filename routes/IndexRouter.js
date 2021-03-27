@@ -50,4 +50,27 @@ router.post("/login", async function (req, res, next) {
 ***REMOVED***
 ***REMOVED***
 
+***REMOVED****
+ * @description 注册
+ * @param {name, password, phone, gender***REMOVED***
+ * @url /register
+ * @return {***REMOVED***
+***REMOVED***
+router.post("/register", async function (req, res, next) {
+    // 获取传递的参数
+    var user = req.body;
+***REMOVED***
+        var result = await userService.add(user);
+        res.json({
+            code: "0",
+            msg: result,
+        ***REMOVED***
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
+***REMOVED***
+
 export default router;
