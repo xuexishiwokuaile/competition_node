@@ -16,6 +16,7 @@ import cors from "cors";
 import indexRouter from "./routes/indexRouter.js";
 import userRouter from "./routes/userRouter.js";
 import competitionRouter from "./routes/CompetitionRouter.js";
+import takepartRouter from "./routes/TakepartRouter.js";
 
 import { checkRole ***REMOVED*** from "./middleWare/CheckRole.js";
 import { updateCookie ***REMOVED*** from "./middleWare/UpdateCookie.js";
@@ -45,9 +46,11 @@ app.use(
 app.use("/", checkRole);
 app.use("/", updateCookie);
 
+// 配置路由
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/competition",competitionRouter);
+app.use("/takepart",takepartRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

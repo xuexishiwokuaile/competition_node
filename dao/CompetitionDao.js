@@ -37,7 +37,7 @@ class CompetitionDao {
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
                             connection.release();
-                            reject("添加失败");
+                            reject("添加失败，操作无效");
                 ***REMOVED***
                 ***REMOVED***
                         // 获取到数据库中生成的id
@@ -65,7 +65,7 @@ class CompetitionDao {
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
                             connection.release();
-                            reject("删除失败");
+                            reject("删除失败，操作无效");
                 ***REMOVED***
                 ***REMOVED***
                         // 释放连接
@@ -102,7 +102,7 @@ class CompetitionDao {
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
                             connection.release();
-                            reject("更新失败");
+                            reject("更新失败，操作无效");
                 ***REMOVED***
                 ***REMOVED***
                         // 释放连接
