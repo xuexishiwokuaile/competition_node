@@ -41,8 +41,9 @@ class CompetitionDao {
                             reject("添加失败");
                             return;
                         }
+                        // 获取到数据库中生成的id
+                        resolve(result.insertId);
                         // 释放连接
-                        resolve("添加成功");
                         connection.release();
                     }
                 );
@@ -88,7 +89,7 @@ class CompetitionDao {
                         competition.url,
                         competition.detail,
                         competition.image,
-                        +competition.id
+                        +competition.id,
                     ],
                     function (err, result) {
                         // 查看错误详情，便于调试

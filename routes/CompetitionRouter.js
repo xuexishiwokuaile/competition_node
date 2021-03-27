@@ -22,7 +22,8 @@ router.post("/add", async function (req, res, next) {
         const result = await competitionService.add(competition);
         res.json({
             code: "0",
-            msg: result,
+            msg: "添加成功",
+            id: result,
         });
     } catch (e) {
         res.json({

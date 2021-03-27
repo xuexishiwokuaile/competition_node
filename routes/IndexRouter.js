@@ -63,7 +63,8 @@ router.post("/register", async function (req, res, next) {
         var result = await userService.add(user);
         res.json({
             code: "0",
-            msg: result,
+            msg: "注册成功",
+            id: result,
         });
     } catch (e) {
         res.json({
