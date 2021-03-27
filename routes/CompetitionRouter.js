@@ -5,13 +5,15 @@
 
 import { Router } from "express";
 import CompetitionService from "../service/CompetitionService.js";
+import TypeService from "../service/TypeService.js";
 
 const router = Router();
 const competitionService = new CompetitionService();
+const typeService = new TypeService();
 
 /**
  * @description 添加竞赛
- * @param {name, url, detail, image}
+ * @param {name, url, detail, image, type[]}
  * @url /competition/add
  * @return {}
  */
@@ -20,10 +22,16 @@ router.post("/add", async function (req, res, next) {
     const competition = req.body;
     try {
         const result = await competitionService.add(competition);
+        // 添加竞赛类型
+        const types = await typeService.add({
+            comId: result,
+            type: competition.type,
+        });
         res.json({
             code: "0",
             msg: "添加成功",
             id: result,
+            type: types,
         });
     } catch (e) {
         res.json({
@@ -58,7 +66,7 @@ router.delete("/delete", async function (req, res, next) {
 
 /**
  * @description 更新竞赛
- * @param {id, name, url, detail, image}
+ * @param {id, name, url, detail, image, type[]}
  * @url /competition/update
  * @return {}
  */
@@ -67,9 +75,15 @@ router.put("/update", async function (req, res, next) {
     const competition = req.body;
     try {
         const result = await competitionService.update(competition);
+        // 更新竞赛种类
+        const types = await typeService.update({
+            comId: competition.id,
+            type: competition.type,
+        });
         res.json({
             code: "0",
             msg: result,
+            type: types,
         });
     } catch (e) {
         res.json({
