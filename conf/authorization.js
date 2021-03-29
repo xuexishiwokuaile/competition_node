@@ -12,6 +12,7 @@ export default {
         "/competition/findOneByName": "",
         "/competition/*": "",
         "/takepart/*": "",
+        "/type/*": ""
     },
     teacher: {
         "/user/*": "",
