@@ -49,4 +49,25 @@ router.get("/findComByType", async function (req, res, next) {
     }
 });
 
+/**
+ * @description 查找同属于多个种类的竞赛
+ * @param {typeId[]}
+ * @url /type/findComByMultiTypes
+ * @return {competition[]}
+ */
+router.get("/findComByMultiTypes", async function (req, res, next) {
+    // 将前端传递的参数解析成数组
+    const typeId = req.query.typeId;
+    const types = typeId.split(",");
+    try {
+        const result = await typeService.findComByMultiTypes(types);
+        res.send(result);
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
+});
+
 export default router;
