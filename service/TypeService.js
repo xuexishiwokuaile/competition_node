@@ -6,6 +6,7 @@
 import TypeDao from "../dao/TypeDao.js";
 import AddError from "../error/AddError.js";
 import UpdateError from "../error/UpdateError.js";
+import { intersection ***REMOVED*** from "../util/intersection.js";
 
 class TypeService {
     constructor() {
@@ -22,7 +23,7 @@ class TypeService {
         const comId = type.comId;
         // 去除type数组中的重复元素
         const newType = Array.from(new Set(type.type));
-        const promises = await newType.map(async (type) => {
+        const promises = newType.map(async (type) => {
             // 检查竞赛类型是否存在
             const comType = await this.typeDao.findOneByType({ typeId: type ***REMOVED***
             if (!comType.length) {
@@ -66,7 +67,7 @@ class TypeService {
         await this.typeDao.delete({ comId: comId ***REMOVED***
         // 去除type数组中的重复元素
         const newType = Array.from(new Set(type.type));
-        const promises = await newType.map(async (type) => {
+        const promises = newType.map(async (type) => {
             const comType = await this.typeDao.findOneByType({ typeId: type ***REMOVED***
             if (!comType.length) {
                 throw new UpdateError("更新失败，竞赛类型不存在");
@@ -103,6 +104,23 @@ class TypeService {
     ***REMOVED***
     async findComByType(type) {
         return await this.typeDao.findComByType(type);
+***REMOVED***
+
+    ***REMOVED****
+     * @description 查找同属于多个种类的竞赛
+     * @param {typeId[]***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    async findComByMultiTypes(types) {
+        // 数组去重
+        const newTypes = Array.from(new Set(types));
+        const promises = newTypes.map(async (type) => {
+            return await this.typeDao.findComByType({ typeId: type ***REMOVED***
+        ***REMOVED***
+        // 结果数组
+        const resultArr = await Promise.all(promises);
+        // 取数组的交集
+        return intersection(resultArr);
 ***REMOVED***
 ***REMOVED***
 
