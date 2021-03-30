@@ -16,7 +16,7 @@ class CompetitionService {
 
     ***REMOVED****
      * @description 添加竞赛
-     * @param {name, url, detail, image***REMOVED***
+     * @param {name, url, detail, image, teaId***REMOVED***
      * @return {Promise***REMOVED***
      * @throws {AddError***REMOVED***
     ***REMOVED***
@@ -61,7 +61,7 @@ class CompetitionService {
 
     ***REMOVED****
      * @description 更新竞赛
-     * @param {id, name, url, detail, image***REMOVED***
+     * @param {id, name, url, detail, image, teaId***REMOVED***
      * @return {Promise***REMOVED***
      * @throws {UpdateError***REMOVED***
     ***REMOVED***

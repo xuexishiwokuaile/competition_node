@@ -24,6 +24,7 @@ class CompetitionDao {
                         competition.url,
                         competition.detail,
                         competition.image,
+                        +competition.teaId,
                     ],
                     function (err, result) {
                         // 查看错误详情，便于调试
@@ -88,6 +89,7 @@ class CompetitionDao {
                         competition.url,
                         competition.detail,
                         competition.image,
+                        +competition.teaId,
                         +competition.id,
                     ],
                     function (err, result) {
