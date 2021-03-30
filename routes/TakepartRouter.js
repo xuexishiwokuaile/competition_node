@@ -88,4 +88,24 @@ router.get("/findComByStuId", async function (req, res, next) {
     }
 });
 
+/**
+ * @description 查看选择某一竞赛的所有学生
+ * @param {comId}
+ * @url /takepart/findStuByCom
+ * @return {}
+ */
+router.get("/findStuByCom", async function (req, res, next) {
+    // 获取参数
+    const takepart = req.query;
+    try {
+        const result = await takePartService.findStuByCom(takepart);
+        res.send(result);
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
+});
+
 export default router;

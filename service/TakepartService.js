@@ -82,6 +82,15 @@ class TakepartService {
     async findComByStuId(takepart) {
         return await this.takepartDao.findComByStuId(takepart);
     }
+
+    /**
+     * @description 查看选择某一竞赛的所有学生
+     * @param {comId}
+     * @return {}
+     */
+    async findStuByCom(takepart) {
+        return await this.takepartDao.findStuByCom(takepart);
+    }
 }
 
 export default TakepartService;
