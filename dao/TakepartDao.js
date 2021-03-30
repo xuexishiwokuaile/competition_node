@@ -111,6 +111,33 @@ class Takepart {
 ***REMOVED***
 
     ***REMOVED****
+     * @description 查看选择某一竞赛的所有学生
+     * @param {comId***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    findStuByCom(takepart) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                // 获取前台页面传过来的参数
+                connection.query(
+                    $sql.findStuByCom,
+                    [+takepart.comId],
+                    function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                ***REMOVED*** else {
+                            resolve(result);
+                ***REMOVED***
+                        // 释放连接
+                        connection.release();
+            ***REMOVED***
+                );
+            ***REMOVED***
+        ***REMOVED***
+***REMOVED***
+
+    ***REMOVED****
      * @description 查看学生是否重复选择相同竞赛
      * @param {stuId, comId***REMOVED***
      * @return {Promise***REMOVED***
