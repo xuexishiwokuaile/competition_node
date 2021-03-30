@@ -13,15 +13,23 @@ const typeService = new TypeService();
 
 /**
  * @description 添加竞赛
- * @param {name, url, detail, image, type[]}
+ * @param {name, url, detail, image, teaId, type[]}
  * @url /competition/add
  * @return {}
  */
 router.post("/add", async function (req, res, next) {
+    // 从cookie中获取当前登录教师的id
+    const teaId = req.signedCookies.id;
     // 获取传递的参数
     const competition = req.body;
     try {
-        const result = await competitionService.add(competition);
+        const result = await competitionService.add({
+            name: competition.name,
+            url: competition.url,
+            detail: competition.detail,
+            image: competition.image,
+            teaId: teaId,
+        });
         // 添加竞赛类型
         const types = await typeService.add({
             comId: result,
@@ -66,15 +74,24 @@ router.delete("/delete", async function (req, res, next) {
 
 /**
  * @description 更新竞赛
- * @param {id, name, url, detail, image, type[]}
+ * @param {id, name, url, detail, image, teaId, type[]}
  * @url /competition/update
  * @return {}
  */
 router.put("/update", async function (req, res, next) {
+    // 从cookie中获取当前登录教师的id
+    const teaId = req.signedCookies.id;
     // 获取传递的参数
     const competition = req.body;
     try {
-        const result = await competitionService.update(competition);
+        const result = await competitionService.update({
+            id: competition.id,
+            name: competition.name,
+            url: competition.url,
+            detail: competition.detail,
+            image: competition.image,
+            teaId: teaId,
+        });
         // 更新竞赛种类
         const types = await typeService.update({
             comId: competition.id,
