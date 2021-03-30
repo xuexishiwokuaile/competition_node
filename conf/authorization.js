@@ -12,7 +12,8 @@ export default {
         "/competition/findOneByName": "",
         "/competition/*": "",
         "/takepart/*": "",
-        "/type/*": ""
+        "/type/*": "",
+        "/message/*": "",
     },
     teacher: {
         "/user/*": "",

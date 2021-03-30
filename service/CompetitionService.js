@@ -16,7 +16,7 @@ class CompetitionService {
 
     /**
      * @description 添加竞赛
-     * @param {name, url, detail, image}
+     * @param {name, url, detail, image, teaId}
      * @return {Promise}
      * @throws {AddError}
      */
@@ -61,7 +61,7 @@ class CompetitionService {
 
     /**
      * @description 更新竞赛
-     * @param {id, name, url, detail, image}
+     * @param {id, name, url, detail, image, teaId}
      * @return {Promise}
      * @throws {UpdateError}
      */
