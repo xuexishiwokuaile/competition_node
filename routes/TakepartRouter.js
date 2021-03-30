@@ -88,4 +88,24 @@ router.get("/findComByStuId", async function (req, res, next) {
 ***REMOVED***
 ***REMOVED***
 
+***REMOVED****
+ * @description 查看选择某一竞赛的所有学生
+ * @param {comId***REMOVED***
+ * @url /takepart/findStuByCom
+ * @return {***REMOVED***
+***REMOVED***
+router.get("/findStuByCom", async function (req, res, next) {
+    // 获取参数
+    const takepart = req.query;
+***REMOVED***
+        const result = await takePartService.findStuByCom(takepart);
+        res.send(result);
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
+***REMOVED***
+
 export default router;

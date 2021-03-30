@@ -51,7 +51,7 @@ router.get("/findComByType", async function (req, res, next) {
 
 ***REMOVED****
  * @description 查找同属于多个种类的竞赛
- * @param {typeId[]***REMOVED***
+ * @param {typeId***REMOVED*** // 多个id，使用逗号分隔 eg: 1,2,3
  * @url /type/findComByMultiTypes
  * @return {competition[]***REMOVED***
 ***REMOVED***
