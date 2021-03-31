@@ -15,6 +15,7 @@ export default {
         "/type/*": "",
         "/message/*": "",
         "/comment/*": "",
+        "/search/*": "",
     },
     teacher: {
         "/user/*": "",
