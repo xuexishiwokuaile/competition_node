@@ -1,26 +1,36 @@
 ***REMOVED***
 ***REMOVED***
- * @Date: 2021-03-23 14:41:38
+ * @Date: 2021-03-31 13:53:21
 ***REMOVED***
 
 import mysql from "mysql";
 import $conf from "../conf/db.js";
 import $util from "../util/pool.js";
-import $sql from "./sql/UserSqlMapping.js";
-import md5 from "md5-node";
+import $sql from "./sql/CommentSqlMapping.js";
 
 // 使用连接池，提升性能
 const pool = mysql.createPool($util.extend({***REMOVED***, $conf.mysql));
 
-class UserDao {
+class CommentDao {
     constructor() {***REMOVED***
-    add(user) {
+
+    ***REMOVED****
+     * @description 添加评论
+     * @param {comId, stuId, detail, date***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    add(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.add,
-                    [user.name, md5(user.password), user.phone, user.gender],
+                    [
+                        +comment.comId,
+                        +comment.stuId,
+                        comment.detail,
+                        comment.date,
+                    ],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {
@@ -46,36 +56,50 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    delete(user) {
+    ***REMOVED****
+     * @description 删除评论
+     * @param {id***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    delete(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                // 将id转换为整形
-                connection.query($sql.delete, +user.id, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                        connection.release();
-                        reject(err);
-            ***REMOVED***
-            ***REMOVED*** else if (!result.affectedRows) {
-                        connection.release();
-                        reject("删除失败，信息不存在");
-            ***REMOVED***
-            ***REMOVED***
-                    // 释放连接
-                    resolve("操作成功");
-                    connection.release();
+                connection.query(
+                    $sql.delete,
+                    // 将id转换为整形
+                    +comment.id,
+                    function (err, result) {
+                        if (err) {
+                            // console.log(err);
+                            connection.release();
+                            reject(err);
                 ***REMOVED***
+                ***REMOVED*** else if (!result.affectedRows) {
+                            connection.release();
+                            reject("删除失败，信息不存在");
+                ***REMOVED***
+                ***REMOVED***
+                        // 释放连接
+                        resolve("删除成功");
+                        connection.release();
+            ***REMOVED***
+                );
             ***REMOVED***
         ***REMOVED***
 ***REMOVED***
 
-    updatePassword(user) {
+    ***REMOVED****
+     * @description 更新评论
+     * @param {detail, id***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    update(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.updatePassword,
-                    [md5(user.password), +user.id],
+                    $sql.update,
+                    [comment.detail, +comment.id],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {
@@ -100,13 +124,18 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findOneById(user) {
+    ***REMOVED****
+     * @description 根据id查找评论
+     * @param {id***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    findOneById(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.findOneById,
-                    [+user.id],
+                    [+comment.id],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -122,13 +151,18 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findOneByName(user) {
+    ***REMOVED****
+     * @description 查找某一学生发表的评论
+     * @param {stuId***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    findOneByStu(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.findOneByName,
-                    [user.name],
+                    $sql.findOneByStu,
+                    [+comment.stuId],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -144,29 +178,18 @@ class UserDao {
         ***REMOVED***
 ***REMOVED***
 
-    findAll() {
+    ***REMOVED****
+     * @description 查找某一竞赛下的评论
+     * @param {comId***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    findOneByCom(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query($sql.findAll, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                        reject(err);
-            ***REMOVED*** else {
-                        resolve(result);
-            ***REMOVED***
-                    // 释放连接
-                    connection.release();
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
-
-    findRoles(user) {
-        return new Promise(function (resolve, reject) {
-            pool.getConnection(function (err, connection) {
+                // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.findRoles,
-                    user.name,
+                    $sql.findOneByCom,
+                    [+comment.comId],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -183,4 +206,4 @@ class UserDao {
 ***REMOVED***
 ***REMOVED***
 
-export default UserDao;
+export default CommentDao;

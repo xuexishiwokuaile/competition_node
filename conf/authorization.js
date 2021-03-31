@@ -14,6 +14,7 @@ export default {
         "/takepart***REMOVED***": "",
         "/type***REMOVED***": "",
         "/message***REMOVED***": "",
+        "/comment***REMOVED***": "",
 ***REMOVED***,
     teacher: {
         "/user***REMOVED***": "",

@@ -37,7 +37,7 @@ class TypeDao {
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
                             connection.release();
-                            reject("添加失败，操作无效");
+                            reject("添加失败，信息不存在");
                 ***REMOVED***
                 ***REMOVED***
                         // 获取到数据库中生成的id
@@ -70,7 +70,7 @@ class TypeDao {
                 ***REMOVED***
                 ***REMOVED*** else if (!result.affectedRows) {
                             connection.release();
-                            reject("删除失败，操作无效");
+                            reject("删除失败，信息不存在");
                 ***REMOVED***
                 ***REMOVED***
                         // 释放连接

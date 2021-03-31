@@ -99,7 +99,15 @@ router.get("/findOneById", async function (req, res, next) {
 ***REMOVED***
 router.get("/findOneByName", async function (req, res, next) {
     var user = req.query;
-    res.send(await userService.findOneByName(user));
+***REMOVED***
+        const result = await userService.findOneByName(user);
+        res.send(result);
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
 ***REMOVED***
 
 ***REMOVED****
