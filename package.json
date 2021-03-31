@@ -9,12 +9,15 @@
     "start": "node ./bin/www.js"
   ***REMOVED***,
   "dependencies": {
+    "ali-oss": "^6.15.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-session": "^1.17.1",
+    "formidable": "^1.2.2",
+    "fs": "0.0.1-security",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "md5-node": "^1.0.1",
