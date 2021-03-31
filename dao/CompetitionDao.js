@@ -25,6 +25,7 @@ class CompetitionDao {
                         competition.detail,
                         competition.image,
                         +competition.teaId,
+                        competition.date,
                     ],
                     function (err, result) {
                         // 查看错误详情，便于调试
