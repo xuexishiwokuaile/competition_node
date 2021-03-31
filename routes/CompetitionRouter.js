@@ -154,13 +154,23 @@ router.get("/findOneByName", async function (req, res, next) {
 });
 
 /**
- * @description 查找所有竞赛
+ * @description 查找所有竞赛，并按时间排序
  * @param {}
- * @url /competition/findAll
+ * @url /competition/findAllByDate
  * @return {competition[]}
  */
-router.get("/findAll", async function (req, res, next) {
-    res.send(await competitionService.findAll());
+router.get("/findAllByDate", async function (req, res, next) {
+    res.send(await competitionService.findAllByDate());
+});
+
+/**
+ * @description 查找所有竞赛，并按热度排序
+ * @param {}
+ * @url /competition/findAllByHot
+ * @return {competition[]}
+ */
+router.get("/findAllByHot",async function(req,res,next) {
+    res.send(await competitionService.findAllByHot());
 });
 
 export default router;

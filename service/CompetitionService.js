@@ -75,8 +75,22 @@ class CompetitionService {
         return await this.competitionDao.findOneByName(competition);
     }
 
-    async findAll() {
-        return await this.competitionDao.findAll();
+    /**
+     * @description 查找所有竞赛，并按时间排序
+     * @param {}
+     * @return {Promise}
+     */
+    async findAllByDate() {
+        return await this.competitionDao.findAllByDate();
+    }
+
+    /**
+     * @description 查找所有竞赛，并按热度排序
+     * @param {}
+     * @return {Promise}
+     */
+    async findAllByHot() {
+        return await this.competitionDao.findAllByHot();
     }
 }
 

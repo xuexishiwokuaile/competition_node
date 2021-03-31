@@ -30,16 +30,36 @@ router.get("/findTypeByCom", async function (req, res, next) {
 });
 
 /**
- * @description 查找某一种类下的所有竞赛
+ * @description 查找某一种类下的所有竞赛，并按时间排序
  * @param {typeId}
- * @url /type/findComByType
+ * @url /type/findComByTypeAndDate
  * @return {competition}
  */
-router.get("/findComByType", async function (req, res, next) {
+router.get("/findComByTypeAndDate", async function (req, res, next) {
     // 获取传递的参数
     const type = req.query;
     try {
-        const result = await typeService.findComByType(type);
+        const result = await typeService.findComByTypeAndDate(type);
+        res.send(result);
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
+});
+
+/**
+ * @description 查找某一种类下的所有竞赛，并按热度排序
+ * @param {typeId}
+ * @url /type/findComByTypeAndHot
+ * @return {competition}
+ */
+router.get("/findComByTypeAndHot", async function (req, res, next) {
+    // 获取传递的参数
+    const type = req.query;
+    try {
+        const result = await typeService.findComByTypeAndHot(type);
         res.send(result);
     } catch (e) {
         res.json({

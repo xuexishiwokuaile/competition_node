@@ -161,10 +161,37 @@ class CompetitionDao {
         });
     }
 
-    findAll() {
+    /**
+     * @description 查找所有竞赛，并按时间排序
+     * @param {}
+     * @return {Promise}
+     */
+    findAllByDate() {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query($sql.findAll, function (err, result) {
+                connection.query($sql.findAllByDate, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                    // 释放连接
+                    connection.release();
+                });
+            });
+        });
+    }
+
+    /**
+     * @description 查找所有竞赛，并按热度排序
+     * @param {}
+     * @return {Promise}
+     */
+    findAllByHot() {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query($sql.findAllByHot, function (err, result) {
                     if (err) {
                         console.log(err);
                         reject(err);
