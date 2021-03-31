@@ -20,6 +20,7 @@ import takepartRouter from "./routes/TakepartRouter.js";
 import typeRouter from "./routes/TypeRouter.js";
 import messageRouter from "./routes/MessageRouter.js";
 import commentRouter from "./routes/CommentRouter.js";
+import searchRouter from "./routes/SearchRouter.js";
 
 import { checkRole ***REMOVED*** from "./middleWare/CheckRole.js";
 import { updateCookie ***REMOVED*** from "./middleWare/UpdateCookie.js";
@@ -57,6 +58,7 @@ app.use("/takepart", takepartRouter);
 app.use("/type", typeRouter);
 app.use("/message", messageRouter);
 app.use("/comment", commentRouter);
+app.use("/search", searchRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -15,6 +15,7 @@ export default {
         "/type***REMOVED***": "",
         "/message***REMOVED***": "",
         "/comment***REMOVED***": "",
+        "/search***REMOVED***": "",
 ***REMOVED***,
     teacher: {
         "/user***REMOVED***": "",
