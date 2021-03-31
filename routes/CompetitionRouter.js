@@ -13,7 +13,7 @@ const typeService = new TypeService();
 
 /**
  * @description 添加竞赛
- * @param {name, url, detail, image, teaId, type[]}
+ * @param {name, url, detail, image, type[]}
  * @url /competition/add
  * @return {}
  */
@@ -22,6 +22,8 @@ router.post("/add", async function (req, res, next) {
     const teaId = req.signedCookies.id;
     // 获取传递的参数
     const competition = req.body;
+    // 获取当前时间
+    const date = new Date();
     try {
         const result = await competitionService.add({
             name: competition.name,
@@ -29,6 +31,7 @@ router.post("/add", async function (req, res, next) {
             detail: competition.detail,
             image: competition.image,
             teaId: teaId,
+            date: date,
         });
         // 添加竞赛类型
         const types = await typeService.add({
@@ -146,7 +149,7 @@ router.get("/findOneByName", async function (req, res, next) {
  * @description 查找所有竞赛
  * @param {}
  * @url /competition/findAll
- * @return {[competition]}
+ * @return {competition[]}
  */
 router.get("/findAll", async function (req, res, next) {
     res.send(await competitionService.findAll());
