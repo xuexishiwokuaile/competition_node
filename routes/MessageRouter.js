@@ -148,7 +148,15 @@ router.get("/findOneByComAndTea", async function (req, res, next) {
 router.get("/findOneByStu", async function (req, res, next) {
     // 从cookie中获取当前登录学生的id
     const stuId = req.signedCookies.id;
-    res.send(await messageService.findOneByStu({ stuId: stuId ***REMOVED***));
+***REMOVED***
+        const result = await messageService.findOneByStu({ stuId: stuId ***REMOVED***
+        res.send(result);
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
 ***REMOVED***
 
 ***REMOVED****
@@ -160,7 +168,15 @@ router.get("/findOneByStu", async function (req, res, next) {
 router.get("/findReadByStu", async function (req, res, next) {
     // 从cookie中获取当前登录学生的id
     const stuId = req.signedCookies.id;
-    res.send(await messageService.findReadByStu({ stuId: stuId ***REMOVED***));
+***REMOVED***
+        const result = await messageService.findReadByStu({ stuId: stuId ***REMOVED***
+        res.send(result);
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
 ***REMOVED***
 
 ***REMOVED****
@@ -172,7 +188,15 @@ router.get("/findReadByStu", async function (req, res, next) {
 router.get("/findUnreadByStu", async function (req, res, next) {
     // 从cookie中获取当前登录学生的id
     const stuId = req.signedCookies.id;
-    res.send(await messageService.findUnreadByStu({ stuId: stuId ***REMOVED***));
+***REMOVED***
+        const result = await messageService.findUnreadByStu({ stuId: stuId ***REMOVED***
+        res.send(result);
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
 ***REMOVED***
 
 ***REMOVED****

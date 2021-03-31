@@ -142,7 +142,15 @@ router.get("/findOneById", async function (req, res, next) {
 router.get("/findOneByName", async function (req, res, next) {
     // 获取传递的参数
     const competition = req.query;
-    res.send(await competitionService.findOneByName(competition));
+***REMOVED***
+        const result = await competitionService.findOneByName(competition);
+        res.send(result);
+***REMOVED***
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        ***REMOVED***
+***REMOVED***
 ***REMOVED***
 
 ***REMOVED****
