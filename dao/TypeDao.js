@@ -1,7 +1,7 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-27 17:41:33
-***REMOVED***
+ */
 
 import mysql from "mysql";
 import $conf from "../conf/db.js";
@@ -9,16 +9,16 @@ import $util from "../util/pool.js";
 import $sql from "./sql/TypeSqlMapping.js";
 
 // 使用连接池，提升性能
-const pool = mysql.createPool($util.extend({***REMOVED***, $conf.mysql));
+const pool = mysql.createPool($util.extend({}, $conf.mysql));
 
 class TypeDao {
-    constructor() {***REMOVED***
+    constructor() {}
 
-    ***REMOVED****
+    /**
      * @description 给添加的竞赛设定种类
-     * @param {comId, typeId***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {comId, typeId}
+     * @return {Promise}
+     */
     add(type) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -34,27 +34,27 @@ class TypeDao {
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
                             reject(err);
                             // reject不会终止函数，这里需要手动return来终止
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
+                            return;
+                        } else if (!result.affectedRows) {
                             connection.release();
                             reject("添加失败，信息不存在");
-                ***REMOVED***
-                ***REMOVED***
+                            return;
+                        }
                         // 获取到数据库中生成的id
                         resolve(result.insertId);
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 删除竞赛种类
-     * @param {comId***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {comId}
+     * @return {Promise}
+     */
     delete(type) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -67,26 +67,26 @@ class TypeDao {
                             console.log(err);
                             connection.release();
                             reject(err);
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
+                            return;
+                        } else if (!result.affectedRows) {
                             connection.release();
                             reject("删除失败，信息不存在");
-                ***REMOVED***
-                ***REMOVED***
+                            return;
+                        }
                         // 释放连接
                         resolve("删除成功");
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 查找某一竞赛包含的种类
-     * @param {comId***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {comId}
+     * @return {Promise}
+     */
     findTypeByCom(type) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -97,22 +97,22 @@ class TypeDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 查找某一种类下的所有竞赛，并按时间排序
-     * @param {typeId***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {typeId}
+     * @return {Promise}
+     */
     findComByTypeAndDate(type) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -123,22 +123,22 @@ class TypeDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 查找某一种类下的所有竞赛，并按热度排序
-     * @param {typeId***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {typeId}
+     * @return {Promise}
+     */
     findComByTypeAndHot(type) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -149,22 +149,22 @@ class TypeDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 根据type值查找
-     * @param {typeId***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {typeId}
+     * @return {Promise}
+     */
     findOneByType(type) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -176,22 +176,22 @@ class TypeDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 检查是否重复设定竞赛类型
-     * @param {comId, typeId***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {comId, typeId}
+     * @return {Promise}
+     */
     findOneByComAndType(type) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -202,22 +202,22 @@ class TypeDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 查看该竞赛是否设定种类
-     * @param {comId***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {comId}
+     * @return {Promise}
+     */
     findOneByCom(type) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -228,16 +228,16 @@ class TypeDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+            });
+        });
+    }
+}
 
 export default TypeDao;

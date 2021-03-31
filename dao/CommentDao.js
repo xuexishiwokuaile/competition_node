@@ -1,7 +1,7 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-31 13:53:21
-***REMOVED***
+ */
 
 import mysql from "mysql";
 import $conf from "../conf/db.js";
@@ -9,16 +9,16 @@ import $util from "../util/pool.js";
 import $sql from "./sql/CommentSqlMapping.js";
 
 // 使用连接池，提升性能
-const pool = mysql.createPool($util.extend({***REMOVED***, $conf.mysql));
+const pool = mysql.createPool($util.extend({}, $conf.mysql));
 
 class CommentDao {
-    constructor() {***REMOVED***
+    constructor() {}
 
-    ***REMOVED****
+    /**
      * @description 添加评论
-     * @param {comId, stuId, detail, date***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {comId, stuId, detail, date}
+     * @return {Promise}
+     */
     add(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -40,27 +40,27 @@ class CommentDao {
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
                             reject(err);
                             // reject不会终止函数，这里需要手动return来终止
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
+                            return;
+                        } else if (!result.affectedRows) {
                             connection.release();
                             reject("添加失败，信息不存在");
-                ***REMOVED***
-                ***REMOVED***
+                            return;
+                        }
                         // 获取到数据库中生成的id
                         resolve(result.insertId);
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 删除评论
-     * @param {id***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {id}
+     * @return {Promise}
+     */
     delete(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -73,26 +73,26 @@ class CommentDao {
                             // console.log(err);
                             connection.release();
                             reject(err);
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
+                            return;
+                        } else if (!result.affectedRows) {
                             connection.release();
                             reject("删除失败，信息不存在");
-                ***REMOVED***
-                ***REMOVED***
+                            return;
+                        }
                         // 释放连接
                         resolve("删除成功");
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 更新评论
-     * @param {detail, id***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {detail, id}
+     * @return {Promise}
+     */
     update(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -109,26 +109,26 @@ class CommentDao {
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
                             reject(err);
                             // reject不会终止函数，这里需要手动return来终止
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
+                            return;
+                        } else if (!result.affectedRows) {
                             connection.release();
                             reject("更新失败，信息不存在");
-                ***REMOVED***
-                ***REMOVED***
+                            return;
+                        }
                         // 释放连接
                         resolve("更新成功");
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 根据id查找评论
-     * @param {id***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {id}
+     * @return {Promise}
+     */
     findOneById(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -140,22 +140,22 @@ class CommentDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 查找某一学生发表的评论
-     * @param {stuId***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {stuId}
+     * @return {Promise}
+     */
     findOneByStu(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -167,22 +167,22 @@ class CommentDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 查找某一竞赛下的评论
-     * @param {comId***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {comId}
+     * @return {Promise}
+     */
     findOneByCom(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -194,16 +194,16 @@ class CommentDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+            });
+        });
+    }
+}
 
 export default CommentDao;

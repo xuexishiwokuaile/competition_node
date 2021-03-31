@@ -1,7 +1,7 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-23 14:50:19
-***REMOVED***
+ */
 
 export default {
     extend: function (target, source, flag) {
@@ -10,8 +10,8 @@ export default {
                 flag
                     ? (target[key] = source[key])
                     : target[key] === void 0 && (target[key] = source[key]);
-    ***REMOVED***
-***REMOVED***
+            }
+        }
         return target;
-***REMOVED***,
-***REMOVED***;
+    },
+};

@@ -1,28 +1,28 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-23 09:51:15
-***REMOVED***
+ */
 
-import { Router ***REMOVED*** from "express";
+import { Router } from "express";
 import UserService from "../service/UserService.js";
 var router = Router();
 var userService = new UserService();
 
-***REMOVED*** GET home page.***REMOVED***
+/* GET home page. */
 router.get("/", function (req, res, next) {
-    res.render("index", { title: "Express" ***REMOVED***
-***REMOVED***
+    res.render("index", { title: "Express" });
+});
 
-***REMOVED****
+/**
  * @description 登录
- * @param {name, password***REMOVED***
+ * @param {name, password}
  * @url /login
- * @return {***REMOVED***
-***REMOVED***
+ * @return {}
+ */
 router.post("/login", async function (req, res, next) {
     // 获取传递的参数
     var user = req.body;
-***REMOVED***
+    try {
         var result = await userService.login(user);
         var role = await userService.findRoles(user);
         // 将用户的角色信息传入到session中
@@ -33,52 +33,52 @@ router.post("/login", async function (req, res, next) {
             httpOnly: true,
             maxAge: 3600 * 24 * 7 * 1000, // 过期时间为一周
             signed: true, // 加密
-        ***REMOVED***
+        });
         res.cookie("name", user.name, {
             httpOnly: true,
             maxAge: 3600 * 24 * 7 * 1000,
             signed: true,
-        ***REMOVED***
+        });
         res.cookie("password", user.password, {
             httpOnly: true,
             maxAge: 3600 * 24 * 7 * 1000,
             signed: true,
-        ***REMOVED***
+        });
         res.json({
             code: "0",
             msg: "登录成功",
             id: result,
-        ***REMOVED***
-***REMOVED***
+        });
+    } catch (e) {
         res.json({
             code: "1",
             msg: e.name + ": " + e.message,
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+        });
+    }
+});
 
-***REMOVED****
+/**
  * @description 注册
- * @param {name, password, phone, gender***REMOVED***
+ * @param {name, password, phone, gender}
  * @url /register
- * @return {***REMOVED***
-***REMOVED***
+ * @return {}
+ */
 router.post("/register", async function (req, res, next) {
     // 获取传递的参数
     var user = req.body;
-***REMOVED***
+    try {
         var result = await userService.add(user);
         res.json({
             code: "0",
             msg: "注册成功",
             id: result,
-        ***REMOVED***
-***REMOVED***
+        });
+    } catch (e) {
         res.json({
             code: "1",
             msg: e.name + ": " + e.message,
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+        });
+    }
+});
 
 export default router;

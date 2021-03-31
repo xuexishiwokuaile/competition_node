@@ -1,7 +1,7 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-27 17:41:26
-***REMOVED***
+ */
 
 const type = {
     add: "INSERT INTO competition_type(comId, typeId) VALUES (?,?)",
@@ -16,6 +16,6 @@ const type = {
     findOneByComAndType:
         "SELECT * FROM competition_type WHERE comId = ? AND typeId = ?",
     findOneByCom: "SELECT * FROM competition_type WHERE comId = ?",
-***REMOVED***;
+};
 
 export default type;

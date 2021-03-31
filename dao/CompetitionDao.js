@@ -1,7 +1,7 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-26 15:28:23
-***REMOVED***
+ */
 
 import mysql from "mysql";
 import $conf from "../conf/db.js";
@@ -9,10 +9,10 @@ import $util from "../util/pool.js";
 import $sql from "./sql/CompetitionSqlMapping.js";
 
 // 使用连接池，提升性能
-const pool = mysql.createPool($util.extend({***REMOVED***, $conf.mysql));
+const pool = mysql.createPool($util.extend({}, $conf.mysql));
 
 class CompetitionDao {
-    constructor() {***REMOVED***
+    constructor() {}
     add(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -36,21 +36,21 @@ class CompetitionDao {
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
                             reject(err);
                             // reject不会终止函数，这里需要手动return来终止
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
+                            return;
+                        } else if (!result.affectedRows) {
                             connection.release();
                             reject("添加失败，信息不存在");
-                ***REMOVED***
-                ***REMOVED***
+                            return;
+                        }
                         // 获取到数据库中生成的id
                         resolve(result.insertId);
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
     delete(competition) {
         return new Promise(function (resolve, reject) {
@@ -64,20 +64,20 @@ class CompetitionDao {
                             console.log(err);
                             connection.release();
                             reject(err);
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
+                            return;
+                        } else if (!result.affectedRows) {
                             connection.release();
                             reject("删除失败，信息不存在");
-                ***REMOVED***
-                ***REMOVED***
+                            return;
+                        }
                         // 释放连接
                         resolve("删除成功");
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
     update(competition) {
         return new Promise(function (resolve, reject) {
@@ -102,20 +102,20 @@ class CompetitionDao {
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
                             reject(err);
                             // reject不会终止函数，这里需要手动return来终止
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
+                            return;
+                        } else if (!result.affectedRows) {
                             connection.release();
                             reject("更新失败，信息不存在");
-                ***REMOVED***
-                ***REMOVED***
+                            return;
+                        }
                         // 释放连接
                         resolve("更新成功");
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
     findOneById(competition) {
         return new Promise(function (resolve, reject) {
@@ -128,16 +128,16 @@ class CompetitionDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
     findOneByName(competition) {
         return new Promise(function (resolve, reject) {
@@ -150,22 +150,22 @@ class CompetitionDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 查找所有竞赛，并按时间排序
-     * @param {***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {}
+     * @return {Promise}
+     */
     findAllByDate() {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -173,21 +173,21 @@ class CompetitionDao {
                     if (err) {
                         console.log(err);
                         reject(err);
-            ***REMOVED*** else {
+                    } else {
                         resolve(result);
-            ***REMOVED***
+                    }
                     // 释放连接
                     connection.release();
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+                });
+            });
+        });
+    }
 
-    ***REMOVED****
+    /**
      * @description 查找所有竞赛，并按热度排序
-     * @param {***REMOVED***
-     * @return {Promise***REMOVED***
-    ***REMOVED***
+     * @param {}
+     * @return {Promise}
+     */
     findAllByHot() {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -195,15 +195,15 @@ class CompetitionDao {
                     if (err) {
                         console.log(err);
                         reject(err);
-            ***REMOVED*** else {
+                    } else {
                         resolve(result);
-            ***REMOVED***
+                    }
                     // 释放连接
                     connection.release();
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+                });
+            });
+        });
+    }
+}
 
 export default CompetitionDao;
