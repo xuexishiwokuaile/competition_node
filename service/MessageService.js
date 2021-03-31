@@ -119,12 +119,6 @@ class MessageService {
      * @return {Promise}
      */
     async updateRead(message) {
-        // 查看该消息是否存在
-        const result = await this.messageDao.findOneById(message);
-        if (!result.length) {
-            throw new UpdateError("更新失败，该条消息不存在");
-        }
-
         try {
             return await this.messageDao.updateRead(message);
         } catch (e) {

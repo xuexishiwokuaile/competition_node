@@ -46,12 +46,6 @@ class CompetitionService {
      * @throws {DeleteError}
      */
     async delete(competition) {
-        // 检查id是否存在
-        const result = await this.competitionDao.findOneById(competition);
-        if (!result.length) {
-            throw new DeleteError("删除失败，未找到竞赛");
-        }
-
         try {
             return await this.competitionDao.delete(competition);
         } catch (e) {
@@ -66,12 +60,6 @@ class CompetitionService {
      * @throws {UpdateError}
      */
     async update(competition) {
-        // 检查id是否存在
-        const result = await this.competitionDao.findOneById(competition);
-        if (!result.length) {
-            throw new UpdateError("更新失败，未找到竞赛");
-        }
-
         try {
             return await this.competitionDao.update(competition);
         } catch (e) {
