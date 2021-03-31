@@ -1,7 +1,7 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-29 16:19:07
-***REMOVED***
+ */
 
 const message = {
     add: "INSERT INTO message(comId, stuId, teaId, detail) VALUES (?,?,?,?)",
@@ -14,6 +14,6 @@ const message = {
     findUnreadByStu: "SELECT * FROM message WHERE stuId = ? AND isRead = false",
     findOneByComAndStu: "SELECT * FROM message WHERE comId = ? AND stuId = ?",
     findOneById: "SELECT * FROM message WHERE id = ?",
-***REMOVED***;
+};
 
 export default message;

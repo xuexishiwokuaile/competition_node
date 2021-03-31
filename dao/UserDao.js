@@ -1,7 +1,7 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-23 14:41:38
-***REMOVED***
+ */
 
 import mysql from "mysql";
 import $conf from "../conf/db.js";
@@ -10,10 +10,10 @@ import $sql from "./sql/UserSqlMapping.js";
 import md5 from "md5-node";
 
 // 使用连接池，提升性能
-const pool = mysql.createPool($util.extend({***REMOVED***, $conf.mysql));
+const pool = mysql.createPool($util.extend({}, $conf.mysql));
 
 class UserDao {
-    constructor() {***REMOVED***
+    constructor() {}
     add(user) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
@@ -30,21 +30,21 @@ class UserDao {
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
                             reject(err);
                             // reject不会终止函数，这里需要手动return来终止
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
+                            return;
+                        } else if (!result.affectedRows) {
                             connection.release();
                             reject("添加失败，信息不存在");
-                ***REMOVED***
-                ***REMOVED***
+                            return;
+                        }
                         // 获取到数据库中生成的id
                         resolve(result.insertId);
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
     delete(user) {
         return new Promise(function (resolve, reject) {
@@ -55,19 +55,19 @@ class UserDao {
                         console.log(err);
                         connection.release();
                         reject(err);
-            ***REMOVED***
-            ***REMOVED*** else if (!result.affectedRows) {
+                        return;
+                    } else if (!result.affectedRows) {
                         connection.release();
                         reject("删除失败，信息不存在");
-            ***REMOVED***
-            ***REMOVED***
+                        return;
+                    }
                     // 释放连接
                     resolve("操作成功");
                     connection.release();
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+                });
+            });
+        });
+    }
 
     updatePassword(user) {
         return new Promise(function (resolve, reject) {
@@ -85,20 +85,20 @@ class UserDao {
                             // 这里嵌套较多，并且为异步操作，需要采取async方式,来让throw按顺序执行，较为繁琐
                             reject(err);
                             // reject不会终止函数，这里需要手动return来终止
-                ***REMOVED***
-                ***REMOVED*** else if (!result.affectedRows) {
+                            return;
+                        } else if (!result.affectedRows) {
                             connection.release();
                             reject("更新失败，信息不存在");
-                ***REMOVED***
-                ***REMOVED***
+                            return;
+                        }
                         // 释放连接
                         resolve("更新成功");
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
     findOneById(user) {
         return new Promise(function (resolve, reject) {
@@ -111,16 +111,16 @@ class UserDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
     findOneByName(user) {
         return new Promise(function (resolve, reject) {
@@ -133,16 +133,16 @@ class UserDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+            });
+        });
+    }
 
     findAll() {
         return new Promise(function (resolve, reject) {
@@ -151,15 +151,15 @@ class UserDao {
                     if (err) {
                         console.log(err);
                         reject(err);
-            ***REMOVED*** else {
+                    } else {
                         resolve(result);
-            ***REMOVED***
+                    }
                     // 释放连接
                     connection.release();
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+                });
+            });
+        });
+    }
 
     findRoles(user) {
         return new Promise(function (resolve, reject) {
@@ -171,16 +171,16 @@ class UserDao {
                         if (err) {
                             console.log(err);
                             reject(err);
-                ***REMOVED*** else {
+                        } else {
                             resolve(result);
-                ***REMOVED***
+                        }
                         // 释放连接
                         connection.release();
-            ***REMOVED***
+                    }
                 );
-            ***REMOVED***
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+            });
+        });
+    }
+}
 
 export default UserDao;

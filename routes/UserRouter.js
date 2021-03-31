@@ -1,21 +1,21 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-25 00:01:05
-***REMOVED***
+ */
 
-import { Router ***REMOVED*** from "express";
+import { Router } from "express";
 import UserService from "../service/userService.js";
 
 const router = Router();
 
 const userService = new UserService();
 
-***REMOVED****
+/**
  * @description 删除用户
- * @param {id***REMOVED***
+ * @param {id}
  * @url /user/delete
- * @return {***REMOVED***
-***REMOVED***
+ * @return {}
+ */
 router.delete("/delete", async function (req, res, next) {
     // 获取传递的参数
     var user = req.query;
@@ -24,100 +24,100 @@ router.delete("/delete", async function (req, res, next) {
     //         res.json({
     //             code: "0",
     //             msg: result,
-    //         ***REMOVED***
-    // ***REMOVED***,
+    //         });
+    //     },
     //     (e) => {
     //         res.json({
     //             code: "1",
     //             msg: e.name + ": " + e.message,
-    //         ***REMOVED***
-    // ***REMOVED***
+    //         });
+    //     }
     // );
 
-***REMOVED***
+    try {
         var result = await userService.delete(user);
         res.json({
             code: "0",
             msg: result,
-        ***REMOVED***
-***REMOVED***
+        });
+    } catch (e) {
         res.json({
             code: "1",
             msg: e.name + ": " + e.message,
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+        });
+    }
+});
 
-***REMOVED****
+/**
  * @description 更新用户密码
- * @param {id, password***REMOVED***
+ * @param {id, password}
  * @url /user/updatePassword
- * @return {***REMOVED***
-***REMOVED***
+ * @return {}
+ */
 router.put("/updatePassword", async function (req, res, next) {
     // 获取传递的参数
     var user = req.body;
-***REMOVED***
+    try {
         var result = await userService.updatePassword(user);
         res.json({
             code: "0",
             msg: result,
-        ***REMOVED***
-***REMOVED***
+        });
+    } catch (e) {
         res.json({
             code: "1",
             msg: e.name + ": " + e.message,
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+        });
+    }
+});
 
-***REMOVED****
+/**
  * @description 根据id查找用户
- * @param {id***REMOVED***
+ * @param {id}
  * @url /user/findOneById
- * @return {user***REMOVED***
-***REMOVED***
+ * @return {user}
+ */
 router.get("/findOneById", async function (req, res, next) {
     // 获取传递的参数
     var user = req.query;
-***REMOVED***
+    try {
         const result = await userService.findOneById(user);
         res.send(result);
-***REMOVED***
+    } catch (e) {
         res.json({
             code: "1",
             msg: e.name + ": " + e.message,
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+        });
+    }
+});
 
-***REMOVED****
+/**
  * @description 根据name查找用户
- * @param {name***REMOVED***
+ * @param {name}
  * @url /user/findOneByName
- * @return {user***REMOVED***
-***REMOVED***
+ * @return {user}
+ */
 router.get("/findOneByName", async function (req, res, next) {
     var user = req.query;
-***REMOVED***
+    try {
         const result = await userService.findOneByName(user);
         res.send(result);
-***REMOVED***
+    } catch (e) {
         res.json({
             code: "1",
             msg: e.name + ": " + e.message,
-        ***REMOVED***
-***REMOVED***
-***REMOVED***
+        });
+    }
+});
 
-***REMOVED****
+/**
  * @description 查找所有用户
- * @param {***REMOVED***
+ * @param {}
  * @url /user/findAll
- * @return {[user]***REMOVED***
-***REMOVED***
+ * @return {[user]}
+ */
 router.get("/findAll", async function (req, res, next) {
     res.send(await userService.findAll());
-***REMOVED***
+});
 
 export default router;

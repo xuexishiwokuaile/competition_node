@@ -1,7 +1,7 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-23 14:39:15
-***REMOVED***
+ */
 
 // MySQL数据库连接配置
 export default {
@@ -11,5 +11,5 @@ export default {
         password: "123456",
         database: "competition",
         port: 3306,
-***REMOVED***,
-***REMOVED***;
+    },
+};

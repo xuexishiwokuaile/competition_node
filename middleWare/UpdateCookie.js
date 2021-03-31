@@ -1,14 +1,14 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-25 18:06:05
-***REMOVED***
+ */
 
 import authorization from "../conf/authorization.js";
-import { checkUrl, getRouterName ***REMOVED*** from "../util/urlUtil.js";
+import { checkUrl, getRouterName } from "../util/urlUtil.js";
 
-***REMOVED****
+/**
  * @description 每次用户发送请求后更新cookie，修改cookie过期时间
-***REMOVED***
+ */
 export function updateCookie(req, res, next) {
     const url = checkUrl(req.url);
     const routerName = getRouterName(url);
@@ -16,7 +16,7 @@ export function updateCookie(req, res, next) {
     // 放行匿名请求
     if (
         authorization["anonymous"].hasOwnProperty(url) ||
-        authorization["anonymous"].hasOwnProperty(`/${routerName***REMOVED******REMOVED***`)
+        authorization["anonymous"].hasOwnProperty(`/${routerName}/*`)
     )
         next();
     else {
@@ -25,17 +25,17 @@ export function updateCookie(req, res, next) {
             httpOnly: true,
             maxAge: 3600 * 24 * 7 * 1000, // 过期时间为一周
             signed: true, // 加密
-        ***REMOVED***
+        });
         res.cookie("name", req.signedCookies.name, {
             httpOnly: true,
             maxAge: 3600 * 24 * 7 * 1000,
             signed: true,
-        ***REMOVED***
+        });
         res.cookie("password", req.signedCookies.password, {
             httpOnly: true,
             maxAge: 3600 * 24 * 7 * 1000,
             signed: true,
-        ***REMOVED***
+        });
         next();
-***REMOVED***
-***REMOVED***
+    }
+}

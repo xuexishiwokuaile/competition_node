@@ -1,7 +1,7 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-26 15:28:56
-***REMOVED***
+ */
 
 const competition = {
     add:
@@ -13,6 +13,6 @@ const competition = {
     findOneByName: "SELECT * FROM competition WHERE name = ?",
     findAllByDate: "SELECT * FROM competition ORDER BY date DESC",
     findAllByHot: "SELECT * FROM competition ORDER BY hot DESC"
-***REMOVED***;
+};
 
 export default competition;

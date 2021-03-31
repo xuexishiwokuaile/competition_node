@@ -1,55 +1,55 @@
-***REMOVED***
-***REMOVED***
+/*
+ * @Author: chenanran
  * @Date: 2021-03-25 17:34:55
-***REMOVED***
+ */
 import UserService from "../service/UserService.js";
 import createError from "http-errors";
 import authorization from "../conf/authorization.js";
-import { checkUrl, getRouterName ***REMOVED*** from "../util/urlUtil.js";
+import { checkUrl, getRouterName } from "../util/urlUtil.js";
 
 var userService = new UserService();
 
-***REMOVED****
+/**
  * @description: 检验用户身份
- * @param {name***REMOVED***
- * @return {***REMOVED***
-***REMOVED***
+ * @param {name}
+ * @return {}
+ */
 export async function checkRole(req, res, next) {
     const url = checkUrl(req.url);
     const routerName = getRouterName(url);
     // 放行匿名请求
     if (
         authorization["anonymous"].hasOwnProperty(url) ||
-        authorization["anonymous"].hasOwnProperty(`/${routerName***REMOVED******REMOVED***`)
+        authorization["anonymous"].hasOwnProperty(`/${routerName}/*`)
     ) {
         next();
-***REMOVED*** else {
+    } else {
         if (!(req.signedCookies.name || req.signedCookies.password)) {
             // cookie中不包含name或password字段，返回403错误
             next(createError(403));
-***REMOVED***
+        }
         var role;
         // 查看session是否存在
         if (!req.session.role) {
             // session中不含role，说明session已过期，查看数据库中存储的用户角色
             // 从cookie中读取name
             var name = req.signedCookies.name;
-            var result = await userService.findRoles({ name: name ***REMOVED***
+            var result = await userService.findRoles({ name: name });
             role = result[0].roleName;
             // 更新session
             req.session.role = role;
-***REMOVED*** else {
+        } else {
             role = req.session.role;
-***REMOVED***
+        }
 
         if (
             authorization[role].hasOwnProperty(url) ||
-            authorization[role].hasOwnProperty(`/${routerName***REMOVED******REMOVED***`)
+            authorization[role].hasOwnProperty(`/${routerName}/*`)
         ) {
             // 精确匹配 || 模糊匹配
             next();
-***REMOVED*** else {
+        } else {
             next(createError(403));
-***REMOVED***
-***REMOVED***
-***REMOVED***
+        }
+    }
+}
