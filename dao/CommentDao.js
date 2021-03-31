@@ -1,26 +1,36 @@
 /*
  * @Author: chenanran
- * @Date: 2021-03-23 14:41:38
+ * @Date: 2021-03-31 13:53:21
  */
 
 import mysql from "mysql";
 import $conf from "../conf/db.js";
 import $util from "../util/pool.js";
-import $sql from "./sql/UserSqlMapping.js";
-import md5 from "md5-node";
+import $sql from "./sql/CommentSqlMapping.js";
 
 // 使用连接池，提升性能
 const pool = mysql.createPool($util.extend({}, $conf.mysql));
 
-class UserDao {
+class CommentDao {
     constructor() {}
-    add(user) {
+
+    /**
+     * @description 添加评论
+     * @param {comId, stuId, detail, date}
+     * @return {Promise}
+     */
+    add(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.add,
-                    [user.name, md5(user.password), user.phone, user.gender],
+                    [
+                        +comment.comId,
+                        +comment.stuId,
+                        comment.detail,
+                        comment.date,
+                    ],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {
@@ -46,36 +56,50 @@ class UserDao {
         });
     }
 
-    delete(user) {
+    /**
+     * @description 删除评论
+     * @param {id}
+     * @return {Promise}
+     */
+    delete(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                // 将id转换为整形
-                connection.query($sql.delete, +user.id, function (err, result) {
-                    if (err) {
-                        console.log(err);
+                connection.query(
+                    $sql.delete,
+                    // 将id转换为整形
+                    +comment.id,
+                    function (err, result) {
+                        if (err) {
+                            // console.log(err);
+                            connection.release();
+                            reject(err);
+                            return;
+                        } else if (!result.affectedRows) {
+                            connection.release();
+                            reject("删除失败，信息不存在");
+                            return;
+                        }
+                        // 释放连接
+                        resolve("删除成功");
                         connection.release();
-                        reject(err);
-                        return;
-                    } else if (!result.affectedRows) {
-                        connection.release();
-                        reject("删除失败，信息不存在");
-                        return;
                     }
-                    // 释放连接
-                    resolve("操作成功");
-                    connection.release();
-                });
+                );
             });
         });
     }
 
-    updatePassword(user) {
+    /**
+     * @description 更新评论
+     * @param {detail, id}
+     * @return {Promise}
+     */
+    update(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.updatePassword,
-                    [md5(user.password), +user.id],
+                    $sql.update,
+                    [comment.detail, +comment.id],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {
@@ -100,13 +124,18 @@ class UserDao {
         });
     }
 
-    findOneById(user) {
+    /**
+     * @description 根据id查找评论
+     * @param {id}
+     * @return {Promise}
+     */
+    findOneById(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
                     $sql.findOneById,
-                    [+user.id],
+                    [+comment.id],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -122,13 +151,18 @@ class UserDao {
         });
     }
 
-    findOneByName(user) {
+    /**
+     * @description 查找某一学生发表的评论
+     * @param {stuId}
+     * @return {Promise}
+     */
+    findOneByStu(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.findOneByName,
-                    [user.name],
+                    $sql.findOneByStu,
+                    [+comment.stuId],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -144,29 +178,18 @@ class UserDao {
         });
     }
 
-    findAll() {
+    /**
+     * @description 查找某一竞赛下的评论
+     * @param {comId}
+     * @return {Promise}
+     */
+    findOneByCom(comment) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query($sql.findAll, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                    // 释放连接
-                    connection.release();
-                });
-            });
-        });
-    }
-
-    findRoles(user) {
-        return new Promise(function (resolve, reject) {
-            pool.getConnection(function (err, connection) {
+                // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.findRoles,
-                    user.name,
+                    $sql.findOneByCom,
+                    [+comment.comId],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -183,4 +206,4 @@ class UserDao {
     }
 }
 
-export default UserDao;
+export default CommentDao;

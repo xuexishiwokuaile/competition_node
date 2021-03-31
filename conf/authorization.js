@@ -14,6 +14,7 @@ export default {
         "/takepart/*": "",
         "/type/*": "",
         "/message/*": "",
+        "/comment/*": "",
     },
     teacher: {
         "/user/*": "",

@@ -99,7 +99,15 @@ router.get("/findOneById", async function (req, res, next) {
  */
 router.get("/findOneByName", async function (req, res, next) {
     var user = req.query;
-    res.send(await userService.findOneByName(user));
+    try {
+        const result = await userService.findOneByName(user);
+        res.send(result);
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
 });
 
 /**
