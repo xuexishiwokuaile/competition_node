@@ -98,12 +98,21 @@ class TypeService {
 ***REMOVED***
 
     ***REMOVED****
-     * @description 查找某一种类下的所有竞赛
+     * @description 查找某一种类下的所有竞赛，并按时间排序
      * @param {typeId***REMOVED***
      * @return {Promise***REMOVED***
     ***REMOVED***
-    async findComByType(type) {
-        return await this.typeDao.findComByType(type);
+    async findComByTypeAndDate(type) {
+        return await this.typeDao.findComByTypeAndDate(type);
+***REMOVED***
+
+    ***REMOVED****
+     * @description 查找某一种类下的所有竞赛，并按热度排序
+     * @param {typeId***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    async findComByTypeAndHot(type) {
+        return await this.typeDao.findComByTypeAndHot(type);
 ***REMOVED***
 
     ***REMOVED****

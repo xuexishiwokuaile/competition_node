@@ -8,8 +8,10 @@ const type = {
     delete: "DELETE FROM competition_type WHERE comId = ?",
     findTypeByCom:
         "SELECT * FROM competition_type,type WHERE competition_type.comId = ? AND competition_type.typeId = type.typeId",
-    findComByType:
+    findComByTypeAndDate:
         "SELECT * FROM competition, competition_type WHERE competition_type.typeId = ? AND competition_type.comId = competition.id ORDER BY date DESC",
+    findComByTypeAndHot:
+        "SELECT * FROM competition, competition_type WHERE competition_type.typeId = ? AND competition_type.comId = competition.id ORDER BY hot DESC",
     findOneByType: "SELECT * FROM type WHERE typeId = ?",
     findOneByComAndType:
         "SELECT * FROM competition_type WHERE comId = ? AND typeId = ?",

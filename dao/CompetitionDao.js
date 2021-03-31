@@ -161,10 +161,37 @@ class CompetitionDao {
         ***REMOVED***
 ***REMOVED***
 
-    findAll() {
+    ***REMOVED****
+     * @description 查找所有竞赛，并按时间排序
+     * @param {***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    findAllByDate() {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query($sql.findAll, function (err, result) {
+                connection.query($sql.findAllByDate, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+            ***REMOVED*** else {
+                        resolve(result);
+            ***REMOVED***
+                    // 释放连接
+                    connection.release();
+                ***REMOVED***
+            ***REMOVED***
+        ***REMOVED***
+***REMOVED***
+
+    ***REMOVED****
+     * @description 查找所有竞赛，并按热度排序
+     * @param {***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    findAllByHot() {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query($sql.findAllByHot, function (err, result) {
                     if (err) {
                         console.log(err);
                         reject(err);

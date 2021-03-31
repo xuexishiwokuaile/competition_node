@@ -11,7 +11,8 @@ const competition = {
         "UPDATE competition SET name = ?, url = ?, detail = ?, image = ?, teaId = ? WHERE id = ?",
     findOneById: "SELECT * FROM competition WHERE id = ?",
     findOneByName: "SELECT * FROM competition WHERE name = ?",
-    findAll: "SELECT * FROM competition ORDER BY date DESC",
+    findAllByDate: "SELECT * FROM competition ORDER BY date DESC",
+    findAllByHot: "SELECT * FROM competition ORDER BY hot DESC"
 ***REMOVED***;
 
 export default competition;

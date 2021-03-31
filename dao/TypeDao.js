@@ -109,15 +109,41 @@ class TypeDao {
 ***REMOVED***
 
     ***REMOVED****
-     * @description 查找某一种类下的所有竞赛
+     * @description 查找某一种类下的所有竞赛，并按时间排序
      * @param {typeId***REMOVED***
      * @return {Promise***REMOVED***
     ***REMOVED***
-    findComByType(type) {
+    findComByTypeAndDate(type) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query(
-                    $sql.findComByType,
+                    $sql.findComByTypeAndDate,
+                    [+type.typeId],
+                    function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                ***REMOVED*** else {
+                            resolve(result);
+                ***REMOVED***
+                        // 释放连接
+                        connection.release();
+            ***REMOVED***
+                );
+            ***REMOVED***
+        ***REMOVED***
+***REMOVED***
+
+    ***REMOVED****
+     * @description 查找某一种类下的所有竞赛，并按热度排序
+     * @param {typeId***REMOVED***
+     * @return {Promise***REMOVED***
+    ***REMOVED***
+    findComByTypeAndHot(type) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query(
+                    $sql.findComByTypeAndHot,
                     [+type.typeId],
                     function (err, result) {
                         if (err) {
