@@ -30,36 +30,16 @@ router.get("/findTypeByCom", async function (req, res, next) {
 });
 
 /**
- * @description 查找某一种类下的所有竞赛，并按时间排序
- * @param {typeId}
- * @url /type/findComByTypeAndDate
+ * @description 查找某一种类下的所有竞赛
+ * @param {typeName, order} // 排序方式：时间date，热度hot
+ * @url /type/findComByType
  * @return {competition}
  */
-router.get("/findComByTypeAndDate", async function (req, res, next) {
+router.get("/findComByType", async function (req, res, next) {
     // 获取传递的参数
     const type = req.query;
     try {
-        const result = await typeService.findComByTypeAndDate(type);
-        res.send(result);
-    } catch (e) {
-        res.json({
-            code: "1",
-            msg: e.name + ": " + e.message,
-        });
-    }
-});
-
-/**
- * @description 查找某一种类下的所有竞赛，并按热度排序
- * @param {typeId}
- * @url /type/findComByTypeAndHot
- * @return {competition}
- */
-router.get("/findComByTypeAndHot", async function (req, res, next) {
-    // 获取传递的参数
-    const type = req.query;
-    try {
-        const result = await typeService.findComByTypeAndHot(type);
+        const result = await typeService.findComByType(type);
         res.send(result);
     } catch (e) {
         res.json({
@@ -71,16 +51,19 @@ router.get("/findComByTypeAndHot", async function (req, res, next) {
 
 /**
  * @description 查找同属于多个种类的竞赛
- * @param {typeId} // 多个id，使用逗号分隔 eg: 1,2,3
+ * @param {typeName, order} // 多个name，使用逗号分隔
  * @url /type/findComByMultiTypes
  * @return {competition[]}
  */
 router.get("/findComByMultiTypes", async function (req, res, next) {
     // 将前端传递的参数解析成数组
-    const typeId = req.query.typeId;
-    const types = typeId.split(",");
+    const type = req.query;
+    const types = type.typeName.split(",");
     try {
-        const result = await typeService.findComByMultiTypes(types);
+        const result = await typeService.findComByMultiTypes({
+            typeName: types,
+            order: type.order,
+        });
         res.send(result);
     } catch (e) {
         res.json({

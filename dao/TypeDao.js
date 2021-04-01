@@ -118,7 +118,7 @@ class TypeDao {
             pool.getConnection(function (err, connection) {
                 connection.query(
                     $sql.findComByTypeAndDate,
-                    [+type.typeId],
+                    [type.typeName],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -144,7 +144,7 @@ class TypeDao {
             pool.getConnection(function (err, connection) {
                 connection.query(
                     $sql.findComByTypeAndHot,
-                    [+type.typeId],
+                    [type.typeName],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -165,13 +165,13 @@ class TypeDao {
      * @param {typeId}
      * @return {Promise}
      */
-    findOneByType(type) {
+    findOneByTypeName(type) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.findOneByType,
-                    [+type.typeId],
+                    $sql.findOneByTypeName,
+                    [type.typeName],
                     function (err, result) {
                         if (err) {
                             console.log(err);

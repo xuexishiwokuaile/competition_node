@@ -76,21 +76,21 @@ class CompetitionService {
     }
 
     /**
-     * @description 查找所有竞赛，并按时间排序
-     * @param {}
+     * @description 查找所有竞赛，按指定的方式排序
+     * @param {order}
      * @return {Promise}
      */
-    async findAllByDate() {
-        return await this.competitionDao.findAllByDate();
-    }
-
-    /**
-     * @description 查找所有竞赛，并按热度排序
-     * @param {}
-     * @return {Promise}
-     */
-    async findAllByHot() {
-        return await this.competitionDao.findAllByHot();
+    async findAll(competition) {
+        // 获取排序方式
+        const order = competition.order;
+        switch (order) {
+            case "date":
+                return await this.competitionDao.findAllByDate();
+            case "hot":
+                return await this.competitionDao.findAllByHot();
+            default:
+                return await this.competitionDao.findAllByDate();
+        }
     }
 }
 
