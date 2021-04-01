@@ -8,6 +8,8 @@ export default {
         "/register": "",
     },
     student: {
+        "/user/updatePassword": "",
+        "/user/updateProfile": "",
         "/competition/findOneById": "",
         "/competition/findOneByName": "",
         "/competition/*": "",

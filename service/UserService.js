@@ -9,7 +9,7 @@ import DeleteError from "../error/DeleteError.js";
 import UpdateError from "../error/UpdateError.js";
 import UserError from "../error/UserError.js";
 import md5 from "md5-node";
-import { hasEmpty, isPhoneNum } from "../util/stringFormatUtil.js";
+import { hasEmpty, isPhoneNum, isEmpty } from "../util/stringFormatUtil.js";
 
 class UserService {
     constructor() {
@@ -69,6 +69,28 @@ class UserService {
 
         try {
             return await this.userDao.updatePassword(user);
+        } catch (e) {
+            throw new UpdateError(e);
+        }
+    }
+
+    /**
+     * @description 更新头像
+     * @param {profile, id}
+     * @return {Promise}
+     * @throws {UpdateError}
+     */
+    async updateProfile(user) {
+        // 检查id是否存在
+        const result = await this.userDao.findOneById(user);
+        if (!result.length) {
+            throw new UpdateError("更新失败，未找到用户");
+        } else if (isEmpty(user.profile)) {
+            throw new UpdateError("更新失败，未选择头像");
+        }
+
+        try {
+            return await this.userDao.updateProfile(user);
         } catch (e) {
             throw new UpdateError(e);
         }
