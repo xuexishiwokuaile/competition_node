@@ -80,7 +80,6 @@ router.post("/add", async function (req, res, next) {
 router.delete("/delete", async function (req, res, next) {
     // 获取传递的参数
     const competition = req.query;
-
     try {
         const result = await competitionService.delete(competition);
         res.json({
