@@ -15,7 +15,7 @@ const typeService = new TypeService();
 
 /**
  * @description 添加竞赛
- * @param {name, url, detail, image, type} // type之间用逗号分隔 image格式为file
+ * @param {name, url, detail, image, typeName} // typeName之间用逗号分隔 image格式为file
  * @url /competition/add
  * @return {}
  */
@@ -40,7 +40,7 @@ router.post("/add", async function (req, res, next) {
         // 获取当前时间
         const date = new Date();
         // 格式化type
-        const type = competition.type.split(",");
+        const typeName = competition.typeName.split(",");
 
         try {
             const result = await competitionService.add({
@@ -54,7 +54,7 @@ router.post("/add", async function (req, res, next) {
             // 添加竞赛类型
             const types = await typeService.add({
                 comId: result,
-                type: type,
+                typeName: typeName,
             });
             res.json({
                 code: "0",
@@ -96,7 +96,7 @@ router.delete("/delete", async function (req, res, next) {
 
 /**
  * @description 更新竞赛
- * @param {id, name, url, detail, image, teaId, type} // type之间用逗号分隔 image格式为file
+ * @param {id, name, url, detail, image, teaId, typeName} // typeName之间用逗号分隔 image格式为file
  * @url /competition/update
  * @return {}
  */
@@ -119,7 +119,7 @@ router.put("/update", async function (req, res, next) {
         // 获取参数
         const competition = fields;
         // 格式化type
-        const type = competition.type.split(",");
+        const typeName = competition.typeName.split(",");
 
         try {
             const result = await competitionService.update({
@@ -133,7 +133,7 @@ router.put("/update", async function (req, res, next) {
             // 更新竞赛种类
             const types = await typeService.update({
                 comId: competition.id,
-                type: type,
+                typeName: typeName,
             });
             res.json({
                 code: "0",
@@ -190,23 +190,15 @@ router.get("/findOneByName", async function (req, res, next) {
 });
 
 /**
- * @description 查找所有竞赛，并按时间排序
- * @param {}
- * @url /competition/findAllByDate
+ * @description 查找所有竞赛，并按指定的方式排序
+ * @param {order}
+ * @url /competition/findAll
  * @return {competition[]}
  */
-router.get("/findAllByDate", async function (req, res, next) {
-    res.send(await competitionService.findAllByDate());
-});
-
-/**
- * @description 查找所有竞赛，并按热度排序
- * @param {}
- * @url /competition/findAllByHot
- * @return {competition[]}
- */
-router.get("/findAllByHot", async function (req, res, next) {
-    res.send(await competitionService.findAllByHot());
+router.get("/findAll", async function (req, res, next) {
+    // 获取请求参数
+    const competition = req.query;
+    res.send(await competitionService.findAll(competition));
 });
 
 export default router;

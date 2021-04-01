@@ -15,24 +15,26 @@ class TypeService {
 
     /**
      * @description 给添加的竞赛设定种类
-     * @param {type[],comId}
+     * @param {typeName[],comId} // 种类名
      * @return {Promise}
      * @throws {AddError}
      */
     async add(type) {
         const comId = type.comId;
         // 去除type数组中的重复元素
-        const newType = Array.from(new Set(type.type));
+        const newType = Array.from(new Set(type.typeName));
         const promises = newType.map(async (type) => {
             // 检查竞赛类型是否存在
-            const comType = await this.typeDao.findOneByType({ typeId: type });
+            const comType = await this.typeDao.findOneByTypeName({
+                typeName: type,
+            });
             if (!comType.length) {
                 throw new AddError("添加失败，竞赛类型不存在");
             }
 
             const params = {
                 comId: comId,
-                typeId: type,
+                typeId: comType[0].typeId,
             };
             // 检查是否重复设定竞赛类型
             const result = await this.typeDao.findOneByComAndType(params);
@@ -52,7 +54,7 @@ class TypeService {
 
     /**
      * @description 更新竞赛种类，需要先删除再添加
-     * @param {type[], comId}
+     * @param {typeName, comId}
      * @return {Promise}
      * @throws {UpdateError}
      */
@@ -66,16 +68,18 @@ class TypeService {
         // 删除该竞赛的所有旧种类
         await this.typeDao.delete({ comId: comId });
         // 去除type数组中的重复元素
-        const newType = Array.from(new Set(type.type));
+        const newType = Array.from(new Set(type.typeName));
         const promises = newType.map(async (type) => {
-            const comType = await this.typeDao.findOneByType({ typeId: type });
+            const comType = await this.typeDao.findOneByTypeName({
+                typeName: type,
+            });
             if (!comType.length) {
                 throw new UpdateError("更新失败，竞赛类型不存在");
             }
 
             const params = {
                 comId: comId,
-                typeId: type,
+                typeId: comType[0].typeId,
             };
 
             try {
@@ -98,33 +102,48 @@ class TypeService {
     }
 
     /**
-     * @description 查找某一种类下的所有竞赛，并按时间排序
-     * @param {typeId}
+     * @description 查找某一种类下的所有竞赛
+     * @param {typeName, order}
      * @return {Promise}
      */
-    async findComByTypeAndDate(type) {
-        return await this.typeDao.findComByTypeAndDate(type);
-    }
-
-    /**
-     * @description 查找某一种类下的所有竞赛，并按热度排序
-     * @param {typeId}
-     * @return {Promise}
-     */
-    async findComByTypeAndHot(type) {
-        return await this.typeDao.findComByTypeAndHot(type);
+    async findComByType(type) {
+        // 获取排序方式
+        const order = type.order;
+        switch (order) {
+            case "date":
+                return await this.typeDao.findComByTypeAndDate(type);
+            case "hot":
+                return await this.typeDao.findComByTypeAndHot(type);
+            default:
+                return await this.typeDao.findComByTypeAndDate(type);
+        }
     }
 
     /**
      * @description 查找同属于多个种类的竞赛
-     * @param {typeId[]}
+     * @param {typeName[], order}
      * @return {Promise}
      */
-    async findComByMultiTypes(types) {
+    async findComByMultiTypes(type) {
+        // 获取排序方式
+        const order = type.order;
         // 数组去重
-        const newTypes = Array.from(new Set(types));
+        const newTypes = Array.from(new Set(type.typeName));
         const promises = newTypes.map(async (type) => {
-            return await this.typeDao.findComByType({ typeId: type });
+            switch (order) {
+                case "date":
+                    return await this.typeDao.findComByTypeAndDate({
+                        typeName: type,
+                    });
+                case "hot":
+                    return await this.typeDao.findComByTypeAndHot({
+                        typeName: type,
+                    });
+                default:
+                    return await this.typeDao.findComByTypeAndDate({
+                        typeName: type,
+                    });
+            }
         });
         // 结果数组
         const resultArr = await Promise.all(promises);
