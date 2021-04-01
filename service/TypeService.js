@@ -102,29 +102,11 @@ class TypeService {
     }
 
     /**
-     * @description 查找某一种类下的所有竞赛
-     * @param {typeName, order}
-     * @return {Promise}
-     */
-    async findComByType(type) {
-        // 获取排序方式
-        const order = type.order;
-        switch (order) {
-            case "date":
-                return await this.typeDao.findComByTypeAndDate(type);
-            case "hot":
-                return await this.typeDao.findComByTypeAndHot(type);
-            default:
-                return await this.typeDao.findComByTypeAndDate(type);
-        }
-    }
-
-    /**
-     * @description 查找同属于多个种类的竞赛
+     * @description 根据单个或多个种类查找竞赛
      * @param {typeName[], order}
      * @return {Promise}
      */
-    async findComByMultiTypes(type) {
+    async findComByType(type) {
         // 获取排序方式
         const order = type.order;
         // 数组去重
