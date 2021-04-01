@@ -13,8 +13,8 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
 
-import indexRouter from "./routes/indexRouter.js";
-import userRouter from "./routes/userRouter.js";
+import indexRouter from "./routes/IndexRouter.js";
+import userRouter from "./routes/UserRouter.js";
 import competitionRouter from "./routes/CompetitionRouter.js";
 import takepartRouter from "./routes/TakepartRouter.js";
 import typeRouter from "./routes/TypeRouter.js";
