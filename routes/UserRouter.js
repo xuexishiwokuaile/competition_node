@@ -11,14 +11,14 @@ const router = Router();
 const userService = new UserService();
 
 /**
- * @description 删除用户
- * @param {id}
+ * @description 删除用户 注销账号，只有用户本人能操作
+ * @param {}
  * @url /user/delete
  * @return {}
  */
 router.delete("/delete", async function (req, res, next) {
-    // 获取传递的参数
-    var user = req.query;
+    // 从cookie中读取当前登录用户的的id
+    const id = req.signedCookies.id;
     // userService.delete(user).then(
     //     (result) => {
     //         res.json({
@@ -35,7 +35,7 @@ router.delete("/delete", async function (req, res, next) {
     // );
 
     try {
-        var result = await userService.delete(user);
+        var result = await userService.delete({ id: id });
         res.json({
             code: "0",
             msg: result,
@@ -50,15 +50,20 @@ router.delete("/delete", async function (req, res, next) {
 
 /**
  * @description 更新用户密码
- * @param {id, password}
+ * @param {password}
  * @url /user/updatePassword
  * @return {}
  */
 router.put("/updatePassword", async function (req, res, next) {
+    // 从cookie中读取当前登录用户的的id
+    const id = req.signedCookies.id;
     // 获取传递的参数
     var user = req.body;
     try {
-        var result = await userService.updatePassword(user);
+        var result = await userService.updatePassword({
+            id: id,
+            password: user.password,
+        });
         res.json({
             code: "0",
             msg: result,
