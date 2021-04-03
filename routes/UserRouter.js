@@ -55,7 +55,7 @@ router.delete("/delete", async function (req, res, next) {
  * @return {}
  */
 router.put("/updatePassword", async function (req, res, next) {
-    // 从cookie中读取当前登录用户的的id
+    // 从cookie中获取当前登录用户的id
     const id = req.signedCookies.id;
     // 获取传递的参数
     var user = req.body;
