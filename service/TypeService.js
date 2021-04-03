@@ -6,7 +6,7 @@
 import TypeDao from "../dao/TypeDao.js";
 import AddError from "../error/AddError.js";
 import UpdateError from "../error/UpdateError.js";
-import { intersection } from "../util/intersection.js";
+import { intersection } from "../util/arrayUtil.js";
 
 class TypeService {
     constructor() {

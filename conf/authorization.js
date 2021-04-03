@@ -18,6 +18,8 @@ export default {
         "/message/*": "",
         "/comment/*": "",
         "/search/*": "",
+        "/apply/*": "",
+        "/team/*": "",
     },
     teacher: {
         "/user/*": "",
