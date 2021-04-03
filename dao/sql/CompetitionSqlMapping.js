@@ -8,7 +8,7 @@ const competition = {
         "INSERT INTO competition(name, url, detail, image, teaId, date) VALUES (?,?,?,?,?,?)",
     delete: "DELETE FROM competition WHERE id = ? AND teaId = ?",
     update:
-        "UPDATE competition SET name = ?, url = ?, detail = ?, image = ? WHERE id = ? AND teaId = ?",
+        "UPDATE competition SET name = ?, url = ?, detail = ?, image = ? WHERE teaId = ? AND id = ?",
     findOneById: "SELECT * FROM competition WHERE id = ?",
     findOneByName: "SELECT * FROM competition WHERE name = ?",
     findAllByDate: "SELECT * FROM competition ORDER BY date DESC",

@@ -16,8 +16,11 @@ const client = new OSS({
 export async function putStream(file) {
     try {
         // use 'chunked encoding'
-        // 检验文件名是否为空，若为空则代表没有上传文件
-        if(!file.name) {
+        // 检验文件和文件名是否为空，若为空则代表没有上传文件
+        if (!file) {
+            return;
+        }
+        if (!file.name) {
             return;
         }
         // 获取文件名
