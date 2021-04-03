@@ -21,6 +21,7 @@ const apply = {
         "SELECT * FROM apply WHERE status <> 0 AND teamId = ? AND captain = ? OR member = ?",
     findOneByMember: "SELECT * FROM apply WHERE member = ? AND status = 2",
     findPositionByName: "SELECT * FROM position WHERE positionName = ?",
+    findAllPosition: "SELECT * FROM position",
     findApply:
         "SELECT apply.status, team.name as teamName, competition.name as competitionName, user.name as userName, user.id as userId ,user.profile FROM apply, team, user, competition WHERE apply.member = ? AND apply.teamId = team.id AND team.comId = competition.id AND apply.captain = user.id", // 申请的
     findReceive:

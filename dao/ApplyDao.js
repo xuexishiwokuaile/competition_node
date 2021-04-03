@@ -318,6 +318,28 @@ class ApplyDao {
     }
 
     /**
+     * @description 查找所有岗位的种类
+     * @param {}
+     * @return {Promise}
+     */
+    findAllPosition() {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query($sql.findAllPosition, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                    // 释放连接
+                    connection.release();
+                });
+            });
+        });
+    }
+
+    /**
      * @description 队员查看自己提交的申请
      * @param {member}
      * @return {Promise}

@@ -10,6 +10,7 @@ import AddError from "../error/AddError.js";
 import DeleteError from "../error/DeleteError.js";
 import UpdateError from "../error/UpdateError.js";
 import { hasEmpty, isEmpty } from "../util/stringFormatUtil.js";
+import { arraySum } from "../util/arrayUtil.js";
 
 class ApplyService {
     constructor() {
@@ -27,9 +28,11 @@ class ApplyService {
     async add(apply) {
         if (apply.captain === apply.member) {
             throw new AddError("申请失败，您不能加入自己创建的团队");
+        } else if (isEmpty(apply.result)) {
+            throw new AddError("申请失败，理由为空");
         }
         // 获取团队信息
-        const team = await this.teamDao.findComByTeam(apply);
+        const team = await this.teamDao.findOneByTeam(apply);
         const comId = team[0].comId;
         // 查看用户是否已经参与了该竞赛
         const takepart = await this.takepartDao.findOneByStuIdAndComId({
@@ -66,8 +69,9 @@ class ApplyService {
             throw new AddError("申请失败，名额已满");
         }
         // 将最新的名额数更新到数据库
-        await this.teamDao.updateTeamPosCount({
+        await this.teamDao.updateTeamPosCountAndMissing({
             count: posNumbers.toString(),
+            missing: arraySum(posNumbers),
             teamId: apply.teamId,
         });
 

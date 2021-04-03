@@ -22,6 +22,7 @@ import messageRouter from "./routes/MessageRouter.js";
 import commentRouter from "./routes/CommentRouter.js";
 import searchRouter from "./routes/SearchRouter.js";
 import applyRouter from "./routes/ApplyRouter.js";
+import teamRouter from "./routes/TeamRouter.js";
 
 import { checkRole } from "./middleWare/CheckRole.js";
 import { updateCookie } from "./middleWare/UpdateCookie.js";
@@ -61,6 +62,7 @@ app.use("/message", messageRouter);
 app.use("/comment", commentRouter);
 app.use("/search", searchRouter);
 app.use("/apply", applyRouter);
+app.use("/team", teamRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
