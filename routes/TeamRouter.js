@@ -95,6 +95,7 @@ router.get("/findAll", async function (req, res, next) {
 
 /**
  * @description 查看还缺人的团队信息
+ * @description 排序规则：竞赛的热度hot和团队总的所缺人数missing，计算规则：hot/missing
  * @param {}
  * @url /team/findMissing
  * @return {}

@@ -132,12 +132,38 @@ class TeamDao {
      * @param {teamId}
      * @return {Promise}
      */
-    findOneByTeam(team) {
+    findOneByTeamId(team) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query(
-                    $sql.findOneByTeam,
+                    $sql.findOneByTeamId,
                     [+team.teamId],
+                    function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            resolve(result);
+                        }
+                        // 释放连接
+                        connection.release();
+                    }
+                );
+            });
+        });
+    }
+
+    /**
+     * @description 根据名称查看某一团队的信息
+     * @param {name}
+     * @return {Promise}
+     */
+    findOneByTeamName(team) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query(
+                    $sql.findOneByTeamName,
+                    [team.name],
                     function (err, result) {
                         if (err) {
                             console.log(err);

@@ -50,10 +50,10 @@ router.delete("/delete", async function (req, res, next) {
     // 从cookie中获取当前登录学生的id
     const stuId = req.signedCookies.id;
     // 读取请求参数
-    const teamId = req.query.teamId;
+    const team = req.query;
     try {
         const result = await applyService.delete({
-            teamId: teamId,
+            teamId: team.teamId,
             stuId: stuId,
         });
         res.json({

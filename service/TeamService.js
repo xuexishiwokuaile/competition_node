@@ -30,12 +30,17 @@ class TeamService {
             stuId: team.captain,
             comId: team.comId,
         });
-        // if (!takepart.length) {
-        //     throw new AddError("发起失败，您还没有选择该竞赛");
-        // }
+        if (!takepart.length) {
+            throw new AddError("发起失败，您还没有选择该竞赛");
+        }
         // 查看必要信息是否提供
         if (isEmpty(team.name) || isEmpty(team.detail) || isEmpty(team.count)) {
             throw new AddError("发起失败，您有必要信息未提供");
+        }
+        // 查看团队名称是否重复
+        const name = await this.teamDao.findOneByTeamName(team);
+        if (name.length) {
+            throw new AddError("发起失败，团队名称重复");
         }
         // 将positionName转化为positionId
         const position = await this.applyDao.findPositionByName(team);
@@ -74,7 +79,7 @@ class TeamService {
      */
     async delete(team) {
         // 查看团队是否存在
-        const result = await this.teamDao.findOneByTeam(team);
+        const result = await this.teamDao.findOneByTeamId(team);
         if (!result.length) {
             throw new DeleteError("删除失败，团队不存在");
         }

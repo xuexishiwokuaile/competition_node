@@ -9,7 +9,8 @@ const team = {
     delete: "DELETE FROM team WHERE id = ? AND captain = ?", // 这里需要同时删除掉apply表下对应teamId的项
     updateTeamPosCountAndMissing:
         "UPDATE team SET count = ? AND missing = ? WHERE id = ?",
-    findOneByTeam: "SELECT * FROM team WHERE id = ?",
+    findOneByTeamId: "SELECT * FROM team WHERE id = ?",
+    findOneByTeamName: "SELECT * FROM team WHERE name = ?",
     findAll:
         "SELECT team.id as teamId, team.name as teamName, competition.id as comId, competition.name as comName, user.id as userId, user.name as userName, user.profile, team.count as count FROM team, competition, user WHERE team.comId = competition.id AND team.captain = user.id",
     findMissing:
