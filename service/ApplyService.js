@@ -32,7 +32,7 @@ class ApplyService {
             throw new AddError("申请失败，理由为空");
         }
         // 获取团队信息
-        const team = await this.teamDao.findOneByTeam(apply);
+        const team = await this.teamDao.findOneByTeamId(apply);
         const comId = team[0].comId;
         // 查看用户是否已经参与了该竞赛
         const takepart = await this.takepartDao.findOneByStuIdAndComId({
@@ -96,8 +96,23 @@ class ApplyService {
      * @throws {DeleteError}
      */
     async delete(apply) {
+        // 判断团队是否存在
+        const team = await this.teamDao.findOneByTeamId(apply);
+        if (!team.length) {
+            throw new DeleteError("退出失败，小队不存在");
+        }
+
         try {
-            return await this.applyDao.delete(apply);
+            const result = await this.applyDao.delete(apply);
+            // 判断请求的用户是队长还是队员
+            if (team[0].captain == apply.stuId) {
+                // 是队长，再删除team表中的相关信息
+                await this.teamDao.delete({
+                    teamId: apply.teamId,
+                    captain: apply.stuId,
+                });
+            }
+            return result;
         } catch (e) {
             throw new DeleteError(e);
         }
