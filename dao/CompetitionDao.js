@@ -58,7 +58,7 @@ class CompetitionDao {
                 connection.query(
                     $sql.delete,
                     // 将id转换为整形
-                    +competition.id,
+                    +competition.id, +competition.teaId,
                     function (err, result) {
                         if (err) {
                             console.log(err);

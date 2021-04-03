@@ -6,13 +6,13 @@
 const competition = {
     add:
         "INSERT INTO competition(name, url, detail, image, teaId, date) VALUES (?,?,?,?,?,?)",
-    delete: "DELETE FROM competition WHERE id = ?",
+    delete: "DELETE FROM competition WHERE id = ? AND teaId = ?",
     update:
-        "UPDATE competition SET name = ?, url = ?, detail = ?, image = ?, teaId = ? WHERE id = ?",
+        "UPDATE competition SET name = ?, url = ?, detail = ?, image = ? WHERE id = ? AND teaId = ?",
     findOneById: "SELECT * FROM competition WHERE id = ?",
     findOneByName: "SELECT * FROM competition WHERE name = ?",
     findAllByDate: "SELECT * FROM competition ORDER BY date DESC",
-    findAllByHot: "SELECT * FROM competition ORDER BY hot DESC"
+    findAllByHot: "SELECT * FROM competition ORDER BY hot DESC",
 };
 
 export default competition;
