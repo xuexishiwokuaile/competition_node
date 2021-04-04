@@ -12,6 +12,7 @@ import session from "express-session";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
+import expressWs from "express-ws";
 
 import indexRouter from "./routes/IndexRouter.js";
 import userRouter from "./routes/UserRouter.js";
@@ -27,7 +28,9 @@ import teamRouter from "./routes/TeamRouter.js";
 import { checkRole } from "./middleWare/CheckRole.js";
 import { updateCookie } from "./middleWare/UpdateCookie.js";
 
-var app = express();
+const app = express();
+
+expressWs(app);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

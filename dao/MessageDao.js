@@ -7,6 +7,7 @@ import mysql from "mysql";
 import $conf from "../conf/db.js";
 import $util from "../util/pool.js";
 import $sql from "./sql/MessageSqlMapping.js";
+import eventEmitter from "../util/EventEmitter.js";
 
 // 使用连接池，提升性能
 const pool = mysql.createPool($util.extend({}, $conf.mysql));
@@ -48,6 +49,8 @@ class MessageDao {
                         }
                         // 获取到数据库中生成的id
                         resolve(result.insertId);
+                        // 广播消息更新事件，websocket监听到后推送到对应用户
+                        eventEmitter.emit("newMessage", message.stuId);
                         // 释放连接
                         connection.release();
                     }

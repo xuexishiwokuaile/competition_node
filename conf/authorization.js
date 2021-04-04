@@ -6,6 +6,7 @@ export default {
     anonymous: {
         "/login": "",
         "/register": "",
+        "/message/*": "",
     },
     student: {
         "/user/updatePassword": "",

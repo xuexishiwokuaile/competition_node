@@ -6,6 +6,7 @@
 import ApplyDao from "../dao/ApplyDao.js";
 import TakepartDao from "../dao/TakepartDao.js";
 import TeamDao from "../dao/TeamDao.js";
+import MessageDao from "../dao/MessageDao.js";
 import AddError from "../error/AddError.js";
 import DeleteError from "../error/DeleteError.js";
 import UpdateError from "../error/UpdateError.js";
@@ -17,6 +18,7 @@ class ApplyService {
         this.applyDao = new ApplyDao();
         this.takepartDao = new TakepartDao();
         this.teamDao = new TeamDao();
+        this.messageDao = new MessageDao();
     }
 
     /**
@@ -126,7 +128,17 @@ class ApplyService {
      */
     async updateStatusConfirm(apply) {
         try {
-            return await this.applyDao.updateStatusConfirm(apply);
+            const result = await this.applyDao.updateStatusConfirm(apply);
+            // 根据teamId查看comId
+            const team = await this.teamDao.findOneByTeamId(apply);
+            // 将申请状态变动的情况通知给队员
+            await this.messageDao.add({
+                comId: team[0].comId,
+                stuId: apply.member,
+                teaId: 1,
+                detail: "您的组队申请情况有变动，请及时查看！",
+            });
+            return result;
         } catch (e) {
             throw new UpdateError(e);
         }
@@ -140,7 +152,17 @@ class ApplyService {
      */
     async updateStatusRefuse(apply) {
         try {
-            return await this.applyDao.updateStatusRefuse(apply);
+            const result = await this.applyDao.updateStatusRefuse(apply);
+            // 根据teamId查看comId
+            const team = await this.teamDao.findOneByTeamId(apply);
+            // 将申请状态变动的情况通知给队员
+            await this.messageDao.add({
+                comId: team[0].comId,
+                stuId: apply.member,
+                teaId: 1,
+                detail: "您的组队申请情况有变动，请及时查看！",
+            });
+            return result;
         } catch (e) {
             throw new UpdateError(e);
         }
