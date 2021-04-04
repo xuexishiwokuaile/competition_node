@@ -163,6 +163,33 @@ class CompetitionDao {
     }
 
     /**
+     * @description 查找某一个教师创建的所有竞赛
+     * @param {teaId}
+     * @return {Promise}
+     */
+    findOneByTeaId(competition) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                // 获取前台页面传过来的参数
+                connection.query(
+                    $sql.findOneByTeaId,
+                    [competition.teaId],
+                    function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            resolve(result);
+                        }
+                        // 释放连接
+                        connection.release();
+                    }
+                );
+            });
+        });
+    }
+
+    /**
      * @description 查找所有竞赛，并按时间排序
      * @param {}
      * @return {Promise}

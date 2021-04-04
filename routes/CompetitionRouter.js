@@ -190,6 +190,28 @@ router.get("/findOneByName", async function (req, res, next) {
 });
 
 /**
+ * @description 查找某一个教师创建的所有竞赛
+ * @param {}
+ * @url /competition/findOneByTeaId
+ * @return {Promise}
+ */
+router.get("/findOneByTeaId", async function (req, res, next) {
+    // 从cookie中获取当前登录教师的id
+    const teaId = req.signedCookies.id;
+    try {
+        const result = await competitionService.findOneByTeaId({
+            teaId: teaId,
+        });
+        res.send(result);
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
+});
+
+/**
  * @description 查找所有竞赛，并按指定的方式排序
  * @param {order}
  * @url /competition/findAll

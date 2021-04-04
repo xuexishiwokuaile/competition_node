@@ -76,6 +76,15 @@ class CompetitionService {
     }
 
     /**
+     * @description 查找某一个教师创建的所有竞赛
+     * @param {teaId}
+     * @return {Promise}
+     */
+    async findOneByTeaId(competition) {
+        return await this.competitionDao.findOneByTeaId(competition);
+    }
+
+    /**
      * @description 查找所有竞赛，按指定的方式排序
      * @param {order}
      * @return {Promise}

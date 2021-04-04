@@ -11,6 +11,7 @@ const competition = {
         "UPDATE competition SET name = ?, url = ?, detail = ?, image = ? WHERE teaId = ? AND id = ?",
     findOneById: "SELECT * FROM competition WHERE id = ?",
     findOneByName: "SELECT * FROM competition WHERE name = ?",
+    findOneByTeaId: "SELECT * FROM competition WHERE teaId = ?",
     findAllByDate: "SELECT * FROM competition ORDER BY date DESC",
     findAllByHot: "SELECT * FROM competition ORDER BY hot DESC",
 };
