@@ -41,7 +41,7 @@ class CompetitionService {
 
     /**
      * @description 删除竞赛
-     * @param {id}
+     * @param {id, teaId}
      * @return {Promise}
      * @throws {DeleteError}
      */

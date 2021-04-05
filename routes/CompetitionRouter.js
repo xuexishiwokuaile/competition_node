@@ -78,10 +78,15 @@ router.post("/add", async function (req, res, next) {
  * @return {}
  */
 router.delete("/delete", async function (req, res, next) {
+    // 从cookie中读取当前登录教师的id
+    const teaId = req.signedCookies.id;
     // 获取传递的参数
     const competition = req.query;
     try {
-        const result = await competitionService.delete(competition);
+        const result = await competitionService.delete({
+            id: competition.id,
+            teaId: teaId,
+        });
         res.json({
             code: "0",
             msg: result,
