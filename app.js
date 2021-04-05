@@ -30,6 +30,7 @@ import { updateCookie } from "./middleWare/UpdateCookie.js";
 
 const app = express();
 
+// 让app支持websocket
 expressWs(app);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

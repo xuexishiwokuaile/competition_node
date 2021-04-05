@@ -47,35 +47,6 @@ router.post("/add", async function (req, res, next) {
 });
 
 /**
- * @description 取消组队招募/解散团队
- * @param {teamId, captain}
- * @url /team/delete
- * @return {}
- */
-router.delete("/delete", async function (req, res, next) {
-    // 从cookie中读取当前登陆用户的id
-    const captain = req.signedCookies.id;
-    // 读取请求参数
-    const team = req.query;
-
-    try {
-        const result = await teamService.delete({
-            teamId: team.teamId,
-            captain: captain,
-        });
-        res.json({
-            code: "0",
-            msg: result,
-        });
-    } catch (e) {
-        res.json({
-            code: "1",
-            msg: e.name + ": " + e.message,
-        });
-    }
-});
-
-/**
  * @description 查看所有团队信息
  * @param {}
  * @url /team/findAll

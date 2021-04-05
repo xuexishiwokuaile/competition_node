@@ -17,10 +17,6 @@ const apply = {
     findMemberByTeam:
         "SELECT competition.name as competitionName, team.name as teamName, user.name as userName, user.id as userId, user.profile, position.positionName FROM apply, user, position, competition, team WHERE apply.teamId = ? AND apply.status = 2 AND apply.member = user.id AND position.positionId = apply.memPositionId AND apply.comId = competition.id AND apply.teamId = team.id",
     findOneByCaptain: "SELECT * FROM apply WHERE captain = ? AND status = 2",
-    findOneByTeamAndCaptain:
-        "SELECT * FROM apply WHERE teamId = ? AND captain = ? AND status <> 0",
-    findOneByTeamAndMember:
-        "SELECT * FROM apply WHERE teamId = ? AND member = ? AND status <> 0",
     findOneByTeamAndStu:
         "SELECT * FROM apply WHERE status <> 0 AND teamId = ? AND captain = ? OR member = ?",
     findOneByMember: "SELECT * FROM apply WHERE member = ? AND status = 2",

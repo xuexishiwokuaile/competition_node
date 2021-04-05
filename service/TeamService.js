@@ -72,31 +72,6 @@ class TeamService {
     }
 
     /**
-     * @description 取消组队招募/解散团队 如果该团队已经有其他队员，不能够强行解散
-     * @param {teamId, captain}
-     * @return {Promise}
-     * @throws {DeleteError}
-     */
-    async delete(team) {
-        // 查看团队是否存在
-        const result = await this.teamDao.findOneByTeamId(team);
-        if (!result.length) {
-            throw new DeleteError("删除失败，团队不存在");
-        }
-        // 查看操作用户是否是队长
-        const captain = result[0].captain;
-        if (captain != team.captain) {
-            throw new DeleteError("删除失败，您不是该团队的队长");
-        }
-
-        try {
-            return await this.teamDao.delete(team);
-        } catch (e) {
-            throw new DeleteError(e);
-        }
-    }
-
-    /**
      * @description 查看所有团队信息
      * @param {}
      * @return {Promise}

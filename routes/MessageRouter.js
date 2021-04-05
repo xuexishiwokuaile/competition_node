@@ -12,6 +12,7 @@ import { redisCache } from "../middleWare/RedisCache.js";
 const router = Router();
 const messageService = new MessageService();
 
+// 让router支持websocket
 expressWs(router);
 
 // 连接池，根据用户的id记录websocket的所有客户端
@@ -181,7 +182,7 @@ eventEmitter.on("newMessage", async function (stuId) {
             client.send(JSON.stringify(message));
         });
     } else {
-        console.log("信息发送失败，用户当前处于离线状态");
+        console.log(`信息发送失败，用户${stuId}当前处于离线状态`);
     }
 });
 
