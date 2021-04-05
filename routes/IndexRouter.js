@@ -5,8 +5,11 @@
 
 import { Router } from "express";
 import UserService from "../service/UserService.js";
-var router = Router();
-var userService = new UserService();
+import redisClient from "../util/redis.js";
+import { tokenGenerator } from "../util/tokenGenerator.js";
+
+const router = Router();
+const userService = new UserService();
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -44,10 +47,15 @@ router.post("/login", async function (req, res, next) {
             maxAge: 3600 * 24 * 7 * 1000,
             signed: true,
         });
+        // 生成token，返回给客户端，并且在redis中存储
+        const token = tokenGenerator(user.name, user.password);
+        // 在redis中存储token
+        redisClient.setex(result, 3600 * 24 * 7, token); // 过期时间设置为一周
         res.json({
             code: "0",
             msg: "登录成功",
             id: result,
+            token: token,
         });
     } catch (e) {
         res.json({

@@ -7,13 +7,14 @@ import { Router } from "express";
 import MessageService from "../service/MessageService.js";
 import eventEmitter from "../util/EventEmitter.js";
 import expressWs from "express-ws";
+import { redisCache } from "../middleWare/RedisCache.js";
 
 const router = Router();
 const messageService = new MessageService();
 
 expressWs(router);
 
-// 根据用户的id记录websocket的所有客户端
+// 连接池，根据用户的id记录websocket的所有客户端
 const wsClients = {};
 router.wsClients = wsClients;
 
@@ -152,26 +153,25 @@ router.get("/findOneByComAndTea", async function (req, res, next) {
  * @param {}
  * @return {}
  */
-router.ws("/ws/:wid", function (ws, req) {
-    if (!wsClients[req.params.wid]) {
-        wsClients[req.params.wid] = [];
+router.ws("/ws", redisCache, function (ws, req, next) {
+    const { id } = req.query;
+    if (!wsClients[id]) {
+        wsClients[id] = [];
     }
     // 将连接记录在连接池中
-    wsClients[req.params.wid].push(ws);
+    wsClients[id].push(ws);
     ws.onclose = () => {
         // 连接关闭时，wsClients进行清理
-        wsClients[req.params.wid] = wsClients[req.params.wid].filter(
-            (client) => {
-                return client !== ws;
-            }
-        );
-        if (wsClients[req.params.wid].length === 0) {
-            delete wsClients[req.params.wid];
+        wsClients[id] = wsClients[id].filter((client) => {
+            return client !== ws;
+        });
+        if (wsClients[id].length === 0) {
+            delete wsClients[id];
         }
     };
 });
 
-// 监听message表的新增事件，将消息发送给新增的用户
+// 监听message表的新增事件(newMessage)，将消息发送给新增的用户
 eventEmitter.on("newMessage", async function (stuId) {
     if (wsClients[stuId] !== undefined) {
         wsClients[stuId].forEach(async (client) => {
@@ -194,10 +194,9 @@ eventEmitter.on("newMessage", async function (stuId) {
  */
 router.get("/findOneByStu", async function (req, res, next) {
     // 从cookie中获取当前登录学生的id
-    const stuId = req.query.stuId; //req.signedCookies.id;
+    const stuId = req.signedCookies.id;
     try {
         const result = await messageService.findOneByStu({ stuId: stuId });
-        console.log(wsClients[stuId]);
         if (wsClients[stuId] !== undefined) {
             wsClients[stuId].forEach((client) => {
                 client.send(JSON.stringify(result));
