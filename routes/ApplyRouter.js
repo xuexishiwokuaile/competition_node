@@ -81,7 +81,7 @@ router.put("/updateStatusConfirm", async function (req, res, next) {
     const apply = req.body;
     try {
         const result = await applyService.updateStatusConfirm({
-            captain: req.body.captain,
+            captain: captain,
             member: apply.member,
             teamId: apply.teamId,
         });
@@ -137,7 +137,7 @@ router.get("/findTeamByStu", async function (req, res, next) {
     const stuId = req.signedCookies.id;
     try {
         const result = await applyService.findTeamByStu({
-            stuId: req.query.stuId,
+            stuId: stuId,
         });
         res.send(result);
     } catch (e) {
@@ -159,7 +159,7 @@ router.get("/findApply", async function (req, res, next) {
     const member = req.signedCookies.id;
     try {
         const result = await applyService.findApply({
-            member: req.query.member,
+            member: member,
         });
         res.send(result);
     } catch (e) {

@@ -5,9 +5,19 @@
 
 import { Router } from "express";
 import MessageService from "../service/MessageService.js";
+import eventEmitter from "../util/EventEmitter.js";
+import expressWs from "express-ws";
+import { redisCache } from "../middleWare/RedisCache.js";
 
 const router = Router();
 const messageService = new MessageService();
+
+// 让router支持websocket
+expressWs(router);
+
+// 连接池，根据用户的id记录websocket的所有客户端
+const wsClients = {};
+router.wsClients = wsClients;
 
 /**
  * @description 发布消息
@@ -140,7 +150,45 @@ router.get("/findOneByComAndTea", async function (req, res, next) {
 });
 
 /**
+ * @description websocket连接
+ * @param {}
+ * @return {}
+ */
+router.ws("/ws", redisCache, function (ws, req, next) {
+    const { id } = req.query;
+    if (!wsClients[id]) {
+        wsClients[id] = [];
+    }
+    // 将连接记录在连接池中
+    wsClients[id].push(ws);
+    ws.onclose = () => {
+        // 连接关闭时，wsClients进行清理
+        wsClients[id] = wsClients[id].filter((client) => {
+            return client !== ws;
+        });
+        if (wsClients[id].length === 0) {
+            delete wsClients[id];
+        }
+    };
+});
+
+// 监听message表的新增事件(newMessage)，将消息发送给新增的用户
+eventEmitter.on("newMessage", async function (stuId) {
+    if (wsClients[stuId] !== undefined) {
+        wsClients[stuId].forEach(async (client) => {
+            // 获取该学生的所有消息
+            const message = await messageService.findOneByStu({ stuId: stuId });
+            // 不能直接发送json对象，需要先转化成字符串
+            client.send(JSON.stringify(message));
+        });
+    } else {
+        console.log(`信息发送失败，用户${stuId}当前处于离线状态`);
+    }
+});
+
+/**
  * @description 查找某一学生的所有消息
+ * @description 使用websocket发送数据
  * @param {}
  * @url /message/findOneByStu
  * @return {}
@@ -150,7 +198,21 @@ router.get("/findOneByStu", async function (req, res, next) {
     const stuId = req.signedCookies.id;
     try {
         const result = await messageService.findOneByStu({ stuId: stuId });
-        res.send(result);
+        if (wsClients[stuId] !== undefined) {
+            wsClients[stuId].forEach((client) => {
+                client.send(JSON.stringify(result));
+            });
+            res.json({
+                code: "0",
+                msg: "success",
+            });
+        } else {
+            // 如果消息接收方没有连接，则返回错误信息
+            res.json({
+                code: "1",
+                msg: "用户当前不在线",
+            });
+        }
     } catch (e) {
         res.json({
             code: "1",

@@ -6,6 +6,7 @@
 import ApplyDao from "../dao/ApplyDao.js";
 import TakepartDao from "../dao/TakepartDao.js";
 import TeamDao from "../dao/TeamDao.js";
+import MessageDao from "../dao/MessageDao.js";
 import AddError from "../error/AddError.js";
 import DeleteError from "../error/DeleteError.js";
 import UpdateError from "../error/UpdateError.js";
@@ -17,6 +18,7 @@ class ApplyService {
         this.applyDao = new ApplyDao();
         this.takepartDao = new TakepartDao();
         this.teamDao = new TeamDao();
+        this.messageDao = new MessageDao();
     }
 
     /**
@@ -101,6 +103,31 @@ class ApplyService {
         if (!team.length) {
             throw new DeleteError("退出失败，小队不存在");
         }
+        if (team[0].captain == apply.stuId) {
+            // 退出的是队长
+            // 查看队员
+            const members = await this.applyDao.findMemberByTeam(apply);
+            // 给队员发送信息
+            members.map(async (item) => {
+                await this.messageDao.add({
+                    comId: team[0].comId,
+                    stuId: item.userId,
+                    teaId: 1,
+                    detail: "您的团队已解散，请及时查看！",
+                });
+            });
+        } else {
+            // 退出的是队员
+            // 查找队长
+            const captain = await this.applyDao.findCaptainByTeam(apply);
+            // 给队长发送信息
+            await this.messageDao.add({
+                comId: team[0].comId,
+                stuId: captain[0].userId,
+                teaId: 1,
+                detail: "您有队员退出了团队，请及时查看！",
+            });
+        }
 
         try {
             const result = await this.applyDao.delete(apply);
@@ -126,7 +153,17 @@ class ApplyService {
      */
     async updateStatusConfirm(apply) {
         try {
-            return await this.applyDao.updateStatusConfirm(apply);
+            const result = await this.applyDao.updateStatusConfirm(apply);
+            // 根据teamId查看comId
+            const team = await this.teamDao.findOneByTeamId(apply);
+            // 将申请状态变动的情况通知给队员
+            await this.messageDao.add({
+                comId: team[0].comId,
+                stuId: apply.member,
+                teaId: 1,
+                detail: "您的组队申请情况有变动，请及时查看！",
+            });
+            return result;
         } catch (e) {
             throw new UpdateError(e);
         }
@@ -140,7 +177,17 @@ class ApplyService {
      */
     async updateStatusRefuse(apply) {
         try {
-            return await this.applyDao.updateStatusRefuse(apply);
+            const result = await this.applyDao.updateStatusRefuse(apply);
+            // 根据teamId查看comId
+            const team = await this.teamDao.findOneByTeamId(apply);
+            // 将申请状态变动的情况通知给队员
+            await this.messageDao.add({
+                comId: team[0].comId,
+                stuId: apply.member,
+                teaId: 1,
+                detail: "您的组队申请情况有变动，请及时查看！",
+            });
+            return result;
         } catch (e) {
             throw new UpdateError(e);
         }
