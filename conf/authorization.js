@@ -6,7 +6,7 @@ export default {
     anonymous: {
         "/login": "",
         "/register": "",
-        "/message/*": "",
+        "/message/ws/.websocket": "", // websocket连接
     },
     student: {
         "/user/updatePassword": "",
