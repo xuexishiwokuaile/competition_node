@@ -240,6 +240,60 @@ class ApplyDao {
     }
 
     /**
+     * @description 根据teamId和captain信息查看申请信息是否存在
+     * @description 用于在有成员退出团队时判断该成员是否是队长
+     * @param {teamId, captain}
+     * @return {Promise}
+     */
+    findOneByTeamAndCaptain(apply) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query(
+                    $sql.findOneByTeamAndCaptain,
+                    [+apply.teamId, +apply.captain],
+                    function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            resolve(result);
+                        }
+                        // 释放连接
+                        connection.release();
+                    }
+                );
+            });
+        });
+    }
+
+    /**
+     * @description 根据teamId和member信息查看申请信息是否存在
+     * @description 用于在有成员退出团队时判断该成员是否是队员
+     * @param {teamId, member}
+     * @return {Promise}
+     */
+    findOneByTeamAndMember(apply) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query(
+                    $sql.findOneByTeamAndMember,
+                    [+apply.teamId, +apply.member],
+                    function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            resolve(result);
+                        }
+                        // 释放连接
+                        connection.release();
+                    }
+                );
+            });
+        });
+    }
+
+    /**
      * @description 队员查看所有竞赛组队的情况
      * @param {member}
      * @return {Promise}

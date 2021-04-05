@@ -103,6 +103,37 @@ class ApplyService {
         if (!team.length) {
             throw new DeleteError("退出失败，小队不存在");
         }
+        // 查看退出的是队长还是队员
+        const captain = await this.applyDao.findOneByTeamAndCaptain({
+            teamId: apply.teamId,
+            captain: apply.stuId,
+        });
+        if (captain.length) {
+            // 队长
+            // 给队员发送信息
+            captain.map(async (item) => {
+                await this.messageDao.add({
+                    comId: team[0].comId,
+                    stuId: item.member,
+                    teaId: 1,
+                    detail: "您的组队情况有变动，请及时查看！",
+                });
+            });
+        } else {
+            // 队员
+            // 查找队长
+            const tempCaptain = await this.applyDao.findOneByTeamAndMember({
+                teamId: apply.teamId,
+                member: apply.stuId,
+            });
+            // 给队长发送信息
+            await this.messageDao.add({
+                comId: team[0].comId,
+                stuId: tempCaptain[0].captain,
+                teaId: 1,
+                detail: "您的组队情况有变动，请及时查看！",
+            });
+        }
 
         try {
             const result = await this.applyDao.delete(apply);
