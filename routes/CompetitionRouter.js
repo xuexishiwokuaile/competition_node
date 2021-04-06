@@ -196,13 +196,13 @@ router.get("/findOneByName", async function (req, res, next) {
 
 /**
  * @description 查找某一个教师创建的所有竞赛
- * @param {}
+ * @param {teaId}
  * @url /competition/findOneByTeaId
  * @return {Promise}
  */
 router.get("/findOneByTeaId", async function (req, res, next) {
     // 从cookie中获取当前登录教师的id
-    const teaId = req.signedCookies.id;
+    const { teaId } = req.query;
     try {
         const result = await competitionService.findOneByTeaId({
             teaId: teaId,
