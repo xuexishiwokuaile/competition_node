@@ -26,8 +26,8 @@ export async function checkRole(req, res, next) {
     } else {
         // 非匿名请求，需要验证用户角色
         if (!(req.signedCookies.name || req.signedCookies.password)) {
-            // cookie中不包含name或password字段，返回403错误
-            next(createError(403));
+            // cookie中不包含name或password字段，返回401错误
+            next(createError(401));
         } else {
             var role;
             // 查看session是否存在
@@ -50,7 +50,8 @@ export async function checkRole(req, res, next) {
                 // 精确匹配 || 模糊匹配
                 next();
             } else {
-                next(createError(403));
+                // 用户角色与权限表不匹配
+                next(createError(401));
             }
         }
     }

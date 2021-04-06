@@ -22,14 +22,14 @@ export function redisCache(ws, req, next) {
                 // 相同代表鉴权成功，放行
                 next();
             } else {
-                // 不同代表用户未授权，抛出403错误
+                // 不同代表用户未授权，抛出401错误
                 ws.send("权限错误，连接失败");
-                next(createError(403));
+                next(createError(401));
             }
         } else {
             // redis中存储的信息已失效，需要用户重新登录
             ws.send("登录信息已失效，请重新登录");
-            next(createError(403));
+            next(createError(401));
         }
     });
 }
