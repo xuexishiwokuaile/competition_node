@@ -42,16 +42,16 @@ export async function checkRole(req, res, next) {
             } else {
                 role = req.session.role;
             }
-        }
 
-        if (
-            authorization[role].hasOwnProperty(url) ||
-            authorization[role].hasOwnProperty(`/${routerName}/*`)
-        ) {
-            // 精确匹配 || 模糊匹配
-            next();
-        } else {
-            next(createError(403));
+            if (
+                authorization[role].hasOwnProperty(url) ||
+                authorization[role].hasOwnProperty(`/${routerName}/*`)
+            ) {
+                // 精确匹配 || 模糊匹配
+                next();
+            } else {
+                next(createError(403));
+            }
         }
     }
 }
