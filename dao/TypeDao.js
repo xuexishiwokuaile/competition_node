@@ -238,6 +238,28 @@ class TypeDao {
             });
         });
     }
+
+    /**
+     * @description 查看所有的竞赛种类
+     * @param {}
+     * @return {Promise}
+     */
+    findAll() {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query($sql.findAll, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                    // 释放连接
+                    connection.release();
+                });
+            });
+        });
+    }
 }
 
 export default TypeDao;

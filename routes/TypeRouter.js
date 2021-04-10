@@ -53,4 +53,22 @@ router.get("/findComByType", async function (req, res, next) {
     }
 });
 
+/**
+ * @description 查看竞赛的所有种类
+ * @param {}
+ * @url /type/findAll
+ * @return {}
+ */
+router.get("/findAll", async function (req, res, next) {
+    try {
+        const result = await typeService.findAll();
+        res.send(result);
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
+});
+
 export default router;

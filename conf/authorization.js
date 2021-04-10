@@ -25,6 +25,7 @@ export default {
     teacher: {
         "/user/*": "",
         "/competition/*": "",
+        "/type/*": "",
     },
     admin: {
         "/user/*": "",

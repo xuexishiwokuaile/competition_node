@@ -132,6 +132,15 @@ class TypeService {
         // 取数组的交集
         return intersection(resultArr);
     }
+
+    /**
+     * @description 查看所有的竞赛种类
+     * @param {}
+     * @return {Promise}
+     */
+    async findAll() {
+        return await this.typeDao.findAll();
+    }
 }
 
 export default TypeService;

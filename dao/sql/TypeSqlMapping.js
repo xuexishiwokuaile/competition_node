@@ -16,6 +16,7 @@ const type = {
     findOneByComAndType:
         "SELECT * FROM competition_type WHERE comId = ? AND typeId = ?",
     findOneByCom: "SELECT * FROM competition_type WHERE comId = ?",
+    findAll: "SELECT * FROM type",
 };
 
 export default type;
