@@ -80,11 +80,11 @@ router.put("/updatePassword", async function (req, res, next) {
 
 /**
  * @description 更新头像
- * @param {profile}
- * @url /user/updateProfile
+ * @param {avatar}
+ * @url /user/updateAvatar
  * @return {}
  */
-router.put("/updateProfile", async function (req, res, next) {
+router.put("/updateAvatar", async function (req, res, next) {
     // 从cookie中获取当前登录用户的id
     const id = req.signedCookies.id;
     // 获取传递的图片，格式为form-data
@@ -97,14 +97,14 @@ router.put("/updateProfile", async function (req, res, next) {
             });
         }
         // 将图片上传到oss
-        const img = await putStream(files.profile);
+        const img = await putStream(files.avatar);
         // 如果没有上传文件，url则为空，否则为文件的oss地址
         const url = img ? img.url : null;
 
         try {
-            const result = await userService.updateProfile({
+            const result = await userService.updateAvatar({
                 id: id,
-                profile: url,
+                avatar: url,
             });
             res.json({
                 code: "0",
@@ -166,6 +166,42 @@ router.get("/findOneByName", async function (req, res, next) {
  */
 router.get("/findAll", async function (req, res, next) {
     res.send(await userService.findAll());
+});
+
+/**
+ * @description 查找当前登录用户的信息
+ * @param {}
+ * @url /user/findCurrentUser
+ * @return {user}
+ */
+router.get("/findCurrentUser", async function (req, res, next) {
+    const id = req.signedCookies.id;
+    try {
+        const result = await userService.findOneById({ id: id });
+        res.send(result);
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
+});
+
+/**
+ * @description 用户登出
+ * @param {}
+ * @url /user/logout
+ * @return {}
+ */
+router.post("/logout", async function (req, res, next) {
+    // 销毁会话cookie
+    res.clearCookie("id");
+    res.clearCookie("name");
+    res.clearCookie("password");
+    res.send({
+        code: "0",
+        msg: "success",
+    });
 });
 
 export default router;
