@@ -102,16 +102,16 @@ class UserDao {
 
     /**
      * @description 更新头像
-     * @param {profile, id}
+     * @param {avatar, id}
      * @return {Promise}
      */
-    updateProfile(user) {
+    updateAvatar(user) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.updateProfile,
-                    [user.profile, +user.id],
+                    $sql.updateAvatar,
+                    [user.avatar, +user.id],
                     function (err, result) {
                         // 查看错误详情，便于调试
                         if (err) {

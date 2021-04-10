@@ -54,9 +54,13 @@ router.post("/login", async function (req, res, next) {
         res.json({
             code: "0",
             msg: "登录成功",
+            type: "account",
             id: result,
             token: token,
-            currentAuthority: role[0].roleName,
+            currentAuthority:
+                role[0].roleName === "teacher"
+                    ? "user"
+                    : role[0].roleName,
         });
     } catch (e) {
         res.json({

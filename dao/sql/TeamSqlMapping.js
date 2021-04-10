@@ -12,11 +12,11 @@ const team = {
     findOneByTeamId: "SELECT * FROM team WHERE id = ?",
     findOneByTeamName: "SELECT * FROM team WHERE name = ?",
     findAll:
-        "SELECT team.id as teamId, team.name as teamName, competition.id as comId, competition.name as comName, user.id as userId, user.name as userName, user.profile, team.count as count FROM team, competition, user WHERE team.comId = competition.id AND team.captain = user.id",
+        "SELECT team.id as teamId, team.name as teamName, competition.id as comId, competition.name as comName, user.id as userId, user.name as userName, user.avatar, team.count as count FROM team, competition, user WHERE team.comId = competition.id AND team.captain = user.id",
     findMissing:
-        "SELECT team.id as teamId, team.name as teamName, competition.id as comId, competition.name as comName, user.id as userId, user.name as userName, user.profile, team.count as count FROM team, competition, user WHERE team.comId = competition.id AND team.captain = user.id AND team.missing > 0 ORDER BY competition.hot/team.missing DESC",
+        "SELECT team.id as teamId, team.name as teamName, competition.id as comId, competition.name as comName, user.id as userId, user.name as userName, user.avatar, team.count as count FROM team, competition, user WHERE team.comId = competition.id AND team.captain = user.id AND team.missing > 0 ORDER BY competition.hot/team.missing DESC",
     findFinished:
-        "SELECT team.id as teamId, team.name as teamName, competition.id as comId, competition.name as comName, user.id as userId, user.name as userName, user.profile, team.count as count FROM team, competition, user WHERE team.comId = competition.id AND team.captain = user.id AND team.missing = 0",
+        "SELECT team.id as teamId, team.name as teamName, competition.id as comId, competition.name as comName, user.id as userId, user.name as userName, user.avatar, team.count as count FROM team, competition, user WHERE team.comId = competition.id AND team.captain = user.id AND team.missing = 0",
 };
 
 export default team;

@@ -76,21 +76,21 @@ class UserService {
 
     /**
      * @description 更新头像
-     * @param {profile, id}
+     * @param {avatar, id}
      * @return {Promise}
      * @throws {UpdateError}
      */
-    async updateProfile(user) {
+    async updateAvatar(user) {
         // 检查id是否存在
         const result = await this.userDao.findOneById(user);
         if (!result.length) {
             throw new UpdateError("更新失败，未找到用户");
-        } else if (isEmpty(user.profile)) {
+        } else if (isEmpty(user.avatar)) {
             throw new UpdateError("更新失败，未选择头像");
         }
 
         try {
-            return await this.userDao.updateProfile(user);
+            return await this.userDao.updateAvatar(user);
         } catch (e) {
             throw new UpdateError(e);
         }

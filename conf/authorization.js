@@ -10,7 +10,7 @@ export default {
     },
     student: {
         "/user/updatePassword": "",
-        "/user/updateProfile": "",
+        "/user/updateAvatar": "",
         "/competition/findOneById": "",
         "/competition/findOneByName": "",
         "/competition/*": "",

@@ -8,7 +8,7 @@ const user = {
         "INSERT INTO user(name, password, phone, roleId, gender) VALUES (?,?,?,0,?)",
     delete: "DELETE FROM user WHERE id = ?",
     updatePassword: "UPDATE user SET password = ? WHERE id = ?",
-    updateProfile: "UPDATE user SET profile = ? WHERE id = ?",
+    updateAvatar: "UPDATE user SET avatar = ? WHERE id = ?",
     findOneById: "SELECT * FROM user WHERE id = ?",
     findOneByName: "SELECT * FROM user WHERE name = ?",
     findAll: "SELECT * FROM user",
