@@ -4,6 +4,7 @@
  */
 
 import TypeDao from "../dao/TypeDao.js";
+import CompetitionDao from "../dao/CompetitionDao.js";
 import AddError from "../error/AddError.js";
 import UpdateError from "../error/UpdateError.js";
 import { intersection } from "../util/arrayUtil.js";
@@ -11,6 +12,7 @@ import { intersection } from "../util/arrayUtil.js";
 class TypeService {
     constructor() {
         this.typeDao = new TypeDao();
+        this.competitionDao = new CompetitionDao();
     }
 
     /**
@@ -111,26 +113,38 @@ class TypeService {
         const order = type.order;
         // 数组去重
         const newTypes = Array.from(new Set(type.typeName));
-        const promises = newTypes.map(async (type) => {
+        // 判断前台是否传参，如果没有传参默认返回所有竞赛
+        if (newTypes && !newTypes[0]) {
             switch (order) {
                 case "date":
-                    return await this.typeDao.findComByTypeAndDate({
-                        typeName: type,
-                    });
+                    return await this.competitionDao.findAllByDate();
                 case "hot":
-                    return await this.typeDao.findComByTypeAndHot({
-                        typeName: type,
-                    });
+                    return await this.competitionDao.findAllByHot();
                 default:
-                    return await this.typeDao.findComByTypeAndDate({
-                        typeName: type,
-                    });
+                    return await this.competitionDao.findAllByDate();
             }
-        });
-        // 结果数组
-        const resultArr = await Promise.all(promises);
-        // 取数组的交集
-        return intersection(resultArr);
+        } else {
+            const promises = newTypes.map(async (type) => {
+                switch (order) {
+                    case "date":
+                        return await this.typeDao.findComByTypeAndDate({
+                            typeName: type,
+                        });
+                    case "hot":
+                        return await this.typeDao.findComByTypeAndHot({
+                            typeName: type,
+                        });
+                    default:
+                        return await this.typeDao.findComByTypeAndDate({
+                            typeName: type,
+                        });
+                }
+            });
+            // 结果数组
+            const resultArr = await Promise.all(promises);
+            // 取数组的交集
+            return intersection(resultArr);
+        }
     }
 
     /**
