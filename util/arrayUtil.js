@@ -4,7 +4,7 @@
  */
 
 /**
- * @description 取多个数组的交集
+ * @description 取多个数组的交集，根据comId判断是否为相同元素
  * @param {arrays[]}
  * @return {Array} 无交集则返回空数组
  */

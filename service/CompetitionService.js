@@ -77,11 +77,25 @@ class CompetitionService {
 
     /**
      * @description 查找某一个教师创建的所有竞赛
-     * @param {teaId}
+     * @param {teaId, order}
      * @return {Promise}
      */
     async findOneByTeaId(competition) {
-        return await this.competitionDao.findOneByTeaId(competition);
+        const order = competition.order;
+        switch (order) {
+            case "date":
+                return await this.competitionDao.findOneByTeaIdByDate(
+                    competition
+                );
+            case "hot":
+                return await this.competitionDao.findOneByTeaIdByHot(
+                    competition
+                );
+            default:
+                return await this.competitionDao.findOneByTeaIdByDate(
+                    competition
+                );
+        }
     }
 
     /**
@@ -100,6 +114,15 @@ class CompetitionService {
             default:
                 return await this.competitionDao.findAllByDate();
         }
+    }
+
+    /**
+     * @description 查找竞赛的所有者
+     * @param {}
+     * @return {Promise}
+     */
+    async findAllOwners() {
+        return await this.competitionDao.findAllOwners();
     }
 }
 

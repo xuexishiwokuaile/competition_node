@@ -162,17 +162,44 @@ class CompetitionDao {
     }
 
     /**
-     * @description 查找某一个教师创建的所有竞赛
+     * @description 查找某一个教师创建的所有竞赛，并按时间排序
      * @param {teaId}
      * @return {Promise}
      */
-    findOneByTeaId(competition) {
+    findOneByTeaIdByDate(competition) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 // 获取前台页面传过来的参数
                 connection.query(
-                    $sql.findOneByTeaId,
-                    [competition.teaId],
+                    $sql.findOneByTeaIdByDate,
+                    [+competition.teaId],
+                    function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            resolve(result);
+                        }
+                        // 释放连接
+                        connection.release();
+                    }
+                );
+            });
+        });
+    }
+
+    /**
+     * @description 查找某一个教师创建的所有竞赛，并按热度排序
+     * @param {teaId}
+     * @return {Promise}
+     */
+    findOneByTeaIdByHot(competition) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                // 获取前台页面传过来的参数
+                connection.query(
+                    $sql.findOneByTeaIdByHot,
+                    [+competition.teaId],
                     function (err, result) {
                         if (err) {
                             console.log(err);
@@ -219,6 +246,28 @@ class CompetitionDao {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query($sql.findAllByHot, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                    // 释放连接
+                    connection.release();
+                });
+            });
+        });
+    }
+
+    /**
+     * @description 查找竞赛的所有者
+     * @param {}
+     * @return {Promise}
+     */
+    findAllOwners() {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query($sql.findAllOwners, function (err, result) {
                     if (err) {
                         console.log(err);
                         reject(err);

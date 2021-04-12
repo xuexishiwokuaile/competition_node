@@ -8,6 +8,7 @@ import CompetitionService from "../service/CompetitionService.js";
 import TypeService from "../service/TypeService.js";
 import { putStream } from "../util/oss.js";
 import formidable from "formidable";
+import { intersection } from "../util/arrayUtil.js";
 
 const router = Router();
 const competitionService = new CompetitionService();
@@ -218,14 +219,42 @@ router.get("/findOneByTeaId", async function (req, res, next) {
 
 /**
  * @description 查找所有竞赛，并按指定的方式排序
- * @param {order}
+ * @param {typeName, teaId, order}
  * @url /competition/findAll
  * @return {competition[]}
  */
 router.get("/findAll", async function (req, res, next) {
     // 获取请求参数
-    const competition = req.query;
-    res.send(await competitionService.findAll(competition));
+    const { typeName, teaId, order } = req.query;
+    const resultArr = [];
+    const allResult = await competitionService.findAll({ order: order });
+    resultArr.push(allResult);
+    if (typeName) {
+        const typeResult = await typeService.findComByType({
+            typeName: typeName.split(","),
+            order: order,
+        });
+        resultArr.push(typeResult);
+    }
+    if (teaId) {
+        const teaResult = await competitionService.findOneByTeaId({
+            teaId: teaId,
+            order: order,
+        });
+        resultArr.push(teaResult);
+    }
+    // 取交集
+    res.send(intersection(resultArr));
+});
+
+/**
+ * @description 查找竞赛的所有者
+ * @param {}
+ * @url /competition/findAllOwners
+ * @return {}
+ */
+router.get("/findAllOwners", async function (req, res, next) {
+    res.send(await competitionService.findAllOwners());
 });
 
 export default router;

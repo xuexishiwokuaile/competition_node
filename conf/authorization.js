@@ -26,6 +26,7 @@ export default {
         "/user/*": "",
         "/competition/*": "",
         "/type/*": "",
+        "/search/*": "",
     },
     admin: {
         "/user/*": "",

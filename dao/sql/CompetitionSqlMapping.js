@@ -11,9 +11,16 @@ const competition = {
         "UPDATE competition SET name = ?, url = ?, detail = ?, image = ? WHERE teaId = ? AND id = ?",
     findOneById: "SELECT * FROM competition WHERE id = ?",
     findOneByName: "SELECT * FROM competition WHERE name = ?",
-    findOneByTeaId: "SELECT * FROM competition WHERE teaId = ?",
-    findAllByDate: "SELECT * FROM competition ORDER BY date DESC",
-    findAllByHot: "SELECT * FROM competition ORDER BY hot DESC",
+    findOneByTeaIdByDate:
+        "SELECT competition.id as comId, competition.name as name, competition.url, competition.detail, competition.image, competition.date, competition.hot, user.id as userId, user.name as userName, user.avatar FROM competition, user WHERE teaId = ? AND user.id = teaId ORDER BY date DESC",
+    findOneByTeaIdByHot:
+        "SELECT competition.id as comId, competition.name as name, competition.url, competition.detail, competition.image, competition.date, competition.hot, user.id as userId, user.name as userName, user.avatar FROM competition, user WHERE teaId = ? AND user.id = teaId ORDER BY hot DESC",
+    findAllByDate:
+        "SELECT competition.id as comId, competition.name as name, competition.url, competition.detail, competition.image, competition.date, competition.hot, user.id as userId, user.name as userName, user.avatar FROM competition, user WHERE competition.teaId = user.id ORDER BY date DESC",
+    findAllByHot:
+        "SELECT competition.id as comId, competition.name as name, competition.url, competition.detail, competition.image, competition.date, competition.hot, user.id as userId, user.name as userName, user.avatar FROM competition, user WHERE competition.teaId = user.id ORDER BY hot DESC",
+    findAllOwners:
+        "SELECT DISTINCT user.id, user.name FROM competition, user WHERE competition.teaId = user.id",
 };
 
 export default competition;

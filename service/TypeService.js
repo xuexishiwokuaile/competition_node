@@ -113,38 +113,26 @@ class TypeService {
         const order = type.order;
         // 数组去重
         const newTypes = Array.from(new Set(type.typeName));
-        // 判断前台是否传参，如果没有传参默认返回所有竞赛
-        if (newTypes && !newTypes[0]) {
+        const promises = newTypes.map(async (type) => {
             switch (order) {
                 case "date":
-                    return await this.competitionDao.findAllByDate();
+                    return await this.typeDao.findComByTypeAndDate({
+                        typeName: type,
+                    });
                 case "hot":
-                    return await this.competitionDao.findAllByHot();
+                    return await this.typeDao.findComByTypeAndHot({
+                        typeName: type,
+                    });
                 default:
-                    return await this.competitionDao.findAllByDate();
+                    return await this.typeDao.findComByTypeAndDate({
+                        typeName: type,
+                    });
             }
-        } else {
-            const promises = newTypes.map(async (type) => {
-                switch (order) {
-                    case "date":
-                        return await this.typeDao.findComByTypeAndDate({
-                            typeName: type,
-                        });
-                    case "hot":
-                        return await this.typeDao.findComByTypeAndHot({
-                            typeName: type,
-                        });
-                    default:
-                        return await this.typeDao.findComByTypeAndDate({
-                            typeName: type,
-                        });
-                }
-            });
-            // 结果数组
-            const resultArr = await Promise.all(promises);
-            // 取数组的交集
-            return intersection(resultArr);
-        }
+        });
+        // 结果数组
+        const resultArr = await Promise.all(promises);
+        // 取数组的交集
+        return intersection(resultArr);
     }
 
     /**
