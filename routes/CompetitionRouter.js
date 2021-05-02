@@ -9,6 +9,7 @@ import TypeService from "../service/TypeService.js";
 import { putStream } from "../util/oss.js";
 import formidable from "formidable";
 import { intersection } from "../util/arrayUtil.js";
+import { sortData } from "../util/sort.js";
 
 const router = Router();
 const competitionService = new CompetitionService();
@@ -205,12 +206,20 @@ router.get("/findOneByName", async function (req, res, next) {
  */
 router.get("/findOneByTeaId", async function (req, res, next) {
     // 从cookie中获取当前登录教师的id
-    const { teaId } = req.signedCookies;
+    const { id } = req.signedCookies;
     try {
-        const result = await competitionService.findOneByTeaId({
-            teaId: teaId,
+        let result = await competitionService.findOneByTeaId({
+            teaId: id,
         });
-        res.send(result);
+        // 排序
+        if (req.query.sorter) {
+            const sorter = JSON.parse(req.query.sorter);
+            result = sortData(result, sorter);
+        }
+        res.send({
+            data: result,
+            success: true,
+        });
     } catch (e) {
         res.json({
             code: "1",
