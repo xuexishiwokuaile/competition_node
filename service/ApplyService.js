@@ -65,17 +65,9 @@ class ApplyService {
         const number = team[0].count;
         const posNumbers = number.split(",");
         // 判断用户申请的岗位是否还存在
-        if (+posNumbers[posId - 1]) {
-            posNumbers[posId - 1]--;
-        } else {
+        if (!+posNumbers[posId - 1]) {
             throw new AddError("申请失败，名额已满");
         }
-        // 将最新的名额数更新到数据库
-        await this.teamDao.updateTeamPosCountAndMissing({
-            count: posNumbers.toString(),
-            missing: arraySum(posNumbers),
-            teamId: apply.teamId,
-        });
 
         try {
             return await this.applyDao.add({
@@ -154,8 +146,25 @@ class ApplyService {
     async updateStatusConfirm(apply) {
         try {
             const result = await this.applyDao.updateStatusConfirm(apply);
-            // 根据teamId查看comId
+            // 查看team信息
             const team = await this.teamDao.findOneByTeamId(apply);
+
+            // 获取团队名额，并转化为数组
+            const number = team[0].count;
+            const posNumbers = number.split(",");
+            // 查看是否有剩余名额
+            if (+posNumbers[posId - 1]) {
+                posNumbers[posId - 1]--;
+            } else {
+                throw new UpdateError("处理失败，名额已满");
+            }
+            // 更新剩余名额
+            await this.teamDao.updateTeamPosCountAndMissing({
+                count: posNumbers.toString(),
+                missing: arraySum(posNumbers),
+                teamId: apply.teamId,
+            });
+
             // 将申请状态变动的情况通知给队员
             await this.messageDao.add({
                 comId: team[0].comId,

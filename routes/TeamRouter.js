@@ -25,7 +25,7 @@ router.post("/add", async function (req, res, next) {
 
     try {
         const result = await teamService.add({
-            captain: team.captain,
+            captain: captain,
             positionName: team.positionName,
             comId: team.comId,
             name: team.name,

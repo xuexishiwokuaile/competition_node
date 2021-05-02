@@ -10,7 +10,7 @@ import { checkUrl, getRouterName } from "../util/urlUtil.js";
 var userService = new UserService();
 
 /**
- * @description: 检验用户身份
+ * @description 检验用户身份
  * @param {name}
  * @return {}
  */
