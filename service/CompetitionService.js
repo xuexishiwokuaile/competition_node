@@ -41,16 +41,25 @@ class CompetitionService {
 
     /**
      * @description 删除竞赛
-     * @param {id, teaId}
+     * @param {id[], teaId} // 批量删除
      * @return {Promise}
      * @throws {DeleteError}
      */
     async delete(competition) {
-        try {
-            return await this.competitionDao.delete(competition);
-        } catch (e) {
-            throw new DeleteError(e);
-        }
+        // 数组去重
+        const newId = Array.from(new Set(competition.id));
+        const promises = newId.map(async (id) => {
+            try {
+                return await this.competitionDao.delete({
+                    id: id,
+                    teaId: competition.teaId,
+                });
+            } catch (e) {
+                throw new DeleteError(e);
+            }
+        });
+
+        return await Promise.all(promises);
     }
 
     /**

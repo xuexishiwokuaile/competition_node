@@ -74,7 +74,7 @@ router.post("/add", async function (req, res, next) {
 
 /**
  * @description 删除竞赛
- * @param {id}
+ * @param {id} // 支持批量删除
  * @url /competition/delete
  * @return {}
  */
@@ -83,9 +83,11 @@ router.delete("/delete", async function (req, res, next) {
     const teaId = req.signedCookies.id;
     // 获取传递的参数
     const competition = req.query;
+    // 将id解析成数组
+    const id = competition.id.split(",");
     try {
         const result = await competitionService.delete({
-            id: competition.id,
+            id: id,
             teaId: teaId,
         });
         res.json({
