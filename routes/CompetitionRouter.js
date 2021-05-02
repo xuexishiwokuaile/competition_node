@@ -205,7 +205,7 @@ router.get("/findOneByName", async function (req, res, next) {
  */
 router.get("/findOneByTeaId", async function (req, res, next) {
     // 从cookie中获取当前登录教师的id
-    const { teaId } = req.query;
+    const { teaId } = req.signedCookies;
     try {
         const result = await competitionService.findOneByTeaId({
             teaId: teaId,
