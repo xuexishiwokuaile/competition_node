@@ -150,6 +150,26 @@ router.get("/findOneByComAndTea", async function (req, res, next) {
 });
 
 /**
+ * @description 查找某一教师发布的所有信息
+ * @param {}
+ * @url /message/findOneByTea
+ * @return {}
+ */
+router.get("/findOneByTea", async function (req, res, next) {
+    // 从cookie中获取当前登录教师的id
+    const teaId = req.signedCookies.id;
+    try {
+        const result = await messageService.findOneByTea({ teaId: teaId });
+        res.send(result);
+    } catch (e) {
+        res.json({
+            code: "1",
+            msg: e.name + ": " + e.message,
+        });
+    }
+});
+
+/**
  * @description websocket连接
  * @param {}
  * @return {}

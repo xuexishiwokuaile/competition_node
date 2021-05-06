@@ -136,6 +136,15 @@ class MessageService {
     }
 
     /**
+     * @description 查找某一教师发布的所有信息
+     * @param {teaId}
+     * @return {Promise}
+     */
+    async findOneByTea(message) {
+        return await this.messageDao.findOneByTea(message);
+    }
+
+    /**
      * @description 查找某一名学生的所有消息
      * @param {stuId}
      * @return {Promise}

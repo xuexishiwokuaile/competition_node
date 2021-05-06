@@ -190,6 +190,32 @@ class MessageDao {
     }
 
     /**
+     * @description 查找某一名教师发布的所有信息
+     * @param {teaId}
+     * @return {Promise}
+     */
+    findOneByTea(message) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query(
+                    $sql.findOneByTea,
+                    [+message.teaId],
+                    function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            resolve(result);
+                        }
+                        // 释放连接
+                        connection.release();
+                    }
+                );
+            });
+        });
+    }
+
+    /**
      * @description 查找某一名学生的所有消息
      * @param {stuId}
      * @return {Promise}
