@@ -9,7 +9,7 @@ const message = {
     update: "UPDATE message SET detail = ? WHERE id = ?",
     updateRead: "UPDATE message SET isRead = ? WHERE id = ?",
     findOneByComAndTea: "SELECT * FROM message WHERE comId = ? AND teaId = ?",
-    findOneByTea: "SELECT competition.name, message.detail FROM message, competition WHERE message.teaId = ? AND message.comId = competition.id",
+    findOneByTea: "SELECT message.id, message.comId, competition.name, message.detail FROM message, competition WHERE message.teaId = ? AND message.comId = competition.id",
     findOneByStu: "SELECT * FROM message WHERE stuID = ?",
     findReadByStu: "SELECT * FROM message WHERE stuId = ? AND isRead = true",
     findUnreadByStu: "SELECT * FROM message WHERE stuId = ? AND isRead = false",

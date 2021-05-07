@@ -30,3 +30,12 @@ export function getRouterName(url) {
     var routerName = url.match(pattern)[0];
     return routerName;
 }
+
+/**
+ * @description 判断是否为图片链接
+ * @param {url}
+ * @return {boolean}
+ */
+export function checkImage(url) {
+    return /.(png|jpg|jpeg|gif)$/g.test(url);
+}

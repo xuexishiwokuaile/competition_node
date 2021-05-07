@@ -8,6 +8,7 @@ import MessageService from "../service/MessageService.js";
 import eventEmitter from "../util/EventEmitter.js";
 import expressWs from "express-ws";
 import { redisCache } from "../middleWare/RedisCache.js";
+import { sortData } from "../util/sort.js";
 
 const router = Router();
 const messageService = new MessageService();
@@ -159,8 +160,16 @@ router.get("/findOneByTea", async function (req, res, next) {
     // 从cookie中获取当前登录教师的id
     const teaId = req.signedCookies.id;
     try {
-        const result = await messageService.findOneByTea({ teaId: teaId });
-        res.send(result);
+        let result = await messageService.findOneByTea({ teaId: teaId });
+        // 排序
+        if (req.query.sorter) {
+            const sorter = JSON.parse(req.query.sorter);
+            result = sortData(result, sorter);
+        }
+        res.send({
+            data: result,
+            success: true,
+        });
     } catch (e) {
         res.json({
             code: "1",
