@@ -4,6 +4,7 @@
  */
 
 import CompetitionDao from "../dao/CompetitionDao.js";
+import TypeDao from "../dao/TypeDao.js";
 import AddError from "../error/AddError.js";
 import DeleteError from "../error/DeleteError.js";
 import UpdateError from "../error/UpdateError.js";
@@ -12,6 +13,7 @@ import { isEmpty } from "../util/stringFormatUtil.js";
 class CompetitionService {
     constructor() {
         this.competitionDao = new CompetitionDao();
+        this.typeDao = new TypeDao();
     }
 
     /**
@@ -77,7 +79,24 @@ class CompetitionService {
     }
 
     async findOneById(competition) {
-        return await this.competitionDao.findOneById(competition);
+        // 竞赛基本信息
+        const result = await this.competitionDao.findOneById(competition);
+        // 竞赛的种类
+        const types = await this.typeDao.findTypeByCom({
+            comId: competition.id,
+        });
+        // 获取种类id
+        const typeIdArr = [];
+        const typeNameArr = [];
+        types.map((type) => {
+            typeIdArr.push(type.typeId);
+            typeNameArr.push(type.typeName);
+        });
+        return {
+            ...result[0],
+            typeId: typeIdArr.toString(),
+            typeName: typeNameArr.toString(),
+        };
     }
 
     async findOneByName(competition) {

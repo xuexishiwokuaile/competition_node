@@ -10,6 +10,7 @@ import { putStream } from "../util/oss.js";
 import formidable from "formidable";
 import { intersection } from "../util/arrayUtil.js";
 import { sortData } from "../util/sort.js";
+import { checkImage } from "../util/urlUtil.js";
 
 const router = Router();
 const competitionService = new CompetitionService();
@@ -105,7 +106,7 @@ router.delete("/delete", async function (req, res, next) {
 
 /**
  * @description 更新竞赛
- * @param {id, name, url, detail, image, teaId, typeName} // typeName之间用逗号分隔 image格式为file
+ * @param {id, name, url, detail, image, typeName} // typeName之间用逗号分隔 image格式为file
  * @url /competition/update
  * @return {}
  */
@@ -122,9 +123,19 @@ router.put("/update", async function (req, res, next) {
             });
         }
         // 将文件上传到oss
-        const img = await putStream(files.image);
-        // 如果没有上传文件，url则为空，否则为文件的oss地址
-        const url = img ? img.url : null;
+        // 判断image是链接还是对象
+        let url = null;
+        if (files.image) {
+            const img = await putStream(files.image);
+            // 如果没有上传文件，url则为空，否则为文件的oss地址
+            url = img ? img.url : null;
+        } else if (fields.image) {
+            // url为链接
+            // 判断是否为图片链接
+            if (checkImage(fields.image)) {
+                url = fields.image;
+            }
+        }
         // 获取参数
         const competition = fields;
         // 格式化type
