@@ -3,7 +3,7 @@
  * @Date: 2021-03-31 16:04:13
  */
 
-import e, { Router } from "express";
+import { Router } from "express";
 import SearchService from "../service/SearchService.js";
 import CompetitionService from "../service/CompetitionService.js";
 

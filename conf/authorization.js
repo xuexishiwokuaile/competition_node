@@ -28,6 +28,7 @@ export default {
         "/type/*": "",
         "/search/*": "",
         "/message/*": "",
+        "/statistics/*": "",
     },
     admin: {
         "/user/*": "",
